@@ -22,3 +22,6 @@ venv/
 
 # Ignore log files
 *.log
+
+# vscode
+.vscode/
