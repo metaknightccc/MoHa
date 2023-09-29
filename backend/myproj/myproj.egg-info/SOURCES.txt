@@ -44,7 +44,6 @@ myproj/templates/index.xhtml
 myproj/templates/login.xhtml
 myproj/templates/master.xhtml
 myproj/templates/template.xhtml.template
-myproj/templates/__pycache__/__init__.cpython-310.pyc
 myproj/tests/__init__.py
 myproj/tests/functional/__init__.py
 myproj/tests/functional/test_authentication.py
