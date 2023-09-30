@@ -1,4 +1,4 @@
 # MoHa
 README
 
-Michael Shuai
+MoHa: An Online Tutor App
