@@ -44,7 +44,6 @@ turbogearapp/templates/index.xhtml
 turbogearapp/templates/login.xhtml
 turbogearapp/templates/master.xhtml
 turbogearapp/templates/template.xhtml.template
-turbogearapp/templates/__pycache__/__init__.cpython-310.pyc
 turbogearapp/tests/__init__.py
 turbogearapp/tests/functional/__init__.py
 turbogearapp/tests/functional/test_authentication.py
