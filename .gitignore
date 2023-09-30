@@ -25,3 +25,6 @@ venv/
 
 # vscode
 .vscode/
+
+# Turbogaer
+turbogear_app.egg-info/
