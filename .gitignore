@@ -25,3 +25,9 @@ venv/
 
 # vscode
 .vscode/
+.idea/
+
+#database
+# PostgreSQL Data Directory
+/database/*
+!/database/.gitkeep
