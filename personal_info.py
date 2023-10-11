@@ -1,3 +1,3 @@
 # used for save information for each user
 
-postgresql_password = "123456"
+postgresql_password = "doudou8"
