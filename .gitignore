@@ -31,3 +31,6 @@ venv/
 # PostgreSQL Data Directory
 /database/*
 !/database/.gitkeep
+
+#personal info
+personal_info.py
