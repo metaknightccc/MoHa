@@ -21,6 +21,7 @@ cur.execute("INSERT INTO person (id, name, age, gender) VALUES (2, 'Alice', 25, 
 cur.execute("INSERT INTO person (id, name, age, gender) VALUES (3, 'Xijingping', 26, 'M')")
 cur.execute("INSERT INTO person (id, name, age, gender) VALUES (4, 'Pan C', 26, 'M')")
 cur.execute("INSERT INTO person (id, name, age, gender) VALUES (5, 'JiangZeming', 26, 'M')")
+cur.execute("INSERT INTO person (id, name, age, gender) VALUES (6, 'Dick', 26, 'M')")
 conn.commit()  # Commit the changes
 
 # Select and print data from the 'person' table
