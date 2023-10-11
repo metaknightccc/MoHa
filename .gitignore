@@ -34,3 +34,6 @@ venv/
 
 #personal info
 personal_info.py
+
+/backend/turbogear_app.egg-info
+/backend/development.ini
