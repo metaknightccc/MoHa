@@ -1,8 +1,7 @@
 #postgre liability test
 import psycopg2
-import personal_info as pi
 
-conn = psycopg2.connect(host="localhost", port=5432, dbname="moha", user="postgres", password=pi.postgresql_password, sslmode="prefer", connect_timeout=10)
+conn = psycopg2.connect(host="localhost", port=5432, dbname="moha", user="postgres", password="123456", sslmode="prefer", connect_timeout=10)
 
 cur=conn.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS person (

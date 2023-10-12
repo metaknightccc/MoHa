@@ -4,6 +4,7 @@
 import zope.sqlalchemy
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from turbogearapp.model import *
 
 # Global session manager: DBSession() returns the Thread-local
 # session object appropriate for the current web request.
@@ -59,5 +60,6 @@ def init_model(engine):
 
 # Import your model modules here.
 from turbogearapp.model.auth import User, Group, Permission
+from turbogearapp.model.model import Tutor, Student, Course
 
-__all__ = ('User', 'Group', 'Permission')
+__all__ = ('User', 'Group', 'Permission', 'Tutor', 'Student', 'Course')
