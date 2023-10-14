@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
 function FetchData() {
-//   const [tutors, setTutors] = useState([]);
-//   const [students, setStudents] = useState([]);
-//   const [courses, setCourses] = useState([]);
-   let res = null;
-  // Fetch data when component mounts
+  const [data, setData] = useState(null);
+
   useEffect(() => {
-    // Example endpoint: Adjust to your actual endpoint
-    fetch('/tutor/insert_fake_data')
-      .then(response => console.log(response))
-      .catch(error => console.error('Error fetching data:', error));
+    // Fetch data when component mounts
+    fetch("/tutor/insert_fake_data")
+      .then((response) => response.json())
+      .then((result) => setData(result))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  return null;
+  return (
+    <div className="FetchData">
+      <h2>Fetch Data</h2>
+      <p>{data ? JSON.stringify(data) : "Fetching..."}</p>
+    </div>
+  );
 }
 
 export default FetchData;
