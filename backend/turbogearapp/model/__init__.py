@@ -60,6 +60,6 @@ def init_model(engine):
 
 # Import your model modules here.
 from turbogearapp.model.auth import User, Group, Permission
-from turbogearapp.model.model import Tutor, Student, Course
+from turbogearapp.model.model import Tutor, Student, Subject, Course, Course_Class, Rating, Card
 
-__all__ = ('User', 'Group', 'Permission', 'Tutor', 'Student', 'Course')
+__all__ = ('User', 'Group', 'Permission', 'Tutor', 'Student', 'Course', 'Course_Class', 'Rating', 'Card', 'Subject')
