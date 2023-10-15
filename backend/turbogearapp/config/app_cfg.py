@@ -76,7 +76,7 @@ class ApplicationAuthMetadata(TGAuthMetadata):
             try:
                 from urllib.parse import parse_qs, urlencode
             except ImportError:
-                from urlparse import parse_qs
+                from urllib.parse import parse_qs
                 from urllib import urlencode
             from tg.exceptions import HTTPFound
 
