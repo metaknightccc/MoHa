@@ -4,13 +4,13 @@ import './RegistrationPage.css';
 function RegistrationPage() {
   const [isStudent, setIsStudent] = useState(true);
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    socialSecurityNumber: '',
+    username: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    social_security_number: ""
   });
 
   const handleInputChange = (e) => {
@@ -19,7 +19,7 @@ function RegistrationPage() {
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-    const endpoint = isStudent ? "/register_student" : "/register_tutor";
+    const endpoint = isStudent ? "/reg/register_student" : "/reg/register_tutor";
     fetch(endpoint, {
       method: "POST",
       headers: {
@@ -27,13 +27,7 @@ function RegistrationPage() {
       },
       body: JSON.stringify(formData)
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => {
-      console.error("Error registering:", error);
-    });
+    .catch((error) => console.error("Error registering:", error));
   };
 
   return (
@@ -45,11 +39,11 @@ function RegistrationPage() {
       <form onSubmit={handleRegistrationSubmit}>
         <label>
           First Name:
-          <input type="text" name="firstName" onChange={handleInputChange} />
+          <input type="text" name="first_name" onChange={handleInputChange} />
         </label>
         <label>
           Last Name:
-          <input type="text" name="lastName" onChange={handleInputChange} />
+          <input type="text" name="last_name" onChange={handleInputChange} />
         </label>
         <label>
           Username:
@@ -67,11 +61,11 @@ function RegistrationPage() {
             </label>
             <label>
               Phone Number:
-              <input type="tel" name="phoneNumber" onChange={handleInputChange} />
+              <input type="tel" name="phone_number" onChange={handleInputChange} />
             </label>
             <label>
               Social Security Number:
-              <input type="text" name="socialSecurityNumber" onChange={handleInputChange} />
+              <input type="text" name="social_security_number" onChange={handleInputChange} />
             </label>
           </>
         )}

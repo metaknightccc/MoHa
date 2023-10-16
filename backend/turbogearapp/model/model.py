@@ -36,6 +36,8 @@ class Student(DeclarativeBase):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     username = Column(String, nullable=False)#was: name
+    email = Column(String, nullable=False)
+    phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
 
 class Card(DeclarativeBase):# todo: should be encrypted
