@@ -21,8 +21,8 @@ class Tutor(DeclarativeBase):
     
 class Rating(DeclarativeBase):#made seperately to store user review and calculated rating based on tutor id
     __tablename__ = 'rating'
-    tutor_id = Column(BigInteger, ForeignKey('tutor.id'))#tutor being rated
-    student_id = Column(BigInteger, ForeignKey('student.id'))#students give rating
+    tutor_id = Column(BigInteger, ForeignKey('tutor.id'), primary_key=True)
+    student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
     quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
     review = Column(Text, nullable=True, default= "User left with a good impression!")
     
@@ -39,7 +39,7 @@ class Student(DeclarativeBase):
     tokens = Column(Float, nullable = False, default= 0.0)
 
 class Card(DeclarativeBase):# todo: should be encrypted
-    __tablename__ = 'student'
+    __tablename__ = 'card'
     card_number = Column(String, primary_key=True, nullable=False)
     exp_date = Column(Date, nullable=False)
     csv = Column(String, nullable=False)
@@ -56,8 +56,8 @@ class Course(DeclarativeBase):
     
 class Course_Class(DeclarativeBase):
     __tablename__ = 'course_class'
-    course_id = Column(BigInteger, ForeignKey('course.id'))
-    student_id = Column(BigInteger, ForeignKey('student.id'))
+    course_id = Column(BigInteger, ForeignKey('course.id'), primary_key=True)
+    student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
     begin_time = Column(DateTime) #planned time to start
     end_time = Column(DateTime) #planned time to end
     duration = Column(BigInteger, nullable=True) #the real duration of the class taken, stored in seconds
@@ -68,7 +68,7 @@ class Course_Class(DeclarativeBase):
 class Subject(DeclarativeBase):
     __tablename__ = 'subject'
     
-    subject_name = Column(String, nullable=False)
+    subject_name = Column(String, primary_key=True, nullable=False)
     major = Column(String, nullable=True)
     academic = Column(Boolean, nullable=False)
     
