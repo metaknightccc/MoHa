@@ -3,13 +3,13 @@ import './App.css';
 import LoginPage from './LoginPage';
 import FetchData from './FetchData';
 import Template from './Template';
-import RegistrationPage from './RegisterationPage';
+import RegistrationPage from './RegistrationPage';
 
 function App() {
   return (
     <div className="App">
       <Template>
-        <RegistrationPage/>
+        <RegistrationPage />
       </Template>
     </div>
   );
