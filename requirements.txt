@@ -1,2 +1,4 @@
 tg.devtools
 tgext.datahelpers
+faker
+psycopg2
