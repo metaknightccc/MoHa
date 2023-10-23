@@ -44,7 +44,7 @@ class Card(DeclarativeBase):# todo: should be encrypted
     __tablename__ = 'card'
     card_number = Column(String, primary_key=True, nullable=False)
     exp_date = Column(Date, nullable=False)
-    csv = Column(String, nullable=False)
+    #csv = Column(String, nullable=False) //update: the storage of the csv code is not allowed due to restrictions
     
 class Course(DeclarativeBase):
     __tablename__ = 'course'
