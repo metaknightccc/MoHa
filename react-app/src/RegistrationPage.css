@@ -1,5 +1,5 @@
 /* Reset default browser styles */
-body, h1, form, label, input, button {
+h1, form, label, input, button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -7,17 +7,10 @@ body, h1, form, label, input, button {
   box-sizing: border-box;  /* Include border and padding in element's total width and height */
 }
 
-body {
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
 
 .container {
-  width: 100%;
-  max-width: 400px;  /* Maximum width of the registration container */
+  width: 50%;
+  max-width: 500px;  /* Maximum width of the registration container */
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -46,7 +39,6 @@ input {
   margin-top: 5px; /* Space between label and input */
   border: 1px solid #ccc;
   border-radius: 3px;
-  width: 100%; /* Make inputs stretch the full width of their parent */
 }
 
 button {
