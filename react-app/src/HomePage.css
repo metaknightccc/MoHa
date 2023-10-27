@@ -1,0 +1,26 @@
+body, h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.HomePage {
+    width: 100%;
+    height: 100vh;
+    background-image: url('./background.svg');
+    background-size: cover;       /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-position: center;  /* Center the image vertically and horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rounded-pill {
+    background-color: #FFF387;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
