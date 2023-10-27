@@ -16,11 +16,19 @@ body, h1 {
 }
 
 .rounded-pill {
+    padding: 20px;
     background-color: #FFF387;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+}
+
+.item {
+    position: absolute;
+    width: 300px;       /* Set to desired width */
+    height: 150px;      /* Set to desired height */
+    /* background-color: white; */
+    padding: 20px;
+    color: white;
+    display: flex;      /* Used to center the button in the div */
+    justify-content: center; /* Center the button horizontally */
+    align-items: center;     /* Center the button vertically */
+    left: 100px;
 }
