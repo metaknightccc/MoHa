@@ -1,0 +1,16 @@
+.cardContent {
+    display: flex;          /* Enable flexbox layout */
+    align-items: start;     /* Align the items to the start (optional) */
+    gap: 1rem;              /* Gap between image and card body (optional) */
+}
+
+.classCard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.cardImage {
+    border-right: 2px solid #ccc;  /* Adds a light grey dividing line */
+    padding-right: 16px;           /* Adds some spacing between the image and the border */
+    margin-right: 16px;            /* Adds some spacing between the border and the content */
+}
