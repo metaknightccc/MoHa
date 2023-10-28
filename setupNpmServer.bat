@@ -8,4 +8,7 @@ if exist react-app\node_modules\ (
     cd react-app
     echo installing dependencies
     npm install
+    npm install react-bootstrap
+    npm install react-router-dom
+    npm install bootstrap
 )
