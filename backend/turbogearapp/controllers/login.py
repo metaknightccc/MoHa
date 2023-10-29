@@ -12,7 +12,8 @@ class LoginController(TGController):
         username = request.json.get('username')
         password = request.json.get('password')
         user = DBSession.query(Tutor).filter_by(username=username).first() or DBSession.query(Student).filter_by(username=username).first()
-        if user: #and #user.validate_password(password):
+        #print(user.username) 
+        if user and user.validate_password(password):
             response.status_code = 200
             # Authentication successful; you can set a session or return a token here
             #return HTTPFound(location= 'register')
