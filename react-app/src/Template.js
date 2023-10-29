@@ -4,15 +4,15 @@ import logo from "./logoWithTxt.svg";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Image from "react-bootstrap/Image";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
 import SearchBar from "./SearchBar";
 
 function Template() {
   const [showMenu, setShowMenu] = useState(false);
-  //const [isSidebarVisible, setSidebarVisibility] = useState(true);
 
   return (
     <div className="Template">
@@ -23,12 +23,13 @@ function Template() {
               <Navbar.Brand href="/">
                 <img
                   src={logo}
-                  width="30"
-                  height="30"
+                  width="50"
+                  height="50"
                   className="d-inline-block align-top"
                   alt="Logo"
                 />
               </Navbar.Brand>
+
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav
@@ -37,18 +38,36 @@ function Template() {
                   activeKey="/home"
                 >
                   <Nav.Item>
-                    <Nav.Link href="/" className="custom-link">Home</Nav.Link>
+                    <Nav.Link href="/" className="custom-link">
+                      Home
+                    </Nav.Link>
                   </Nav.Item>
+
                   <Nav.Item>
-                    <Nav.Link href="/reg/register_tutor" className="custom-link">
+                    <Nav.Link
+                      href="/reg/register_tutor"
+                      className="custom-link"
+                    >
                       Become a Tutor
                     </Nav.Link>
                   </Nav.Item>
+
                   <Nav.Item>
-                    <Nav.Link href="/about" className="custom-link">About us</Nav.Link>
+                    <Nav.Link href="/search" className="custom-link">
+                      Explore
+                    </Nav.Link>
                   </Nav.Item>
+
                   <Nav.Item>
-                    <Nav.Link href="/contact" className="custom-link">Contact us</Nav.Link>
+                    <Nav.Link href="/about" className="custom-link">
+                      About us
+                    </Nav.Link>
+                  </Nav.Item>
+
+                  <Nav.Item>
+                    <Nav.Link href="/contact" className="custom-link">
+                      Contact us
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Navbar.Collapse>
@@ -61,18 +80,17 @@ function Template() {
                 <Dropdown.Toggle
                   id="dropdown-basic"
                   className="avatar-dropdown"
+                  variant="primary"
                 >
-                  <img src="path-to-your-avatar-image" className="avatar-img" />
+                  <Image src="..." roundedCircle fluid />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="right">
                   <Dropdown.Item disabled>
                     <div className="avatar-dropdown-header">
-                      <img
-                        src="avatar-image-url"
-                        alt="avatar"
-                        className="avatar-image-small"
-                      />
+
+                      <Image src="..." roundedCircle />
+
                       <div>
                         <div className="username">Username</div>
                         <div className="email">email@example.com</div>
