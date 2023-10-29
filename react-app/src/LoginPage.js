@@ -17,7 +17,7 @@ function LoginPage() {
 
       // Handle the successful login response here
       if (response.status_code=400) {
-        setStatusMessage(response.data.error);
+        setStatusMessage('Error!');
         console.error('Login error', response.data.error);
         // Display the error message to the user (e.g., in a div element)
         //setError(response.data.error);

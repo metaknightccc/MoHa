@@ -1,0 +1,9 @@
+form label{
+    width: 20%;
+    display: inline-block;
+}
+
+form input{
+    width: 30% ;
+    display: inline-block;
+}
