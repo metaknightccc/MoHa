@@ -10,7 +10,12 @@ const HomePage = () => {
         <button className="rounded-pill" type="submit">Get it Started</button>
       </div>
       <div className="ClassList">
-        <ClassSlot />
+      <ClassSlot 
+        imgName="nyu.jpg"
+        tutorName="John Doe"
+        courseName="Math 101"
+        courseDes="This is a basic math course."
+      />
       </div>
     </div>
   );
