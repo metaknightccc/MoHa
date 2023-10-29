@@ -4,10 +4,11 @@ body, h1 {
 }
 
 .HomePage {
+
     width: 100%;
     height: 100vh;
     background-image: url('./background.svg');
-    background-size: auto;       /* Cover the entire viewport */
+    background-size: 100%;       /* Cover the entire viewport */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-position: center;  /* Center the image vertically and horizontally */
     display: flex;
