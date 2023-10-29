@@ -1,57 +1,13 @@
-.cardContent {
-    display: flex;
-    align-items: center;   
-    justify-content: start; 
-    padding: 0 15px;       
-  }
-  
-  .cardImage {
-    width: 100px;       
-    height: 100px;      
-    min-width: 100px;
-    object-fit: cover;  
-    margin-right: 15px;  
-  }
-  
-  .cardBody {
-    flex-grow: 1;           /* Allow card body to grow and take available space */
-    border-right: 1px solid #ddd;  /* Add border to the right of card body */
-    padding-right: 15px;    /* Add some padding to the right to separate content from border */
-    margin-right: 15px;  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 150px;
-  }
-  
-  .tutorArea {
-    flex-shrink: 0;          /* Don't allow the right area to shrink */
-    padding: 0 15px;         /* Some padding for the content inside */
-  }
-
-  .cardBody .card-title:hover {
-    text-decoration: underline;
-  }
-
-  .cardBody .card-text {
-    white-space: nowrap;       /* Prevents the text from wrapping to next line */
-    overflow: hidden;         /* Hides the overflowing text */
-    text-overflow: ellipsis;  /* Adds the ellipsis at the end */
-    overflow: auto;
-  }
-
-  .tutorArea .card-title:hover {
-    text-decoration: underline;
-  }
-
-/* Reset the styles for visited links inside cardBody */
-.cardBody a.card-title:visited {
-    color: inherit;  /* Use the parent's text color */
-    text-decoration: none;  /* Remove underline */
+.classCard:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-/* Remove the underline for the link in its normal state and on hover */
-.cardBody a.card-title,
-.cardBody a.card-title:hover {
-    text-decoration: none;  /* Remove underline */
+.cardBody .card-title:hover {
+  text-decoration: underline;
+}
+
+.classCard{
+  position: absolute;
+  display: flex;
 }
