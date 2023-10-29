@@ -8,6 +8,7 @@ class RegistrationController(TGController):
     @expose('json')
     def register_tutor(self, **kwargs):
         # TODO: Hash the password and encrypt the SSN before saving
+        #done: password would be hashed in database
         print('========================')
         print(request.json)
         tutor = Tutor(
@@ -25,7 +26,7 @@ class RegistrationController(TGController):
         transaction.commit()
         # return dict(page='login', login_counter=str(login_counter),
         #             came_from=came_from, login=login)
-        return dict(page='login', message='Tutor registration successful.')
+        return dict(page='/login', message='Tutor registration successful.')
 
 
     @expose('json')
@@ -37,11 +38,11 @@ class RegistrationController(TGController):
             first_name = request.json['first_name'],
             last_name = request.json['last_name'],
             username = request.json['username'],
-            password = request.json['password'],
+            _password = request.json['password'],
             email = request.json['email'],
             phone_number = request.json['phone_number']
         )
         DBSession.add(student)
         transaction.commit()
-        return dict(page='login', message='Student registration successful.')
+        return dict(page='/login', message='Student registration successful.')
 
