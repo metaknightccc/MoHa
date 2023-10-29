@@ -8,6 +8,8 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Outlet } from 'react-router-dom';
 
+import SearchBar from "./SearchBar";
+
 function Template() {
   const [showMenu, setShowMenu] = useState(false);
   //const [isSidebarVisible, setSidebarVisibility] = useState(true);
@@ -53,7 +55,7 @@ function Template() {
             </Navbar>
           </div>
           <div className="Nav-Main-Right">
-            <input type="text" placeholder="Search..." />
+            <SearchBar isSimple={true} />
             <div className="avatar">
               <Dropdown>
                 <Dropdown.Toggle
