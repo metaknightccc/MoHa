@@ -15,8 +15,11 @@ turbogearapp/config/app_cfg.py
 turbogearapp/config/application.py
 turbogearapp/controllers/__init__.py
 turbogearapp/controllers/error.py
+turbogearapp/controllers/login.py
+turbogearapp/controllers/registration.py
 turbogearapp/controllers/root.py
 turbogearapp/controllers/secure.py
+turbogearapp/controllers/tutor.py
 turbogearapp/i18n/ru/LC_MESSAGES/turbogearapp.po
 turbogearapp/lib/__init__.py
 turbogearapp/lib/app_globals.py
@@ -24,6 +27,7 @@ turbogearapp/lib/base.py
 turbogearapp/lib/helpers.py
 turbogearapp/model/__init__.py
 turbogearapp/model/auth.py
+turbogearapp/model/model.py
 turbogearapp/public/favicon.ico
 turbogearapp/public/css/bootstrap.min.css
 turbogearapp/public/css/style.css
@@ -44,6 +48,7 @@ turbogearapp/templates/index.xhtml
 turbogearapp/templates/login.xhtml
 turbogearapp/templates/master.xhtml
 turbogearapp/templates/template.xhtml.template
+turbogearapp/templates/__pycache__/__init__.cpython-38.pyc
 turbogearapp/tests/__init__.py
 turbogearapp/tests/functional/__init__.py
 turbogearapp/tests/functional/test_authentication.py
