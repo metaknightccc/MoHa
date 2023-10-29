@@ -11,4 +11,5 @@ if exist react-app\node_modules\ (
     npm install react-bootstrap
     npm install react-router-dom
     npm install bootstrap
+    npm install axios
 )
