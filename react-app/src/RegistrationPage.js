@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./RegistrationPage.css";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Col, Row, Nav } from "react-bootstrap";
 
-function RegistrationPage(isStd) {
-  const [isStudent, setIsStudent] = useState(isStd);
+function RegistrationPage() {
+  const [isStudent, setIsStudent] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -13,6 +13,7 @@ function RegistrationPage(isStd) {
     phone_number: "",
     social_security_number: "",
   });
+  const [validated, setValidated] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,88 +21,177 @@ function RegistrationPage(isStd) {
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-    const endpoint = isStudent
-      ? "/reg/register_student"
-      : "/reg/register_tutor";
-    fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).catch((error) => console.error("Error registering:", error));
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      const endpoint = isStudent
+        ? "/reg/register_student"
+        : "/reg/register_tutor";
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }).catch((error) => console.error("Error registering:", error));
+    }
+    setValidated(true);
   };
 
   return (
     <Container>
-      <Button variant="primary" onClick={() => setIsStudent(!isStudent)}>
-        Switch to {isStudent ? "Tutor" : "Student"} Registration
-      </Button>
-      <h1>{isStudent ? "Student Registration" : "Tutor Registration"}</h1>
-      <Form onSubmit={handleRegistrationSubmit}>
-        <Form.Group controlId="formFirstName">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="first_name"
-            onChange={handleInputChange}
-          />
+      <Row>
+        <Col>
+          <h2>Registration</h2>
+        </Col>
+        <Col>
+          <Nav
+            variant="underline"
+            defaultActiveKey="student"
+            onSelect={(key) => setIsStudent(key === "student")}
+          >
+            <Nav.Item>
+              <Nav.Link eventKey="student">For Student</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="tutor">For Tutor</Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </Col>
+      </Row>
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={handleRegistrationSubmit}
+      >
+        <Form.Group as={Row} controlId="formFirstName">
+          <Form.Label column sm={4}>
+            First Name
+          </Form.Label>
+          <Col sm={7}>
+            <Form.Control
+              required
+              type="text"
+              name="first_name"
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a first name.
+            </Form.Control.Feedback>
+          </Col>
         </Form.Group>
-        <Form.Group controlId="formLastName">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="last_name"
-            onChange={handleInputChange}
-          />
+        <Form.Group as={Row} controlId="formLastName">
+          <Form.Label column sm={4}>
+            Last Name
+          </Form.Label>
+          <Col sm={7}>
+            <Form.Control
+              required
+              type="text"
+              name="last_name"
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a last name.
+            </Form.Control.Feedback>
+          </Col>
         </Form.Group>
-        <Form.Group controlId="formUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-            onChange={handleInputChange}
-          />
+        <Form.Group as={Row} controlId="formUsername">
+          <Form.Label column sm={4}>
+            Username
+          </Form.Label>
+          <Col sm={7}>
+            <Form.Control
+              required
+              type="text"
+              name="username"
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please choose a username.
+            </Form.Control.Feedback>
+          </Col>
         </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            onChange={handleInputChange}
-          />
+        <Form.Group as={Row} controlId="formPassword">
+          <Form.Label column sm={4}>
+            Password
+          </Form.Label>
+          <Col sm={7}>
+            <Form.Control
+              required
+              type="password"
+              name="password"
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a password.
+            </Form.Control.Feedback>
+          </Col>
         </Form.Group>
         {!isStudent && (
           <>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                onChange={handleInputChange}
-              />
+            <Form.Group as={Row} controlId="formEmail">
+              <Form.Label column sm={4}>
+                Email
+              </Form.Label>
+              <Col sm={7}>
+                <Form.Control
+                  required
+                  type="email"
+                  name="email"
+                  onChange={handleInputChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid email.
+                </Form.Control.Feedback>
+              </Col>
             </Form.Group>
-            <Form.Group controlId="formPhoneNumber">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                type="tel"
-                name="phone_number"
-                onChange={handleInputChange}
-              />
+            <Form.Group as={Row} controlId="formPhoneNumber">
+              <Form.Label column sm={4}>
+                Phone Number
+              </Form.Label>
+              <Col sm={7}>
+                <Form.Control
+                  required
+                  type="tel"
+                  name="phone_number"
+                  onChange={handleInputChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid phone number.
+                </Form.Control.Feedback>
+              </Col>
             </Form.Group>
-            <Form.Group controlId="formSSN">
-              <Form.Label>Social Security Number</Form.Label>
-              <Form.Control
-                type="text"
-                name="social_security_number"
-                onChange={handleInputChange}
-              />
+            <Form.Group as={Row} controlId="formSSN">
+              <Form.Label column sm={4}>
+                Social Security Number
+              </Form.Label>
+              <Col sm={7}>
+                <Form.Control
+                  required
+                  type="text"
+                  name="social_security_number"
+                  onChange={handleInputChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid social security number.
+                </Form.Control.Feedback>
+              </Col>
             </Form.Group>
           </>
         )}
-        <Button variant="primary" type="submit">
-          Register
-        </Button>
+        <Row>
+          <Col sm={{ span: 7, offset: 4 }}>
+            <Form.Group>
+              <Form.Control
+                type="submit"
+                value="Register"
+                className="btn btn-primary"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
       </Form>
     </Container>
   );
