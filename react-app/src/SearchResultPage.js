@@ -1,7 +1,7 @@
 import React from "react";
 import "./SearchResultPage.css";
 import { Container, Form, Button } from "react-bootstrap";
-import ClassSlot from "./ClassSlot"; // Import ClassSlot component
+// import ClassSlot from "./ClassSlot"; // Import ClassSlot component
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import SearchBar from "./SearchBar";
@@ -25,7 +25,8 @@ function SearchResultPage(classes) {
 
       <div className="SearchResultPage">
         {[].map((classObj, index) => (
-          <ClassSlot />
+          // <ClassSlot />
+          console.log(classObj)
         ))}
       </div>
     </Container>
