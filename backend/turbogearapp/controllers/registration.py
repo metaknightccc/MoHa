@@ -38,7 +38,7 @@ class RegistrationController(TGController):
             first_name = request.json['first_name'],
             last_name = request.json['last_name'],
             username = request.json['username'],
-            _password = request.json['password'],
+            password = request.json['password'],
             email = request.json['email'],
             phone_number = request.json['phone_number']
         )
