@@ -47,6 +47,7 @@ class RootController(BaseController):
         response.headers['Access-Control-Allow-Methods'] = 'POST, GET, DELETE, PUT, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
         response.headers['Access-Control-Max-Age'] = '1728000'
+        print("request: {resquest} \n response: {response}".format(request=request.json, response=response.json))
         tmpl_context.project_name = "turbogearapp"
 
     @expose('turbogearapp.templates.index')
