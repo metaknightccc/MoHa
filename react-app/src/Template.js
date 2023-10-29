@@ -82,7 +82,7 @@ function Template() {
                   className="avatar-dropdown"
                   variant="primary"
                 >
-                  <Image src="..." roundedCircle fluid />
+                  <Image src={require('./assets/nyu.jpg')}  roundedCircle fluid />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="right">
@@ -98,6 +98,7 @@ function Template() {
                     </div>
                   </Dropdown.Item>
                   <Dropdown.Divider />
+                  <button className="rounded-pill">Become a Tutor</button>
                   <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
                   <Dropdown.Item href="#/signout">Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
