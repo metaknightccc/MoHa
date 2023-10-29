@@ -2,7 +2,7 @@
 """Main Controller"""
 
 from tg import expose, flash, require, url, lurl
-from tg import request, redirect, tmpl_context
+from tg import request, redirect, tmpl_context, response
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from tg.exceptions import HTTPFound
 from tg import predicates
@@ -14,6 +14,9 @@ from tgext.admin.controller import AdminController
 
 from turbogearapp.lib.base import BaseController
 from turbogearapp.controllers.error import ErrorController
+
+from turbogearapp.controllers.tutor import TutorController
+from turbogearapp.controllers.registration import RegistrationController
 
 __all__ = ['RootController']
 
@@ -36,8 +39,14 @@ class RootController(BaseController):
     admin = AdminController(model, DBSession, config_type=TGAdminConfig)
 
     error = ErrorController()
+    tutor = TutorController()
+    reg = RegistrationController()
 
     def _before(self, *args, **kw):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, DELETE, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+        response.headers['Access-Control-Max-Age'] = '1728000'
         tmpl_context.project_name = "turbogearapp"
 
     @expose('turbogearapp.templates.index')

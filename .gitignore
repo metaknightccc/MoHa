@@ -25,3 +25,14 @@ venv/
 
 # vscode
 .vscode/
+.idea/
+
+#database
+# PostgreSQL Data Directory
+/database/*
+!/database/.gitkeep
+
+#personal info
+personal_info.py
+
+/backend/turbogear_app.egg-info

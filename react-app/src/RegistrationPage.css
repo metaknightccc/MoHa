@@ -1,0 +1,57 @@
+/* Reset default browser styles */
+h1, form, label, input, button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;  /* Include border and padding in element's total width and height */
+}
+
+
+.container {
+  width: 50%;
+  max-width: 500px;  /* Maximum width of the registration container */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0;
+  font-weight: bold;
+  display: block;  /* Make labels block-level to occupy their own line */
+}
+
+input {
+  padding: 10px;
+  margin-top: 5px; /* Space between label and input */
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;  /* Smoother transition on hover */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
