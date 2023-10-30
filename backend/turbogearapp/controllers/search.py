@@ -19,21 +19,26 @@ class SearchController(TGController):
     def index(self, **kwargs):
         print("========================")
         # if no query provided at all
-        if not kwargs:
-            session = DBSession()
-            matching_courses = session.query(Course).limit(5).all()
-        else:
-            query = kwargs.get('query', '')
-            priority = kwargs.get('priority', 'rel')
-            subject_name, tutor_name, type = query.split('+')
-
-            session = DBSession()
+        #if not kwargs:
+        #    session = DBSession()
+        #    matching_courses = session.query(Course).limit(5).all()
+        #else:
+            #query = kwargs.get('query', '')
+            #priority = kwargs.get('priority', 'rel')
+        #query= request.json['qwery']
+        query= request.json.get('str', '')
+            #subject_name, tutor_name, type = query.split('+')
+        print(query)
+        print("above is request")
+            #print(tutor_name)
+            #print(type)
+        session = DBSession()
             
-            tutor_id = session.query(Tutor).filter(Totor.first_name == tutor_name).first()
-            matching_courses = session.query(Course).filter(
-                Course.Subject_name == subject_name,
-                Course.tutor_id == tutor_id,
-                Course.type == type,
+            #tutor_id = session.query(Tutor).filter(Tutor.first_name == query).first()
+        matching_courses = session.query(Course).filter(
+            Course.Subject_name == query or
+            Course.tutor_id == query or
+            Course.type == query
             ).all()
         
         print("========================")

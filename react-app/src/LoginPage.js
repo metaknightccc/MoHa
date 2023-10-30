@@ -21,6 +21,8 @@ function Login() {
             },
             body: JSON.stringify(credentials),
         })
+        //.then((response) => console.log(response))
+        
         .then((response) => {
             console.log(response);
             //console.log(Response);
@@ -30,7 +32,7 @@ function Login() {
                 // You can redirect to another page or update the UI here
                 console.log('Login successful');
                 setMessage('Success!');
-                navigate('/homepage')
+                navigate('/')
             } else if(response.status === 400){
               console.log('Login Unsuccessful: Bad username or password');
               setMessage('Unsuccessful: Bad username or password!');

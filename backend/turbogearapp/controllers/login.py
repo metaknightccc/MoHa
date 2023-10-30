@@ -12,7 +12,7 @@ class LoginController(TGController):
     
     @expose('json')
     def index(self, **kwargs):
-        print('========================im the new login')
+        print('========================here')
         print(request.json)
         #maker = sessionmaker(autoflush=True, autocommit=False)
         #DBSession = scoped_session(maker)
