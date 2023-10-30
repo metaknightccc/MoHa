@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 
-const ClassSlot = ({imgName="nyu.jpg",tutorName,courseName,courseDes}) => {
+const ClassSlot = ({imgName="nyu.jpg",tutorName="Charles Pan",courseName="CS101",courseDes="RandomCourse"}) => {
   return (
     <Card className="classCard" style={{width: '18rem'}}>
       <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} />

@@ -3,21 +3,28 @@ body, h1 {
     padding: 0;
 }
 
-.HomePage {
-
-    width: 100%;
-    height: 100vh;
-    background-image: url('./background.svg');
-    background-size: 100%;       /* Cover the entire viewport */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-position: center;  /* Center the image vertically and horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .rounded-pill {
     position: absolute;
     padding: 20px;
     background-color: #FFF387;
+}
+
+.HomePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 10px;
+    width: 100%;
+    height: 100%;
+    background-image: url('./background.svg');
+    background-size: cover;       /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-position: center;  /* Center the image vertically and horizontally */
+    
+  }
+  
+.ClassList {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
