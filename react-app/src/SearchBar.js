@@ -61,9 +61,6 @@ function SearchBar({ isSimple }) {
         <Form.Group controlId="SearchBar">
           <Form.Control type="text" placeholder="search..." onChange={(e) => setQuery(e.target.value)} />
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Search
-        </Button>
       </Form>
     );
   };

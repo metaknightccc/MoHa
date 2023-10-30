@@ -21,6 +21,7 @@ function SearchResultPage({ classes }) {
         console.log(response);
         if (response.status === 200) {
           searchResults = response;
+          console.log(searchResults);
         } else {
           console.error("Error searching:", response.data.error);
           // Display the error message to the user (e.g., in a div element)
