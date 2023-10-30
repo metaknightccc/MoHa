@@ -8,12 +8,13 @@ import { useLocation } from "react-router-dom";
 function SearchResultPage() {
   const location = useLocation();
   const [searchResults, setSearchResults] = useState(location.state?.searchResults || []);
+  const [shouldFetchCourses, setShouldFetchCourses] = useState(!searchResults.length);
 
   useEffect(() => {
-    if (!searchResults.length) {
+    if (shouldFetchCourses) {
       fetchCourses();
     }
-  }, [searchResults]);
+  }, [shouldFetchCourses]);
 
   const fetchCourses = () => {
     const endpoint = "/search";
@@ -32,8 +33,12 @@ function SearchResultPage() {
     })
     .then((data) => {
       setSearchResults(data);
+      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
     })
-    .catch((error) => console.error("Error searching:", error));
+    .catch((error) => {
+      console.error("Error searching:", error);
+      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
+    });
   };
 
   const GetCarouselHtml = () => {
