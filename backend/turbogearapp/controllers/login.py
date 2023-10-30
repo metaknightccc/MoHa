@@ -12,7 +12,7 @@ class LoginController(TGController):
     
     @expose('json')
     def index(self, **kwargs):
-        print('========================here')
+        print('========================im the new login')
         print(request.json)
         #maker = sessionmaker(autoflush=True, autocommit=False)
         #DBSession = scoped_session(maker)
@@ -31,7 +31,8 @@ class LoginController(TGController):
             # Authentication successful; you can set a session or return a token here
             #return HTTPFound(location= 'register')
             response.status_code=200
-            return dict(status='success')
+            #return dict(status='success')
+            return dict(page='/homepage', message='Success Login')
 
         # Authentication failed
         response.status_code = 400 
