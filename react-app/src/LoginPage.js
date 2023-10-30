@@ -14,7 +14,7 @@ function Login() {
         const credentials = { username, password };
 
         // Send a POST request to the login endpoint
-        fetch('/login/login', {
+        fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,16 +23,16 @@ function Login() {
         })
         //.then((response) => console.log(response))
         
-        .then((data) => {
-            console.log(data);
-            console.log(Response);
+        .then((response) => {
+            console.log(response);
+            //console.log(Response);
             console.log(credentials);
             if (response.status === 200) { //if (data.status === 'success') {
                 // Authentication successful
                 // You can redirect to another page or update the UI here
                 console.log('Login successful');
                 setMessage('Success!');
-                navigate('/homepage')
+                navigate('/')
             } else if(response.status === 400){
               console.log('Login Unsuccessful: Bad username or password');
               setMessage('Unsuccessful: Bad username or password!');
