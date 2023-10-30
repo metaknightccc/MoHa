@@ -1,6 +1,6 @@
 # controllers/search.py
 from tg import expose, validate, request, response, TGController
-from turbogearapp.model import DBSession, Course
+from turbogearapp.model import DBSession, Course, Tutor
 import transaction
 import json
 
@@ -25,15 +25,15 @@ class SearchController(TGController):
         else:
             query = kwargs.get('query', '')
             priority = kwargs.get('priority', 'rel')
-            subject, tutor_name, type = query.split('+')
+            subject_name, tutor_name, type = query.split('+')
 
             session = DBSession()
             
-            tutor_id = session.query(Tutor).filter(first_name == tutor_name).first()
+            tutor_id = session.query(Tutor).filter(Totor.first_name == tutor_name).first()
             matching_courses = session.query(Course).filter(
                 Course.Subject_name == subject_name,
                 Course.tutor_id == tutor_id,
-                Course.type == type
+                Course.type == type,
             ).all()
         
         print("========================")
