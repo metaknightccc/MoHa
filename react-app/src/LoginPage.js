@@ -20,8 +20,6 @@ function Login() {
             },
             body: JSON.stringify(credentials),
         })
-        //.then((response) => console.log(response))
-        
         .then((data) => {
             console.log(data);
             console.log(Response);

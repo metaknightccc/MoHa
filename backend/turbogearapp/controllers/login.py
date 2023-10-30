@@ -11,7 +11,7 @@ class LoginController(TGController):
     #DBSession.init_model()
     
     @expose('json')
-    def index(self, username, password, **kwargs):
+    def index(self, **kwargs):
         print('========================here')
         print(request.json)
         #maker = sessionmaker(autoflush=True, autocommit=False)
