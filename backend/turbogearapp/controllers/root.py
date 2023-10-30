@@ -18,6 +18,8 @@ from turbogearapp.controllers.error import ErrorController
 from turbogearapp.controllers.tutor import TutorController
 from turbogearapp.controllers.registration import RegistrationController
 from turbogearapp.controllers.search import SearchController
+from turbogearapp.controllers.login import LoginController
+
 
 __all__ = ['RootController']
 
@@ -43,12 +45,15 @@ class RootController(BaseController):
     tutor = TutorController()
     reg = RegistrationController()
     search = SearchController()
+    login = LoginController()
+
 
     def _before(self, *args, **kw):
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Methods'] = 'POST, GET, DELETE, PUT, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
         response.headers['Access-Control-Max-Age'] = '1728000'
+        #print("request: {resquest} \n response: {response}".format(request=request.json, response=response.json))
         tmpl_context.project_name = "turbogearapp"
 
     @expose('turbogearapp.templates.index')
@@ -84,7 +89,7 @@ class RootController(BaseController):
     def editor_user_only(self, **kw):
         """Illustrate how a page exclusive for the editor works."""
         return dict(page='editor stuff')
-
+    '''
     @expose('turbogearapp.templates.login')
     def login(self, came_from=lurl('/'), failure=None, login=''):
         """Start the user login."""
@@ -100,7 +105,7 @@ class RootController(BaseController):
 
         return dict(page='login', login_counter=str(login_counter),
                     came_from=came_from, login=login)
-
+    '''
     @expose()
     def post_login(self, came_from=lurl('/')):
         """

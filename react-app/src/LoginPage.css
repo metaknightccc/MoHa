@@ -15,7 +15,7 @@ label {
   margin-bottom: 5px;
 }
 
-input[type="username"],
+input[type="text"], /* Updated selector */
 input[type="password"] {
   width: 100%;
   padding: 8px;
@@ -36,7 +36,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-.status-message {
+.error-message {
   color: red; /* You can change the color to match your design */
   font-size: 14px; /* You can adjust the font size */
   margin-top: 10px; /* Add some spacing between the input fields and the message */

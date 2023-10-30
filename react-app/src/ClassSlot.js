@@ -2,20 +2,21 @@ import React from "react";
 import "./ClassSlot.css";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 
-const ClassSlot = ({imgName="nyu.jpg"}) => {
-
+const ClassSlot = ({imgName="nyu.jpg",tutorName,courseName,courseDes}) => {
   return (
-    <Card className="classCard" style={{ width: '50rem', height: '10rem' }}>
-      <div className="cardContent">
-        <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} style={{ width: '100px' }} />
-        <Card.Body className="cardBody">
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            A random course
-          </Card.Text>
-        </Card.Body>
-      </div>
+    <Card className="classCard" style={{width: '18rem'}}>
+      <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} />
+      <Card.Body className="cardBody">
+        <Link to="/login">
+          <Card.Title>{courseName}</Card.Title>
+        </Link>
+        <Card.Subtitle className="mb-2 text-muted">{tutorName}</Card.Subtitle>
+        <Card.Text>
+          {courseDes}
+        </Card.Text>
+      </Card.Body>
     </Card>
   );
 };

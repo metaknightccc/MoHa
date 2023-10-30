@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import "./SearchResultPage.css";
-// import ClassSlot from "./ClassSlot";
+import ClassSlot from "./ClassSlot";
 
 function SearchResultPage({ classes }) {
   const location = useLocation();
@@ -50,15 +50,17 @@ function SearchResultPage({ classes }) {
     <Container>
       <h2>Explore</h2>
       <SearchBar isSimple={false} />
-
-      {searchResults.length > 0 ? (
+      <div className="SearchResultPage">
+        <ClassSlot imgName={"nyu.jpg"} />
+      </div>
+      {/* {searchResults.length > 0 ? (
         <>
           <h2>{`Search Result: ${searchResults.length} found`}</h2>
           <div className="SearchResultPage">
             {searchResults.map((classObj, index) => (
               // Replace the below line with the ClassSlot component once it is developed
-              // <ClassSlot key={index} classObj={classObj} />
-              <div key={index}>{classObj.name}</div>
+              <ClassSlot />
+              // <div key={index}>{classObj.name}</div>
             ))}
           </div>
         </>
@@ -66,11 +68,11 @@ function SearchResultPage({ classes }) {
         <div className="SearchResultPage">
           {courses.map((course, index) => (
             // Replace the below line with the ClassSlot component once it is developed
-            // <ClassSlot key={index} course={course} />
-            <div key={index}>{course.name}</div>
+            <ClassSlot />
+            // <div key={index}>{course.name}</div>
           ))}
         </div>
-      )}
+      )} */}
     </Container>
   );
 }
