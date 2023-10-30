@@ -3,65 +3,67 @@ import { Carousel, Container } from "react-bootstrap";
 import SearchBar from "./SearchBar";
 import "./SearchResultPage.css";
 import ClassSlot from "./ClassSlot";
-import { useLocation } from "react-router-dom";
 
 function SearchResultPage() {
-  const location = useLocation();
-  const [searchResults, setSearchResults] = useState(location.state?.searchResults || []);
-  const [shouldFetchCourses, setShouldFetchCourses] = useState(!searchResults.length);
+  const [searchResults, setSearchResults] = useState([]);
 
-  useEffect(() => {
-    if (shouldFetchCourses) {
-      fetchCourses();
-    }
-  }, [shouldFetchCourses]);
+
+  const handleSearchBarCallback = (searchResults) => {
+    setSearchResults(searchResults);
+  };
+
 
   const fetchCourses = () => {
-    const endpoint = "/search";
+    const endpoint = '/search';
     fetch(endpoint, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     })
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error('Failed to fetch search results');
-      }
-    })
-    .then((data) => {
-      setSearchResults(data);
-      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
-    })
-    .catch((error) => {
-      console.error("Error searching:", error);
-      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
-    });
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch search results");
+        }
+      })
+      .then((data) => {
+        setSearchResults(data);
+      })
+      .catch((error) => {
+        console.error("Error searching:", error);
+      });
   };
 
-  const GetCarouselHtml = () => {
+  const GetCarouselHtml = (numPerSlide = 3) => {
     const carouselItems = [];
-    for (let i = 0; i < searchResults.length; i += 3) {
-      const remaining = searchResults.length - i;
+    const arr = [];
+    // turn searchResults into an array of arrays of length numPerSlide( the resting elements are in the last array which could have less than numPerSlide elements)
+    for (let i = 0; i < searchResults.length; i += numPerSlide) {
+      arr.push(
+        searchResults.slice(
+          i,
+          i +
+            (searchResults.length - i < numPerSlide
+              ? searchResults.length - i
+              : numPerSlide)
+        )
+      );
+    }
+    // turn the array of arrays into carousel items
+    for (let i = 0; i < arr.length; i++) {
       carouselItems.push(
         <Carousel.Item key={i}>
           <div className="SearchResultPage">
-            {remaining >= 3 ? (
-              <>
-                <ClassSlot courseDes={searchResults[i]} />
-                <ClassSlot courseDes={searchResults[i+1]} />
-                <ClassSlot courseDes={searchResults[i+2]} />
-              </>
-            ) : remaining === 2 ? (
-              <>
-                <ClassSlot courseDes={searchResults[i]} />
-                <ClassSlot courseDes={searchResults[i+1]} />
-              </>
-            ) : (
-              <ClassSlot courseDes={searchResults[i]} />
-            )}
+            {arr[i].map((item) => (
+              <ClassSlot
+                imgName={"nyu.jpg"}
+                tutorName={item.tutor_id}
+                courseName={item.subject_name}
+                courseDes={"a sample courseDes"}
+              />
+            ))}
           </div>
         </Carousel.Item>
       );
@@ -72,10 +74,8 @@ function SearchResultPage() {
   return (
     <Container>
       <h2>Explore</h2>
-      <SearchBar isSimple={false} />
-      <Carousel>
-        {GetCarouselHtml()}
-      </Carousel>
+      <SearchBar isSimple={false} cb={handleSearchBarCallback}/>
+      <Carousel>{GetCarouselHtml()}</Carousel>
     </Container>
   );
 }

@@ -17,6 +17,8 @@
     padding: 20px;
 
     gap: 10px;
+
+    max-height: 50vh;
 }
 
 .carousel-control-prev-icon {
