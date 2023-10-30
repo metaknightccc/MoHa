@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
-
+import { useNavigate } from "react-router-dom";
 function Login() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -20,18 +21,27 @@ function Login() {
             },
             body: JSON.stringify(credentials),
         })
+        //.then((response) => console.log(response))
+        
         .then((data) => {
             console.log(data);
             console.log(Response);
             console.log(credentials);
-            if (data.status === 'success') {
+            if (response.status === 200) { //if (data.status === 'success') {
                 // Authentication successful
                 // You can redirect to another page or update the UI here
                 console.log('Login successful');
-            } else {
+                setMessage('Success!');
+                navigate('/homepage')
+            } else if(response.status === 400){
+              console.log('Login Unsuccessful: Bad username or password');
+              setMessage('Unsuccessful: Bad username or password!');
+            } 
+            else {
                 // Authentication failed
                 console.log('error');
-                setMessage(data.message);
+                setMessage(response.status);
+                
             }
         })
         .catch((error) => {

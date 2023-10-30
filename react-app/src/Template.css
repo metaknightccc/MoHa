@@ -97,3 +97,8 @@ nav input[type="text"] {
     padding: 10px 20px;
     text-align: center;
 }
+
+.dropdown-toggle {
+    width: 80px;
+    height: 80px;
+}
