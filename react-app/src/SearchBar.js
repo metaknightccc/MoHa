@@ -35,7 +35,7 @@ function SearchBar({ isSimple }) {
 
   const handleAdvancedFilterSearch = (e) => {
     e.preventDefault();
-    const endpoint = `/search?q=${query}&pri=${priority}}`;
+    const endpoint = `/search?q=${query}&pri=${priority}`;
     fetch(endpoint, {
       method: "GET",
       headers: {
