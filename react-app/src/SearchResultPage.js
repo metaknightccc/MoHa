@@ -1,76 +1,81 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { Carousel, Container } from "react-bootstrap";
 import SearchBar from "./SearchBar";
 import "./SearchResultPage.css";
-// import ClassSlot from "./ClassSlot";
+import ClassSlot from "./ClassSlot";
+import { useLocation } from "react-router-dom";
 
-function SearchResultPage({ classes }) {
+function SearchResultPage() {
   const location = useLocation();
-  const [courses, setCourses] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(location.state?.searchResults || []);
+  const [shouldFetchCourses, setShouldFetchCourses] = useState(!searchResults.length);
 
   useEffect(() => {
-    // Fetch list of courses when the user clicks "explore" on navbar
-    const fetchCourses = async () => {
-      // Replace the endpoint with the correct API endpoint for fetching courses
-      const endpoint = "/search";
-      try {
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        setCourses(data);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
-      }
-    };
-
-    // Extract search query from URL query parameters
-    const searchQuery = new URLSearchParams(location.search).get("query");
-    if (searchQuery) {
-      // Fetch search results if there is a search query
-      const fetchSearchResults = async () => {
-        // Replace the endpoint with the correct API endpoint for searching courses
-        const endpoint = `/search?query=${searchQuery}`;
-        try {
-          const response = await fetch(endpoint);
-          const data = await response.json();
-          setSearchResults(data);
-        } catch (error) {
-          console.error("Error fetching search results:", error);
-        }
-      };
-      fetchSearchResults();
-    } else {
-      // Fetch list of courses when there is no search query
+    if (shouldFetchCourses) {
       fetchCourses();
     }
-  }, [location.search]);
+  }, [shouldFetchCourses]);
+
+  const fetchCourses = () => {
+    const endpoint = "/search";
+    fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch search results');
+      }
+    })
+    .then((data) => {
+      setSearchResults(data);
+      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
+    })
+    .catch((error) => {
+      console.error("Error searching:", error);
+      setShouldFetchCourses(false);  // Set shouldFetchCourses to false to prevent further fetching
+    });
+  };
+
+  const GetCarouselHtml = () => {
+    const carouselItems = [];
+    for (let i = 0; i < searchResults.length; i += 3) {
+      const remaining = searchResults.length - i;
+      carouselItems.push(
+        <Carousel.Item key={i}>
+          <div className="SearchResultPage">
+            {remaining >= 3 ? (
+              <>
+                <ClassSlot courseDes={searchResults[i]} />
+                <ClassSlot courseDes={searchResults[i+1]} />
+                <ClassSlot courseDes={searchResults[i+2]} />
+              </>
+            ) : remaining === 2 ? (
+              <>
+                <ClassSlot courseDes={searchResults[i]} />
+                <ClassSlot courseDes={searchResults[i+1]} />
+              </>
+            ) : (
+              <ClassSlot courseDes={searchResults[i]} />
+            )}
+          </div>
+        </Carousel.Item>
+      );
+    }
+    return carouselItems;
+  };
 
   return (
     <Container>
       <h2>Explore</h2>
       <SearchBar isSimple={false} />
-
-      {searchResults.length > 0 ? (
-        <>
-          <h2>{`Search Result: ${searchResults.length} found`}</h2>
-          <div className="SearchResultPage">
-            {searchResults.map((classObj, index) => (
-              // Replace the below line with the ClassSlot component once it is developed
-              // <ClassSlot key={index} classObj={classObj} />
-              <div key={index}>{classObj.name}</div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="SearchResultPage">
-          {courses.map((course, index) => (
-            // Replace the below line with the ClassSlot component once it is developed
-            // <ClassSlot key={index} course={course} />
-            <div key={index}>{course.name}</div>
-          ))}
-        </div>
-      )}
+      <Carousel>
+        {GetCarouselHtml()}
+      </Carousel>
     </Container>
   );
 }

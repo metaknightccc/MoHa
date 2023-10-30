@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./RegistrationPage.css";
 import { Container, Form, Col, Row, Nav } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function RegistrationPage() {
+  const navigate = useNavigate();
   const [isStudent, setIsStudent] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
@@ -34,7 +36,17 @@ function RegistrationPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      }).catch((error) => console.error("Error registering:", error));
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          navigate("/login");
+        } else {
+          console.error("Error registering:", response.data.error);
+          // Display the error message to the user (e.g., in a div element)
+          //setError(response.data.error);
+        }
+      })
+      .catch((error) => console.error("Error registering:", error));
     }
     setValidated(true);
   };
