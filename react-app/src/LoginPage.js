@@ -1,67 +1,75 @@
 import React, { useState } from 'react';
-import "./LoginPage.css";
-import axios from 'axios';
+import './LoginPage.css';
 
-function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [statusMessage, setStatusMessage] = useState('');
-  const handleLogin = async (e) => {
-    e.preventDefault();
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-    try {
-      const response = await axios.post('/login', {
-        username: username,
-        password: password,
-      });
+    const handleLogin = (e) => {
+        e.preventDefault();
 
-      // Handle the successful login response here
-      if (response.status_code=400) {
-        setStatusMessage('Error!');
-        console.error('Login error', response.data.error);
-        // Display the error message to the user (e.g., in a div element)
-        //setError(response.data.error);
-      } else {
-        // Handle the successful login response here
-        console.log('Login successful', response.data.message);
-        // You can perform client-side redirection or other actions after a successful login.
-        // Example: window.location.href = '/dashboard';
-      }
-    } catch (error) {
-      // Handle network or unexpected errors
-      console.error('Network error', error);
-      //setError('An error occurred. Please try again later.'); // Display a generic error message
-    }
-  }
+        // Create a JSON object with the username and password
+        const credentials = { username, password };
 
-  return (
-    <div className="login-container">
-      <form onSubmit={handleLogin}>
-        <h2>Login</h2>
-        <div className="input-group">
-          <label>Username:</label>
-          <input
-            type="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+        // Send a POST request to the login endpoint
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials),
+        })
+        //.then((response) => console.log(response))
+        
+        .then((data) => {
+            console.log(data);
+            console.log(Response);
+            console.log(credentials);
+            if (data.status === 'success') {
+                // Authentication successful
+                // You can redirect to another page or update the UI here
+                console.log('Login successful');
+            } else {
+                // Authentication failed
+                console.log('error');
+                setMessage(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
+    return (
+        <div className="login-container">
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <div className="input-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="input-group">
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            {message && <div className="error-message">{message}</div>}
         </div>
-        <div className="input-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      {/* Display the status message */}
-      {statusMessage && <div className="status-message">{statusMessage}</div>}
-    </div>
-  );
+    );
 }
 
-export default LoginPage;
+export default Login;
