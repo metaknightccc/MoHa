@@ -5,9 +5,15 @@ import "./SearchResultPage.css";
 import ClassSlot from "./ClassSlot";
 import { useLocation } from "react-router-dom";
 
-function SearchResultPage({ classes }) {
+function SearchResultPage() {
   const location = useLocation();
-  let searchResults = classes ?? location.state?.searchResult;
+  const [searchResults, setSearchResults] = useState(location.state?.searchResults || []);
+
+  useEffect(() => {
+    if (!searchResults.length) {
+      fetchCourses();
+    }
+  }, [searchResults]);
 
   const fetchCourses = () => {
     const endpoint = "/search";
@@ -17,31 +23,25 @@ function SearchResultPage({ classes }) {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          searchResults = response;
-          console.log(searchResults);
-        } else {
-          console.error("Error searching:", response.data.error);
-          // Display the error message to the user (e.g., in a div element)
-          //setError(response.data.error);
-        }
-      })
-      .catch((error) => console.error("Error searching:", error));
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch search results');
+      }
+    })
+    .then((data) => {
+      setSearchResults(data);
+    })
+    .catch((error) => console.error("Error searching:", error));
   };
 
-  if (!searchResults) {
-    fetchCourses();
-  }
-  
   const GetCarouselHtml = () => {
-    // display 3 classes per carousel item from searchResults
     const carouselItems = [];
     for (let i = 0; i < searchResults.length; i += 3) {
       const remaining = searchResults.length - i;
       carouselItems.push(
-        <Carousel.Item>
+        <Carousel.Item key={i}>
           <div className="SearchResultPage">
             {remaining >= 3 ? (
               <>
@@ -55,17 +55,14 @@ function SearchResultPage({ classes }) {
                 <ClassSlot courseDes={searchResults[i+1]} />
               </>
             ) : (
-              <>
-                <ClassSlot courseDes={searchResults[i]} />
-              </>
+              <ClassSlot courseDes={searchResults[i]} />
             )}
           </div>
         </Carousel.Item>
       );
     }
     return carouselItems;
-  }
-
+  };
 
   return (
     <Container>
@@ -74,7 +71,6 @@ function SearchResultPage({ classes }) {
       <Carousel>
         {GetCarouselHtml()}
       </Carousel>
-
     </Container>
   );
 }
