@@ -19,12 +19,8 @@ from turbogearapp.controllers.tutor import TutorController
 from turbogearapp.controllers.registration import RegistrationController
 from turbogearapp.controllers.search import SearchController
 from turbogearapp.controllers.login import LoginController
-<<<<<<< HEAD
-from turbogearapp.model import DBSession, Tutor, Student
-=======
 
 
->>>>>>> main
 __all__ = ['RootController']
 
 

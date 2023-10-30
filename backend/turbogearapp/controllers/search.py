@@ -29,7 +29,7 @@ class SearchController(TGController):
 
             session = DBSession()
             
-            tutor_id = session.query(Tutor).filter(Totor.first_name == tutor_name).first()
+            tutor_id = session.query(Tutor).filter(Tutor.first_name == tutor_name).first()
             matching_courses = session.query(Course).filter(
                 Course.Subject_name == subject_name,
                 Course.tutor_id == tutor_id,
