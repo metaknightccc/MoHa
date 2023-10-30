@@ -17,7 +17,9 @@ from turbogearapp.controllers.error import ErrorController
 
 from turbogearapp.controllers.tutor import TutorController
 from turbogearapp.controllers.registration import RegistrationController
+from turbogearapp.controllers.search import SearchController
 from turbogearapp.controllers.login import LoginController
+
 
 __all__ = ['RootController']
 
@@ -42,7 +44,9 @@ class RootController(BaseController):
     error = ErrorController()
     tutor = TutorController()
     reg = RegistrationController()
+    search = SearchController()
     login = LoginController()
+
 
     def _before(self, *args, **kw):
         response.headers['Access-Control-Allow-Origin'] = '*'
