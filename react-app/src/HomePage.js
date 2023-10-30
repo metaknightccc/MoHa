@@ -1,34 +1,26 @@
 import React from "react";
 import "./HomePage.css";
 import ClassSlot from "./ClassSlot";
+import background from "./background.svg";
 
 const HomePage = () => {
   return (
     <div className="HomePage">
-      <div className="ClassList">
-        <ClassSlot 
-          imgName="nyu.jpg"
-          tutorName="John Doe"
-          courseName="Math 101"
-          courseDes="This is a basic math course."
-        />
-        <ClassSlot 
-          imgName="nyu.jpg"
-          tutorName="John Doe"
-          courseName="Math 101"
-          courseDes="This is a basic math course."
-        />
-        <ClassSlot 
-          imgName="nyu.jpg"
-          tutorName="John Doe"
-          courseName="Math 101"
-          courseDes="This is a basic math course."
-        />
+      
+      <div className="First">
+        <img src={background} alt="background"/>
+      </div>
+      <div>
+        <ClassSlot/>
+      </div>
+      <div>
+        <ClassSlot/>
       </div>
       
-      <div className="item">
+      
+      {/* <div className="item">
           <button className="rounded-pill" type="submit">Get it Started</button>
-        </div>
+      </div> */}
       
     </div>
   );
