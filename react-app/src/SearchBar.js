@@ -3,13 +3,13 @@ import "./SearchBar.css";
 import { Form, Button } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
-function SearchBar({ isSimple }) {
+function SearchBar({ isSimple, cb = null }) {
   const [query, setQuery] = useState('');
   const [priority, setPriority] = useState('rel');
   
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleSimpleFilterSearch = (e) => {
     e.preventDefault();
@@ -28,7 +28,8 @@ function SearchBar({ isSimple }) {
       }
     })
     .then((data) => {
-      navigate("/search", { state: { searchResults: data } });
+      if(cb) cb(data);
+      //navigate("/search", { state: { searchResults: data } });
     })
     .catch((error) => console.error("Error searching:", error));
   };
@@ -50,7 +51,8 @@ function SearchBar({ isSimple }) {
       }
     })
     .then((data) => {
-      navigate("/search", { state: { searchResults: data } });
+      if(cb) cb(data);
+      //navigate(endpoint, { state: { searchResults: data } });
     })
     .catch((error) => console.error("Error searching:", error));
   };
