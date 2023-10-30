@@ -13,15 +13,13 @@ function Login() {
         const credentials = { username, password };
 
         // Send a POST request to the login endpoint
-        fetch('/login', {
+        fetch('/login/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(credentials),
         })
-        //.then((response) => console.log(response))
-        
         .then((data) => {
             console.log(data);
             console.log(Response);

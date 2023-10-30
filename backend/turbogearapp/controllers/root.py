@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
 
-from tg import expose, flash, require, url, lurl
+from tg import expose, flash, require, url, lurl, TGController
 from tg import request, redirect, tmpl_context, response
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from tg.exceptions import HTTPFound
@@ -18,7 +18,7 @@ from turbogearapp.controllers.error import ErrorController
 from turbogearapp.controllers.tutor import TutorController
 from turbogearapp.controllers.registration import RegistrationController
 from turbogearapp.controllers.login import LoginController
-
+from turbogearapp.model import DBSession, Tutor, Student
 __all__ = ['RootController']
 
 
@@ -86,9 +86,12 @@ class RootController(BaseController):
         """Illustrate how a page exclusive for the editor works."""
         return dict(page='editor stuff')
     '''
-    @expose('turbogearapp.templates.login')
+    #@expose('turbogearapp.templates.login')
+    @expose('json')
     def login(self, came_from=lurl('/'), failure=None, login=''):
+    #def login(self, username, password,failure=None):
         """Start the user login."""
+        print('========================here im basic login')
         if failure is not None:
             if failure == 'user-not-found':
                 flash(_('User not found'), 'error')
@@ -102,6 +105,37 @@ class RootController(BaseController):
         return dict(page='login', login_counter=str(login_counter),
                     came_from=came_from, login=login)
     '''
+    '''
+    @expose('json')
+    @expose('turbogearapp.templates.login')
+    def login(self, came_from=lurl('/'), failure=None, login=''):
+        print('========================here')
+        print(request.json)
+        #maker = sessionmaker(autoflush=True, autocommit=False)
+        #DBSession = scoped_session(maker)
+        #session=DBSession()
+        #DBSession = scoped_session(sessionmaker())
+        #username = request.json.get('username')
+        #password = request.json.get('password')
+        username = request.json['username']
+        password = request.json['password']
+        user = DBSession.query(Tutor).filter_by(username=username).first() or DBSession.query(Student).filter_by(username=username).first()
+        #user = DBSession.query(Student).filter_by(username=username).first()
+        #print("woshidashabi")
+        #print(user.username) 
+        if user and user.validate_password(password):
+            #response.status_code = 200
+            # Authentication successful; you can set a session or return a token here
+            #return HTTPFound(location= 'register')
+            response.status_code=200
+            return dict(status='success')
+
+        # Authentication failed
+        response.status_code = 400 
+        return dict(status='failed')
+    '''
+    
+    
     @expose()
     def post_login(self, came_from=lurl('/')):
         """
@@ -129,3 +163,4 @@ class RootController(BaseController):
         """
         flash(_('We hope to see you soon!'))
         return HTTPFound(location=came_from)
+    
