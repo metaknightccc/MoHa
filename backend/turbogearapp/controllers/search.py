@@ -43,9 +43,9 @@ class SearchController(TGController):
                 
                 tutor_id = session.query(Tutor).filter_by(first_name = tutor_name).first()
                 matching_courses = session.query(Course).filter(
-                    subject_name == subject_name,
-                    tutor_id == tutor_id,
-                    type == type
+                    Course.subject_name == subject_name,
+                    Course.tutor_id == tutor_id,
+                    Course.type == type
                 ).all()
         
         print("========================")
