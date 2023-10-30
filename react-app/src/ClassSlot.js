@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const ClassSlot = ({imgName="nyu.jpg",tutorName,courseName,courseDes}) => {
   return (
-    <Card className="classCard" style={{width: '18rem'}}>
+    <Card className="classCard" style={{width: '60%'}}>
       <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} />
       <Card.Body className="cardBody">
         <Link to="/login">
