@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Carousel, Container } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import "./SearchResultPage.css";
@@ -50,9 +50,34 @@ function SearchResultPage({ classes }) {
     <Container>
       <h2>Explore</h2>
       <SearchBar isSimple={false} />
-      <div className="SearchResultPage">
-        <ClassSlot imgName={"nyu.jpg"} />
-      </div>
+        <Carousel>
+          <Carousel.Item>
+            <div className="SearchResultPage">  
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+            </div>  
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div className="SearchResultPage">  
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+            </div>  
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div className="SearchResultPage">  
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+              <ClassSlot imgName={"nyu.jpg"} />
+            </div>  
+          </Carousel.Item>
+
+          
+        </Carousel>
+
       {/* {searchResults.length > 0 ? (
         <>
           <h2>{`Search Result: ${searchResults.length} found`}</h2>
