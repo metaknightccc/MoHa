@@ -1,23 +1,105 @@
-body, h1 {
-    margin: 0;
-    padding: 0;
-}
-
-.HomePage {
-
-    width: 100%;
-    height: 100vh;
-    background-image: url('./background.svg');
-    background-size: 100%;       /* Cover the entire viewport */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-position: center;  /* Center the image vertically and horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.wrap {
+    width: 100vw;
 }
 
 .rounded-pill {
     position: absolute;
     padding: 20px;
     background-color: #FFF387;
+}
+
+.bgContainer {
+    width: 100%;
+    overflow: hidden;
+    height: 435px;
+    margin-left: -20px;
+    margin-top: -40px;
+
+}
+
+.First {
+    width: 100%;
+    background-color: #FFF387;
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    height: 500px;
+
+}
+
+.First .banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+
+}
+
+.bgContainer .txt {
+    top: 144px;
+    left: 36px;
+    position: absolute;
+    z-index: 999;
+    color: #fff;
+    width: 407px;
+}
+
+.bgContainer .txt .wlc {
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 0px 2px black;
+}
+
+.bgContainer .txt .title {
+    color: #fff;
+    font-size: 26px;
+    text-align: left;
+    font-weight: 200;
+}
+
+.bgContainer .txt .button {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #FFF387;
+    color: #000;
+    border-radius: 50px;
+    padding: 10px 20px;
+    width: 80%;
+    cursor: pointer;
+}
+.carousel.slide {
+    padding: 74px 0;
+}
+
+.carousel-item .group {
+    display: flex !important;
+    gap: 31px;
+    justify-content: center;
+}
+
+.carousel-item .item {
+    width: 18vw;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #a7a7a7;
+}
+
+.carousel-item img {
+    width: 100% !important;
+    border-radius: 6px;
+
+}
+.carousel-item .item .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
 }
