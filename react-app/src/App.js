@@ -6,9 +6,24 @@ import Template from './Template';
 import RegistrationPage from './RegistrationPage';
 import SearchResultPage from './SearchResultPage';
 import DashboardPage from './DashboardPage';
-
+import axios from 'axios';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+// Set up Axios interceptor to add JWT token to all outgoing requests
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  console.log('Token from localStorage:', token);  // Add this line to check the token value
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+    console.log('Authorization header set:', config.headers.Authorization);  // Add this line to check the header value
+    console.log('Config:', config);  // Add this line to check the config value
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 
 const App = () => {
   return (

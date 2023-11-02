@@ -3,6 +3,7 @@ import "./SearchBar.css";
 import { Form, Button } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import axios from "axios";
 //import { useNavigate } from "react-router-dom";
 
 function SearchBar({ isSimple, cb = null }) {
@@ -11,50 +12,34 @@ function SearchBar({ isSimple, cb = null }) {
   
   //const navigate = useNavigate();
 
-  const handleSimpleFilterSearch = (e) => {
+  const handleSimpleFilterSearch = async (e) => {
     e.preventDefault();
     const endpoint = "/search";
-    fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
+    try {
+      const response = await axios.get(endpoint);
       if (response.status === 200) {
-        return response.json();
+        if (cb) cb(response.data);
       } else {
         throw new Error('Failed to fetch search results');
       }
-    })
-    .then((data) => {
-      if(cb) cb(data);
-      //navigate("/search", { state: { searchResults: data } });
-    })
-    .catch((error) => console.error("Error searching:", error));
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
   };
 
-  const handleAdvancedFilterSearch = (e) => {
+  const handleAdvancedFilterSearch = async (e) => {
     e.preventDefault();
     const endpoint = `/search?q=${query}&pri=${priority}`;
-    fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
+    try {
+      const response = await axios.get(endpoint);
       if (response.status === 200) {
-        return response.json();
+        if (cb) cb(response.data);
       } else {
         throw new Error('Failed to fetch search results');
       }
-    })
-    .then((data) => {
-      if(cb) cb(data);
-      //navigate(endpoint, { state: { searchResults: data } });
-    })
-    .catch((error) => console.error("Error searching:", error));
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
   };
 
   const GetSimpleBarHtml = () => {
