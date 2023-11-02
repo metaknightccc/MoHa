@@ -99,7 +99,7 @@ function Template() {
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <button className="rounded-pill">Become a Tutor</button>
-                  <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
+                  <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
                   <Dropdown.Item href="#/signout">Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
