@@ -55,7 +55,7 @@ function SearchBar({ isSimple, cb = null }) {
   const GetAdvancedBarHtml = () => {
     return (
       <Form onSubmit={handleAdvancedFilterSearch} className="d-flex">
-        <Row>
+        <Row className="search-align-row">
           <Col sm={8}>
             <Form.Group controlId="SearchBar">
               <Form.Control
@@ -70,10 +70,10 @@ function SearchBar({ isSimple, cb = null }) {
 
           <Col sm={4}>
             <Form.Group as={Row} controlId="Filter">
-              <Form.Label column sm={1}>
+              <Form.Label column sm={2}>
                 by
               </Form.Label>
-              <Col sm={10}>
+              <Col sm={8}>
                 <Form.Select as="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
                   <option value="rel">Relevance</option>
                   <option value="lat">Latest</option>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Carousel, Container } from "react-bootstrap";
 import SearchBar from "./SearchBar";
-import "./SearchResultPage.css";
 import ClassSlot from "./ClassSlot";
+import "./SearchResultPage.css";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import axios from "axios";
 
 function SearchResultPage() {
@@ -64,8 +66,12 @@ function SearchResultPage() {
   return (
     <div className="SearchContainer">
       <Container>
-        <h2>Explore</h2>
-        <SearchBar isSimple={false} cb={handleSearchBarCallback}/>
+        <Row>
+          <Col sm={12}>
+            <h2>Explore</h2>
+            <SearchBar isSimple={false} cb={handleSearchBarCallback}/>
+          </Col>
+        </Row>
       </Container>
       <Container>
         <Carousel>{GetCarouselHtml(4)}</Carousel>
