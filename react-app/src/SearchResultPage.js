@@ -72,11 +72,15 @@ function SearchResultPage() {
   };
 
   return (
-    <Container>
-      <h2>Explore</h2>
-      <SearchBar isSimple={false} cb={handleSearchBarCallback}/>
-      <Carousel>{GetCarouselHtml()}</Carousel>
-    </Container>
+    <div className="SearchContainer">
+      <Container>
+        <h2>Explore</h2>
+        <SearchBar isSimple={false} cb={handleSearchBarCallback}/>
+      </Container>
+      <Container>
+        <Carousel>{GetCarouselHtml(4)}</Carousel>
+      </Container>
+    </div>
   );
 }
 

@@ -7,6 +7,12 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+.SearchContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .SearchResultPage {
     display: flex;
     flex-direction: row;
@@ -19,6 +25,13 @@
     gap: 10px;
 
     max-height: 50vh;
+}
+.carousel-control-prev{
+    justify-content: flex-start;
+}
+
+.carousel-control-next{
+    justify-content: flex-end;
 }
 
 .carousel-control-prev-icon {
@@ -38,4 +51,9 @@
 }
 .carousel .carousel-indicators .active {
     background-color: rgba(146, 112, 228, 0.452) !important;
+}
+
+.carousel.slide {
+    margin: 0 auto;
+    padding: 0px;
 }
