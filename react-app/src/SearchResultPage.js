@@ -3,6 +3,7 @@ import { Carousel, Container } from "react-bootstrap";
 import SearchBar from "./SearchBar";
 import "./SearchResultPage.css";
 import ClassSlot from "./ClassSlot";
+import axios from "axios";
 
 function SearchResultPage() {
   const [searchResults, setSearchResults] = useState([]);
@@ -14,22 +15,11 @@ function SearchResultPage() {
 
 
   const fetchCourses = () => {
-    const endpoint = '/search';
-    fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    const endpoint = "/search";
+    axios
+      .get(endpoint)
       .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error("Failed to fetch search results");
-        }
-      })
-      .then((data) => {
-        setSearchResults(data);
+        setSearchResults(response.data);
       })
       .catch((error) => {
         console.error("Error searching:", error);

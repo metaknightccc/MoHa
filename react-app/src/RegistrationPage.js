@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./RegistrationPage.css";
 import { Container, Form, Col, Row, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function RegistrationPage() {
+function RegistrationPage({ isStd }) {
   const navigate = useNavigate();
-  const [isStudent, setIsStudent] = useState(true);
+  const [isStudent, setIsStudent] = useState(isStd);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,6 +17,13 @@ function RegistrationPage() {
     social_security_number: "",
   });
   const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,23 +38,21 @@ function RegistrationPage() {
       const endpoint = isStudent
         ? "/reg/register_student"
         : "/reg/register_tutor";
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/login");
-        } else {
-          console.error("Error registering:", response.data.error);
+      axios.post(endpoint, formData)
+        .then((response) => {
+          if (response.status === 200) {
+            navigate("/login");
+          } else {
+            console.error("Error registering:", response.data.error);
+            // Display the error message to the user (e.g., in a div element)
+            //setError(response.data.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Error registering:", error);
           // Display the error message to the user (e.g., in a div element)
-          //setError(response.data.error);
-        }
-      })
-      .catch((error) => console.error("Error registering:", error));
+          //setError(error.message);
+        });
     }
     setValidated(true);
   };
@@ -60,7 +66,7 @@ function RegistrationPage() {
         <Col>
           <Nav
             variant="underline"
-            defaultActiveKey="student"
+            defaultActiveKey={isStd ? "student" : "tutor"}
             onSelect={(key) => setIsStudent(key === "student")}
           >
             <Nav.Item>
