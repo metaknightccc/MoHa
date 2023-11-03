@@ -4,9 +4,12 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 
-const ClassSlot = ({imgName="nyu.jpg",tutorName="Charles Pan",courseName="CS101",courseDes="RandomCourse"}) => {
+const ClassSlot = ({imgName="nyu.jpg",tutorName="Charles Pan",courseName="CS101",courseDes="RandomCourse", variant}) => {
+ 
+  const cardType = variant ? `classCard classCard-${variant}` : "classCard";
+  
   return (
-    <Card className="classCard" style={{width: '60%'}}>
+    <Card className={cardType} style={{width: '60%'}}>
       <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} />
       <Card.Body className="cardBody">
         <Link to="/login">
