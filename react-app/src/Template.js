@@ -12,7 +12,6 @@ import { Outlet } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 function Template() {
-  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div className="Template">
@@ -89,7 +88,7 @@ function Template() {
                   <Dropdown.Item disabled>
                     <div className="avatar-dropdown-header">
 
-                      <Image src="..." roundedCircle />
+                      <Image src={require('./assets/nyu.jpg')} roundedCircle fluid />
 
                       <div>
                         <div className="username">Username</div>
@@ -98,9 +97,8 @@ function Template() {
                     </div>
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <button className="rounded-pill">Become a Tutor</button>
-                  <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
-                  <Dropdown.Item href="#/signout">Sign Out</Dropdown.Item>
+                  <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
+                  <Dropdown.Item href="/signout">Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

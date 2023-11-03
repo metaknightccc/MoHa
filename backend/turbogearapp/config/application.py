@@ -4,6 +4,43 @@ from turbogearapp.config.app_cfg import base_config
 
 __all__ = ['make_app']
 
+import jwt
+from tg import request
+from webob import exc
+
+SECRET_KEY = "your-secret-key"  # use your secret key here
+
+def jwt_middleware(app):
+    def middleware(environ, start_response):
+        auth_header = environ.get('HTTP_AUTHORIZATION', '')
+        print('Authorization header:', auth_header)  # add this line to print the header
+
+        # extract the token from the authorization header
+        token = environ.get('HTTP_AUTHORIZATION', '').split(' ')[1] if 'HTTP_AUTHORIZATION' in environ else None
+        if token is None:
+            print('No token found')
+            return app(environ, start_response)
+
+        # decode the token and set the user identity in the request context
+        try:
+            print('Decoding token:', token)
+            payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            print('Payload:', payload)
+            user_type = payload.get('user_type')  # assuming the payload includes a 'user_type' field
+            print('User type:', user_type)
+            if user_type not in ['student', 'tutor']:
+                return exc.HTTPUnauthorized('Invalid user type')(environ, start_response)
+            environ['REMOTE_USER'] = payload['sub']
+            environ['USER_TYPE'] = user_type  # additional environment variable to store the user type
+            print('User id:', environ['REMOTE_USER'])
+            print('User type:', environ['USER_TYPE'])
+        except jwt.ExpiredSignatureError:
+            return exc.HTTPUnauthorized('Token is expired')(environ, start_response)
+        except jwt.InvalidTokenError:
+            return exc.HTTPUnauthorized('Invalid token')(environ, start_response)
+
+        return app(environ, start_response)
+    return middleware
 
 def make_app(global_conf, **app_conf):
     """
@@ -24,5 +61,6 @@ def make_app(global_conf, **app_conf):
     app = base_config.make_wsgi_app(global_conf, app_conf, wrap_app=None)
 
     # Wrap your final TurboGears 2 application with custom middleware here
+    app = jwt_middleware(app)
 
     return app

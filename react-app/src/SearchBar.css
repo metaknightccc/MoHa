@@ -7,3 +7,10 @@ form input{
     width: 30% ;
     display: inline-block;
 }
+
+.search-align-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
