@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
+import Profile from './Profile' 
 
 const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
@@ -65,7 +66,7 @@ const Dashboard = () => {
               <Tab.Content>
                 <Tab.Pane eventKey="#profile">
                   <h3>Profile</h3>
-                  {profileData ? <div>{JSON.stringify(profileData)}</div> : 'Loading...'}
+                  <Profile/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#course">
                   <h3>My Courses</h3>
