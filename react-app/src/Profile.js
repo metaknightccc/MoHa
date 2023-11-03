@@ -6,7 +6,10 @@ import ClassSlot from "./ClassSlot";
 
 const Profile = ({ data }) => {
     return (
-      <div className="button">Get started now</div>
+      <div>
+        <div className="button">Get started now</div>
+        <button>asd</button>
+      </div>
     );
   };
   
