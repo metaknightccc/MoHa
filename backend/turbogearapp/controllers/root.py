@@ -19,6 +19,7 @@ from turbogearapp.controllers.tutor import TutorController
 from turbogearapp.controllers.registration import RegistrationController
 from turbogearapp.controllers.search import SearchController
 from turbogearapp.controllers.login import LoginController
+
 from turbogearapp.controllers.dashboard import DashboardController
 
 
@@ -47,6 +48,7 @@ class RootController(BaseController):
     reg = RegistrationController()
     search = SearchController()
     login = LoginController()
+
     dashboard = DashboardController()
 
 
