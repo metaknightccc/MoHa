@@ -3,6 +3,8 @@ import axios from 'axios';
 import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
 import Profile from './Profile' 
+import AddCoursePage from './AddCoursePage';
+
 
 const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
@@ -82,6 +84,7 @@ const Dashboard = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="#addcourse">
                   <h3>Add Course</h3>
+                  <AddCoursePage />
                   {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Add Course page'}
                 </Tab.Pane>
               </Tab.Content>

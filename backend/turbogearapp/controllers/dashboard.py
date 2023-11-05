@@ -7,6 +7,12 @@ import transaction
 
 class DashboardController(TGController):
     @expose('json')
+    def get_existing_subjects(self):
+        existing_subjects = DBSession.query(Subject.subject_name).all()
+        subject_names = [subject[0] for subject in existing_subjects]
+        return subject_names
+    
+    @expose('json')
     def index(self, **kwargs):
         return dict(page='profile')
     
@@ -21,8 +27,14 @@ class DashboardController(TGController):
     
     @expose('json')
     def add_course(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        if user_type != 'tutor':
+            return dict(status='failed', message='User is not a tutor')
+        
+        # Get the tutor's ID
+        
         new_course = Course(
-            tutor_id = request.json['tutor_id'],
+            tutor_id = request.environ.get('REMOTE_USER'),
             name = request.json['name'],
             subject_name = request.json['subject_name'],
             type = request.json['type'],
