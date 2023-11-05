@@ -1,6 +1,7 @@
 import jwt  # Use the same JWT library as in your middleware
 from tg import expose, validate, request, response, TGController
 from turbogearapp.model import DBSession, Tutor, Student
+import datetime
 
 class LoginController(TGController):
     SECRET_KEY = 'your-secret-key'
@@ -17,7 +18,15 @@ class LoginController(TGController):
             isStudent = True
         
         if user and user.validate_password(password):
-            token = jwt.encode({'sub': user.id, 'name': user.username, 'user_type': ("student" if isStudent else "tutor")}, self.SECRET_KEY, algorithm='HS256')
+            # Set expiration time for the token, for example, 1 hour from now
+            expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            payload = {
+                'sub': user.id,
+                'name': user.username,
+                'user_type': ("student" if isStudent else "tutor"),
+                'exp': expiration_time
+            }
+            token = jwt.encode(payload, self.SECRET_KEY, algorithm='HS256')
             response.status_code = 200
             return dict(token=token, status='success')
 
