@@ -20,8 +20,7 @@ def jaccard_similarity(query, document):
         return -1
     return len(intersection)/(len(query) + len(document) - len(intersection))
 
-
-
+  
 class SearchController(TGController):
     @expose("json")
     def index(self, **kwargs):
@@ -80,5 +79,27 @@ class SearchController(TGController):
         print("here")
         # for row in matching_courses:
         #     print(row.name + "\n")
+        response = json.dumps(sqlalchemy_to_json(matching_courses))
+        return response
+    '''
+class SearchController(TGController):
+    @expose("json")
+    def index(self, str='', **kwargs):
+        print("========================")
+        # Use the 'str' parameter passed from the GET request
+        query = str.split('=')[1]
+        print(query)
+        print("above is request")
+        session = DBSession()
+
+        matching_courses = session.query(Course).filter(
+            Course.Subject_name == query or
+            Course.tutor_id == query or
+            Course.type == query
+        ).all()
+
+        print("========================")
+        for row in matching_courses:
+            print(row.name + "\n")
         response = json.dumps(sqlalchemy_to_json(matching_courses))
         return response
