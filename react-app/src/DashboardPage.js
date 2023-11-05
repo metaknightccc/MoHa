@@ -3,6 +3,8 @@ import axios from 'axios';
 import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
 import Profile from './Profile' 
+import AddCoursePage from './AddCoursePage';
+
 
 const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
@@ -60,6 +62,10 @@ const Dashboard = () => {
                 <ListGroup.Item action href="#security">
                   Security
                 </ListGroup.Item>
+              
+                <ListGroup.Item action href="#addcourse">
+                  Add Course
+                </ListGroup.Item>
               </ListGroup>
             </Col>
             <Col sm={10}>
@@ -75,6 +81,11 @@ const Dashboard = () => {
                 <Tab.Pane eventKey="#security">
                   <h3>Security</h3>
                   {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
+                </Tab.Pane>
+                <Tab.Pane eventKey="#addcourse">
+                  <h3>Add Course</h3>
+                  <AddCoursePage />
+                  {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Add Course page'}
                 </Tab.Pane>
               </Tab.Content>
             </Col>
