@@ -1,80 +1,167 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AddCoursePage.css';
+import { Form, Button } from 'react-bootstrap';
 
-function AddCoursePage() {
-  const [subjectName, setSubjectName] = useState('');
-  const [existingSubjects, setExistingSubjects] = useState([]);
-  const [courseName, setCourseName] = useState('');
-  const [courseType, setCourseType] = useState('');
-  const [price, setPrice] = useState('');
+const AddClassPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    type: '',
+    price: 0.0,
+    description: '',
+  });
+
+  const [isNewSubject, setIsNewSubject] = useState(false); // State for the "New Subject?" checkbox
+  const [existingSubjects, setExistingSubjects] = useState([]); // State to store existing subjects
 
   useEffect(() => {
-    // Fetch existing subjects from your TurboGears backend
-    axios.get('/dashboard/get_existing_subjects')
-      .then(response => {
-        setExistingSubjects(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching existing subjects:', error);
-      });
+    // Fetch existing subjects when the component loads
+    fetchExistingSubjects();
   }, []);
 
-  const handleAddCourse = () => {
-    // Handle the form submission here, including subjectName and other data
-    console.log('Subject Name:', subjectName);
-    console.log('Course Name:', courseName);
-    console.log('Course Type:', courseType);
-    console.log('Price:', price);
-    // ... handle the submission ...
+  const fetchExistingSubjects = async () => {
+    try {
+      const response = await fetch('/dashboard/get_existing_subjects');
+      if (response.ok) {
+        const subjects = await response.json();
+        setExistingSubjects(subjects);
+      } else {
+        console.error('Failed to fetch existing subjects');
+      }
+    } catch (error) {
+      console.error('Error fetching existing subjects:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Your submit logic here
+    axios.post('/dashboard/add_course', formData)
+      .then((response) => {
+        // Handle the response data as needed
+        console.log('Course added:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error adding course:', error);
+      });
+    console.log('Form Data:', formData);
   };
 
   return (
-    <div className="add-course-page">
-      <h3>Add Course</h3>
-      <form>
-        <div className="form-group">
-          <label>Subject Name</label>
-          <select
-            value={subjectName}
-            onChange={(e) => setSubjectName(e.target.value)}
-          >
-            <option value="">Select an existing subject</option>
-            {existingSubjects.map((subject, index) => (
-              <option key={index} value={subject}>
-                {subject}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Course Name</label>
-          <input
+    <div className="addClass-page">
+      <h2>Add Class</h2>
+      <Form.Group>
+          <Form.Label>Course Picture</Form.Label>
+          <Form.Control type="file" name="pic" onChange={handleInputChange} />
+        </Form.Group>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="name">
+          <Form.Label>Class Name</Form.Label>
+          <Form.Control
             type="text"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
           />
-        </div>
-        <div className="form-group">
-          <label>Course Type</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="type">
+          <Form.Label>Class Type</Form.Label>
+          <Form.Control
             type="text"
-            value={courseType}
-            onChange={(e) => setCourseType(e.target.value)}
+            name="type"
+            value={formData.type}
+            onChange={handleInputChange}
           />
-        </div>
-        <div className="form-group">
-          <label>Price</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="price">
+          <Form.Label>Price</Form.Label>
+          <Form.Control
             type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
           />
-        </div>
-      </form>
-      <button onClick={handleAddCourse}>Add Course</button>
+        </Form.Group>
+        <Form.Group controlId="description">
+          <Form.Label>Class Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="isNewSubject">
+          <Form.Check
+            type="checkbox"
+            label="New Subject?"
+            name="isNewSubject"
+            checked={isNewSubject}
+            onChange={(e) => setIsNewSubject(e.target.checked)}
+          />
+        </Form.Group>
+        {isNewSubject ? (
+          <div>
+            <Form.Group controlId="subject_name">
+              <Form.Label>Subject Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="subject_name"
+                value={formData.subject_name}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="major">
+              <Form.Label>Major</Form.Label>
+              <Form.Control
+                type="text"
+                name="major"
+                value={formData.major}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="academic">
+              <Form.Check
+                type="checkbox"
+                label="Academic"
+                name="academic"
+                checked={formData.academic}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </div>
+        ) : (
+          <Form.Group controlId="subject_name">
+            <Form.Label>Subject Name</Form.Label>
+            <Form.Select
+              name="subject_name"
+              value={formData.subject_name}
+              onChange={handleInputChange}
+            >
+              <option value="">Select a subject</option>
+              {existingSubjects.map((subject) => (
+                <option key={subject.subject_name} value={subject.subject_name}>
+                  {subject.subject_name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        )}
+        <Button variant="primary" type="submit">
+          Add Class
+        </Button>
+      </Form>
     </div>
   );
-}
+};
 
-export default AddCoursePage;
+export default AddClassPage;
