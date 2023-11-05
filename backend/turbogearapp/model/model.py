@@ -165,9 +165,12 @@ class Course(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
     name = Column(String, nullable=False)
+    pic = Column(String, nullable = True)
     subject_name = Column(String, ForeignKey('subject.subject_name'))
     type = Column(String, nullable=False)
     price = Column(Float, nullable = False, default= 0.0)
+    description = Column(Text, nullable=True)
+    lemmas = Column(Text, nullable=True)
     
 class Course_Class(DeclarativeBase):
     __tablename__ = 'course_class'
