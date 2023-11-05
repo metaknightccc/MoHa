@@ -174,7 +174,6 @@ class Course(DeclarativeBase):
     description = Column(Text, nullable=True)
     lemmas = Column(Text, nullable=True)
     
-    
 class Course_Class(DeclarativeBase):
     __tablename__ = 'course_class'
     course_id = Column(BigInteger, ForeignKey('course.id'), primary_key=True)
