@@ -63,7 +63,7 @@ const Dashboard = () => {
                   Security
                 </ListGroup.Item>
               
-                <ListGroup.Item action href="#addcourse">
+                <ListGroup.Item action href="#add_course">
                   Add Course
                 </ListGroup.Item>
               </ListGroup>
@@ -82,10 +82,9 @@ const Dashboard = () => {
                   <h3>Security</h3>
                   {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
                 </Tab.Pane>
-                <Tab.Pane eventKey="#addcourse">
+                <Tab.Pane eventKey="#add_course">
                   <h3>Add Course</h3>
                   <AddCoursePage />
-                  {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Add Course page'}
                 </Tab.Pane>
               </Tab.Content>
             </Col>

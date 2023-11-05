@@ -57,7 +57,6 @@ const AddClassPage = () => {
 
   return (
     <div className="addClass-page">
-      <h2>Add Class</h2>
       <Form.Group>
           <Form.Label>Course Picture</Form.Label>
           <Form.Control type="file" name="pic" onChange={handleInputChange} />
