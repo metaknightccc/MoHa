@@ -3,6 +3,7 @@ from tg import expose, validate, request, response, TGController
 from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
 import transaction
 import json
+import os
 
 class DashboardController(TGController):
     @expose('json')
@@ -57,3 +58,19 @@ class DashboardController(TGController):
         transaction.commit()
 
         return dict(page='add_course')
+
+
+    @expose('json')
+    def upload_image(self, **kwargs):
+        print('==========================')
+        print(request.body)
+        print('==========================')
+        print(request.json)
+        # file=request.json['file']
+        # if file:
+        #     filename = file.filename
+        #     file.save(os.path.join('../react-app/src/assets', filename))
+        #     print('==========================')
+        #     return dict(status='success', message='Image uploaded successfully')
+        
+

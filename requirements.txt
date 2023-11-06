@@ -1,3 +1,5 @@
 tg.devtools
 faker
 psycopg2
+pyjwt
+spacy
