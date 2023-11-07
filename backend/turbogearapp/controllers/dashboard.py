@@ -101,3 +101,17 @@ class DashboardController(TGController):
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
                 return dict(path=tutor.pic)
+            
+    @expose('json')
+    def get_user_info(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = str(request.environ.get('REMOTE_USER'))
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+            if student:
+                print(student.first_name,student.last_name,student.username,student.email,student.phone_number)
+                return dict(fn=student.first_name
+                            ,ln=student.last_name
+                            ,un=student.username
+                            ,em=student.email
+                            ,pn=student.phone_number)

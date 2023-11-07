@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Form, Col, Row, Nav, Image, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
+import { Button, Container, Form, Col, Row, Nav, Image, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClassSlot from "./ClassSlot";
@@ -7,10 +7,40 @@ import "./Profile.css"
 
 const Profile = ({ data }) => {
 
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   file: null,
-  // });
+  const [showForm, setShowForm] = useState(false);
+
+  const handleEditClick = () => {
+    setShowForm(true);
+  };
+
+  const [formData, setFormData] = useState({
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    phone: '',
+  });
+
+  const fetchInfo = async () => {
+    try {
+      const response = await axios.get('/dashboard/get_user_info');
+      setFormData({
+        firstname: response.data.fn,
+        lastname: response.data.ln,
+        username: response.data.un,
+        email: response.data.em,
+        phone: response.data.ph,
+      });
+      console.log('User infosada==sd:', formData);
+    }
+    catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInfo();
+  }, []);
 
   const [avatarPath, setAvatarPath] = useState('');
 
@@ -81,6 +111,9 @@ const Profile = ({ data }) => {
     <div>
       <Container>
         <Row>
+          <h1>Hi,{formData.firstname} {formData.lastname}</h1>
+        </Row>
+        <Row>
           <Col xs={2} md={2}>
             <Image className="avatarImg" src={avatarPath||'./assets/nyu.jpg'} roundedCircle fluid/>
           </Col>  
@@ -97,6 +130,16 @@ const Profile = ({ data }) => {
               accept="image/*"
             />
           </Col>  
+        </Row>
+        <Row>
+          <Col xs={2} md={5}>
+          <Form>
+              <Form.Label>Username:{formData.username}</Form.Label>
+              <Button onClick={handleEditClick}>Edit</Button>{' '}
+              {showForm && <Form.Control placeholder="Username" />}
+              
+          </Form>
+          </Col>
         </Row>
         <Row>
           <Container>
