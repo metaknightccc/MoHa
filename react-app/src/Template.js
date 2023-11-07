@@ -21,7 +21,7 @@ function Template() {
             <Navbar expand="lg">
               <Navbar.Brand href="/">
                 <img
-                  src={logo}
+                  src={'./assets/logo.png'}
                   width="50"
                   height="50"
                   className="d-inline-block align-top"
@@ -81,14 +81,14 @@ function Template() {
                   className="avatar-dropdown"
                   variant="primary"
                 >
-                  <Image src={require('./assets/nyu.jpg')}  roundedCircle fluid />
+                  <Image src={'./assets/nyu.jpg'}  roundedCircle fluid />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="right">
                   <Dropdown.Item disabled>
                     <div className="avatar-dropdown-header">
 
-                      <Image src={require('./assets/nyu.jpg')} roundedCircle fluid />
+                      <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
 
                       <div>
                         <div className="username">Username</div>

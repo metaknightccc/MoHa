@@ -12,6 +12,24 @@ const Profile = ({ data }) => {
   //   file: null,
   // });
 
+  const [avatarPath, setAvatarPath] = useState('');
+
+  const fetchAvatarPath = async () => {
+    // axios.get('/dashboard/get_avatar_path')
+    try {
+      const response=axios.get('/dashboard/get_avatar_path')
+      setAvatarPath((await response).data.path)
+      // console.log("avatar path===", typeof avatarPath)
+    }
+    catch (error) {
+      console.error('Error fetching avatar path:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvatarPath();
+  }, []);
+
   const handleInputChange = (e) => {
     document.getElementById('fileInput').click();
   };
@@ -64,7 +82,7 @@ const Profile = ({ data }) => {
       <Container>
         <Row>
           <Col xs={2} md={2}>
-            <Image className="avatarImg" src={require('./assets/nyu.jpg')} roundedCircle fluid/>
+            <Image className="avatarImg" src={avatarPath||'./assets/nyu.jpg'} roundedCircle fluid/>
           </Col>  
           <Col xs={2} md={5}>
             <DropdownButton as={ButtonGroup} title="Edit" id="bg-nested-dropdown">
@@ -84,18 +102,21 @@ const Profile = ({ data }) => {
           <Container>
             <Row>
               <Col xs={2} md={5}>
-                <h1>Enrolled courses</h1>
+                <h1>Enrolled courses {avatarPath}</h1>
               </Col>
             </Row>
             <Row>
               <Col xs={2} md={5}>
                   <ClassSlot 
-                    imgName={"nyu.jpg"}
+                    imgName={"logo.png"}
                     tutorName={"Esposito"}
                     courseName={"intro to react"}
                     courseDes={"a sample courseDes"}
                     // variant={"secondary"}
                   />
+              </Col>
+              <Col xs={2} md={5}>
+                <ClassSlot/>
               </Col>
             </Row>
           </Container>
