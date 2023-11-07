@@ -24,7 +24,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world</div>
@@ -33,7 +33,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world</div>
@@ -42,7 +42,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world</div>
@@ -51,7 +51,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world</div>
@@ -64,7 +64,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world111</div>
@@ -73,7 +73,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world111</div>
@@ -82,7 +82,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world111</div>
@@ -91,7 +91,7 @@ const HomePage = () => {
             <div className="item">
               <img
                 className="d-block w-100"
-                src={require('./assets/nyu.jpg')}
+                src={'./assets/nyu.jpg'}
                 alt="First slide"
               />
               <div className="title">Hello world</div>

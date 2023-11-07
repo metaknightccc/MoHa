@@ -10,7 +10,7 @@ const ClassSlot = ({imgName="nyu.jpg",tutorName="Charles Pan",courseName="CS101"
   
   return (
     <Card className={cardType} style={{width: '60%'}}>
-      <Card.Img className="cardImage" variant="top" src={require('./assets/'+imgName)} />
+      <Card.Img className="cardImage" variant="top" src={'./assets/'+imgName} />
       <Card.Body className="cardBody">
         <Link to="/login">
           <Card.Title>{courseName}</Card.Title>

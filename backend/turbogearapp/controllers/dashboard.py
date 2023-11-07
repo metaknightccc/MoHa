@@ -4,6 +4,7 @@ from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
 import transaction
 import json
 import os
+from PIL import Image
 
 class DashboardController(TGController):
     @expose('json')
@@ -62,15 +63,41 @@ class DashboardController(TGController):
 
     @expose('json')
     def upload_image(self, **kwargs):
+        # print('==============122121221============')
+        uploadImg=request.params['fileaaaa']
+        # print(uploadImg)
         print('==========================')
-        print(request.body)
-        print('==========================')
-        print(request.json)
-        # file=request.json['file']
-        # if file:
-        #     filename = file.filename
-        #     file.save(os.path.join('../react-app/src/assets', filename))
-        #     print('==========================')
-        #     return dict(status='success', message='Image uploaded successfully')
+        img=Image.open(uploadImg.file)
+        # print(img.size)
+        # img.save('../react-app/src/assets/'+uploadImg.filename)
         
+        user_type = request.environ.get('USER_TYPE')
+        user_id = str(request.environ.get('REMOTE_USER'))
+        # print(user_id,user_type)
+        # print(type(user_id))
+        img.save('../react-app/public/assets/'+uploadImg.filename)
+        path_name='./assets/'+uploadImg.filename
 
+        #TODO: delete the original pic and save every pic with a unique name
+
+        student = DBSession.query(Student).filter(Student.id == user_id).first()
+        if student:
+            student.pic = path_name
+            transaction.commit()
+
+        return dict(page='dashboard')
+    
+    @expose('json')
+    def get_avatar_path(self, **kwargs):
+        print('========================asdasdasdas')
+        user_type = request.environ.get('USER_TYPE')
+        user_id = str(request.environ.get('REMOTE_USER'))
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+            if student:
+                print(student.pic)
+                return dict(path=student.pic)
+        elif user_type == 'tutor':
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                return dict(path=tutor.pic)
