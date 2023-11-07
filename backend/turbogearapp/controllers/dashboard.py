@@ -62,10 +62,14 @@ class DashboardController(TGController):
 
     @expose('json')
     def upload_image(self, **kwargs):
+        file=request.params['fileaaaa']
+        print(file)
         print('==========================')
         print(request.body)
         print('==========================')
         print(request.json)
+        print('==========================123')
+        
         # file=request.json['file']
         # if file:
         #     filename = file.filename
