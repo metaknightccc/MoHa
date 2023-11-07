@@ -142,7 +142,7 @@ const Profile = ({ data }) => {
           </Col>
         </Row>
         <Row>
-          <Container>
+          {/* <Container>
             <Row>
               <Col xs={2} md={5}>
                 <h1>Enrolled courses {avatarPath}</h1>
@@ -162,7 +162,8 @@ const Profile = ({ data }) => {
                 <ClassSlot/>
               </Col>
             </Row>
-          </Container>
+          </Container> */}
+          <Button>Save changes</Button>{' '}
         </Row>
       </Container>
     </div>
