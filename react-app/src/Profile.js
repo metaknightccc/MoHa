@@ -6,11 +6,27 @@ import ClassSlot from "./ClassSlot";
 import "./Profile.css"
 
 const Profile = ({ data }) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
+    try {
+      const response = await axios.post('/dashboard/update_user_info', {
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+      });
+      console.log('User info updated:', response.data);
+    }
+    catch (error) {
+      console.error('Error updating user info:', error);
+    }
+  };
 
   const [showForm, setShowForm] = useState(false);
+  const [showForm2, setShowForm2] = useState(false);
 
   const handleEditClick = () => {
     setShowForm(true);
+    setShowForm2(true);
   };
 
   const [formData, setFormData] = useState({
@@ -132,39 +148,20 @@ const Profile = ({ data }) => {
           </Col>  
         </Row>
         <Row>
-          <Col xs={2} md={5}>
-          <Form>
-              <Form.Label>Username:{formData.username}</Form.Label>
-              <Button onClick={handleEditClick}>Edit</Button>{' '}
-              {showForm && <Form.Control placeholder="Username" />}
-              
+          {/* <Col xs={2} md={5}> */}
+          <Form onSubmit={handleSubmit}>
+            <Form.Label>Username:{formData.username}</Form.Label>
+            <Form.Label>Name:{formData.firstname} {formData.lastname}</Form.Label>
+            <Button onClick={handleEditClick}>Edit</Button>{' '}
+            {showForm && <Form.Control placeholder="First Name" value={formData.firstname} onChange={(e) => setFormData({...formData, firstname: e.target.value})} />}
+            {showForm2 && <Form.Control placeholder="Last Name" value={formData.lastname} onChange={(e) => setFormData({...formData, lastname: e.target.value})} />} 
+            <Button type="submit">Save changes</Button>{' '} {/* Add the Submit button */}
           </Form>
-          </Col>
+          {/* </Col> */}
         </Row>
-        <Row>
-          {/* <Container>
-            <Row>
-              <Col xs={2} md={5}>
-                <h1>Enrolled courses {avatarPath}</h1>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2} md={5}>
-                  <ClassSlot 
-                    imgName={"logo.png"}
-                    tutorName={"Esposito"}
-                    courseName={"intro to react"}
-                    courseDes={"a sample courseDes"}
-                    // variant={"secondary"}
-                  />
-              </Col>
-              <Col xs={2} md={5}>
-                <ClassSlot/>
-              </Col>
-            </Row>
-          </Container> */}
+        {/* <Row> 
           <Button>Save changes</Button>{' '}
-        </Row>
+        </Row> */}
       </Container>
     </div>
   );
