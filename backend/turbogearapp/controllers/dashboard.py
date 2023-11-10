@@ -66,7 +66,6 @@ class DashboardController(TGController):
         # print('==============122121221============')
         uploadImg=request.params['fileaaaa']
         # print(uploadImg)
-        print('==========================')
         img=Image.open(uploadImg.file)
         # print(img.size)
         # img.save('../react-app/src/assets/'+uploadImg.filename)
@@ -89,7 +88,6 @@ class DashboardController(TGController):
     
     @expose('json')
     def get_avatar_path(self, **kwargs):
-        print('========================asdasdasdas')
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
         if user_type == 'student':
@@ -115,3 +113,21 @@ class DashboardController(TGController):
                             ,un=student.username
                             ,em=student.email
                             ,pn=student.phone_number)
+            
+    @expose('json')
+    def update_user_info(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = str(request.environ.get('REMOTE_USER'))
+        print("sadasd=====")
+        body_str = request.body.decode('utf-8')
+        body_dict = json.loads(body_str)
+        edit_first = body_dict['firstname']
+        edit_last = body_dict['lastname']
+        # print(edit_first,edit_last)
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+            if student:
+                student.first_name = edit_first
+                student.last_name = edit_last
+                transaction.commit()
+                return dict(status='success')

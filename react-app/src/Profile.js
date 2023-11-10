@@ -6,6 +6,7 @@ import ClassSlot from "./ClassSlot";
 import "./Profile.css"
 
 const Profile = ({ data }) => {
+  
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
   
@@ -19,14 +20,20 @@ const Profile = ({ data }) => {
     catch (error) {
       console.error('Error updating user info:', error);
     }
+    setShowSubmit(false);
+    setShowForm(false);
+    setShowForm2(false);
+    await fetchInfo();
   };
 
   const [showForm, setShowForm] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
+  const [showSubmit, setShowSubmit] = useState(false);
 
   const handleEditClick = () => {
     setShowForm(true);
     setShowForm2(true);
+    setShowSubmit(true);
   };
 
   const [formData, setFormData] = useState({
@@ -36,6 +43,9 @@ const Profile = ({ data }) => {
     email: '',
     phone: '',
   });
+
+  const [displayFirstname, setDisplayFirstname] = useState(formData.firstname);
+  const [displayLastname, setDisplayLastname] = useState(formData.lastname);
 
   const fetchInfo = async () => {
     try {
@@ -47,7 +57,8 @@ const Profile = ({ data }) => {
         email: response.data.em,
         phone: response.data.ph,
       });
-      console.log('User infosada==sd:', formData);
+      setDisplayFirstname(formData.firstname);
+      setDisplayLastname(formData.lastname);
     }
     catch (error) {
       console.error('Error fetching user info:', error);
@@ -90,28 +101,10 @@ const Profile = ({ data }) => {
     // });
     
     if (file){
-      // const reader = new FileReader();
-      // reader.onload = (e) => {
-      //   const imageDataUrl = e.target.result;
-      //   console.log(imageDataUrl);
-      // };
-      // // reader.readAsDataURL(file);
-      // console.log("12345455")
-    //   console.log("form data===", formData)
-    //   axios.post('/dashboard/upload_image', formData)
-    //     .then((response) => {
-    //       // Handle the response data as needed
-    //       console.log('Image uploaded:', response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error uploading image:', error);
-    //     });
-    //   console.log('Form Data:', formData);
-    // }
       const formData = new FormData();
       formData.append('fileaaaa', file);
       // const data = Object.fromEntries(formData);
-      console.log("form data===", file)
+      // console.log("form data===", file)
       axios.post('/dashboard/upload_image', formData)
         .then((response) => {
           // Handle the response data as needed
@@ -127,7 +120,7 @@ const Profile = ({ data }) => {
     <div>
       <Container>
         <Row>
-          <h1>Hi,{formData.firstname} {formData.lastname}</h1>
+          <h1>Hi, {displayFirstname} {displayLastname}</h1>
         </Row>
         <Row>
           <Col xs={2} md={2}>
@@ -151,11 +144,11 @@ const Profile = ({ data }) => {
           {/* <Col xs={2} md={5}> */}
           <Form onSubmit={handleSubmit}>
             <Form.Label>Username:{formData.username}</Form.Label>
-            <Form.Label>Name:{formData.firstname} {formData.lastname}</Form.Label>
+            <Form.Label>Name:{displayFirstname} {displayLastname}</Form.Label>
             <Button onClick={handleEditClick}>Edit</Button>{' '}
-            {showForm && <Form.Control placeholder="First Name" value={formData.firstname} onChange={(e) => setFormData({...formData, firstname: e.target.value})} />}
-            {showForm2 && <Form.Control placeholder="Last Name" value={formData.lastname} onChange={(e) => setFormData({...formData, lastname: e.target.value})} />} 
-            <Button type="submit">Save changes</Button>{' '} {/* Add the Submit button */}
+            {showForm && <Form.Control placeholder="First Name"  onChange={(e) => setFormData({...formData, firstname: e.target.value})} />}
+            {showForm2 && <Form.Control placeholder="Last Name"  onChange={(e) => setFormData({...formData, lastname: e.target.value})} />} 
+            {showSubmit && <Button type="submit">Save changes</Button>}{' '} 
           </Form>
           {/* </Col> */}
         </Row>
