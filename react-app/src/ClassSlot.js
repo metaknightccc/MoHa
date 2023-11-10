@@ -12,7 +12,7 @@ const ClassSlot = ({imgName="nyu.jpg",tutorName="Charles Pan",courseName="CS101"
     <Card className={cardType} style={{width: '60%'}}>
       <Card.Img className="cardImage" variant="top" src={'./assets/'+imgName} />
       <Card.Body className="cardBody">
-        <Link to="/login">
+        <Link to="/coursedes">
           <Card.Title>{courseName}</Card.Title>
         </Link>
         <Card.Subtitle className="mb-2 text-muted">{tutorName}</Card.Subtitle>

@@ -57,8 +57,8 @@ const Profile = ({ data }) => {
         email: response.data.em,
         phone: response.data.ph,
       });
-      setDisplayFirstname(formData.firstname);
-      setDisplayLastname(formData.lastname);
+      setDisplayFirstname(response.data.fn);
+      setDisplayLastname(response.data.ln);
     }
     catch (error) {
       console.error('Error fetching user info:', error);
@@ -152,9 +152,9 @@ const Profile = ({ data }) => {
           </Form>
           {/* </Col> */}
         </Row>
-        {/* <Row> 
-          <Button>Save changes</Button>{' '}
-        </Row> */}
+        <Row> 
+          <ClassSlot/>
+        </Row>
       </Container>
     </div>
   );
