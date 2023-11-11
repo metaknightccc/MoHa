@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
   const endpoint = '/dashboard';
+  const coursemod = '/course';
 
   const fetchData = (key) => {
     if (key === '#profile' && profileData == null) {
@@ -22,7 +23,7 @@ const Dashboard = () => {
           console.error('Error fetching profile data:', error);
         });
     } else if (key === '#course' && courseData == null) {
-      axios.get(endpoint + '/course')
+      axios.get(coursemod + '/course')
         .then(response => {
           setCourseData(response.data);
         })
