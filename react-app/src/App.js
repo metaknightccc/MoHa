@@ -9,6 +9,7 @@ import DashboardPage from './DashboardPage';
 import axios from 'axios';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AddCoursePage from './AddCoursePage';
 
 // Set up Axios interceptor to add JWT token to all outgoing requests
 axios.interceptors.request.use((config) => {
@@ -35,7 +36,10 @@ const App = () => {
           <Route path="reg/register_student" element={<RegistrationPage isStd={true} />} />
           <Route path="reg/register_tutor" element={<RegistrationPage isStd={false} />} />
           <Route path="search" element={<SearchResultPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="dashboard" element={<DashboardPage />}>
+            <Route path="add_course" element={<AddCoursePage />} />
+          </Route>
+
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />

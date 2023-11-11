@@ -23,7 +23,7 @@ const Dashboard = () => {
           console.error('Error fetching profile data:', error);
         });
     } else if (key === '#course' && courseData == null) {
-      axios.get(coursemod + '/course')
+      axios.get(endpoint + '/course')
         .then(response => {
           setCourseData(response.data);
         })
