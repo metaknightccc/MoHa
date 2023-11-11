@@ -25,7 +25,7 @@ class DashboardController(TGController):
     @expose('json')
     def security(self, **kwargs):
         return dict(page='security')
-'''
+    '''
     @expose('json')
     def add_course(self, **kwargs):
         user_type = request.environ.get('USER_TYPE')
@@ -60,7 +60,7 @@ class DashboardController(TGController):
         transaction.commit()
 
         return dict(page='add_course')
-'''
+    '''
     @expose('json')
     def upload_image(self, **kwargs):
         # print('==============122121221============')
