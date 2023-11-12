@@ -1,18 +1,30 @@
 import React, { useState, useEffect} from "react";
 import "./LoginPage.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+
+const ERROR_STATUS = {
+  Unauthorized: 'Please login to access this page',
+}
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
+    const message = location.state?.message;
+    if (message) {
+      if(message in ERROR_STATUS) {
+        setMessage(ERROR_STATUS[message]);
+      }
+    }else{
+      const token = localStorage.getItem("token");
+      if (token) {
+        navigate("/dashboard");
+      }
     }
   }, [navigate]);
 
