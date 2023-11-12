@@ -17,6 +17,7 @@ class Tutor(DeclarativeBase):
     phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
     #courses = relationship('Course', back_populates='tutor_id')
+    preference = Column(Text, nullable=True) #preference of the student
     social_security_number = Column(String, nullable=False)# todo: encrypt using hash method
     _password = Column('password',String, nullable=False)
     @classmethod

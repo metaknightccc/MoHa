@@ -17,6 +17,9 @@ class CourseController(TGController):
     @expose('json')
     def add_course(self, **kwargs):
         user_type = request.environ.get('USER_TYPE')
+        print(user_type)
+        #print(request.environ)
+        print('=====user_type=====')
         if user_type != 'tutor':
             return dict(status='failed', message='User is not a tutor')
 
