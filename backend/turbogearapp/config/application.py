@@ -9,17 +9,26 @@ from tg import request
 from webob import exc
 
 SECRET_KEY = "your-secret-key"  # use your secret key here
+ROUTE_TO_AUTHENTICATE = [
+    '/dashboard',
+]
 
 def jwt_middleware(app):
     def middleware(environ, start_response):
         auth_header = environ.get('HTTP_AUTHORIZATION', '')
+        request_path = environ.get('PATH_INFO', '')
         print('Authorization header:', auth_header)  # add this line to print the header
+        print('Request path:', request_path)  # add this line to print the request path
 
+        # check if the request path is in the list of routes that require authentication
+        if not any(request_path.startswith(auth_path) for auth_path in ROUTE_TO_AUTHENTICATE):
+            return app(environ, start_response)
+        
         # extract the token from the authorization header
         token = environ.get('HTTP_AUTHORIZATION', '').split(' ')[1] if 'HTTP_AUTHORIZATION' in environ else None
         if token is None:
             print('No token found')
-            return app(environ, start_response)
+            return exc.HTTPUnauthorized('No Token Found')(environ, start_response)
 
         # decode the token and set the user identity in the request context
         try:
