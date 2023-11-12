@@ -25,7 +25,7 @@ const Dashboard = () => {
       .catch(error => {
         if(error.response.status === 401) {
           console.log('Unauthorized');
-          navigate('/login');
+          navigate('/login', {state: { message: 'Unauthorized' }});
         }
       });
   }, []);
