@@ -35,10 +35,7 @@ const App = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="search" element={<SearchResultPage />} />
-          <Route path="dashboard" element={<DashboardPage />}>
-            {/* <Route path="add_course" element={<AddCoursePage />} /> */}
-          </Route>
-
+          <Route path="dashboard" element={<DashboardPage />} />
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />
