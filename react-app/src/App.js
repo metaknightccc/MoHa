@@ -32,8 +32,7 @@ const App = () => {
         <Route path="/" element={<Template />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="reg/register_student" element={<RegistrationPage isStd={true} />} />
-          <Route path="reg/register_tutor" element={<RegistrationPage isStd={false} />} />
+          <Route path="register" element={<RegistrationPage />} />
           <Route path="search" element={<SearchResultPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
         </Route>
