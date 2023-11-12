@@ -7,6 +7,7 @@ import RegistrationPage from './RegistrationPage';
 import SearchResultPage from './SearchResultPage';
 import DashboardPage from './DashboardPage';
 import axios from 'axios';
+import CourseDescription from './CourseDescription';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddCoursePage from './AddCoursePage';
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="register" element={<RegistrationPage />} />
           <Route path="search" element={<SearchResultPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="coursedes" element={<CourseDescription />} />
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />

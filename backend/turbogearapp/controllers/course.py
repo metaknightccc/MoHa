@@ -51,3 +51,21 @@ class CourseController(TGController):
         transaction.commit()
 
         return dict(page='add_course')
+    
+    @expose('json')
+    def get_course_info(self, **kwargs):
+        course_id = kwargs.get('course_id')
+        print(course_id)
+        course = DBSession.query(Course).filter_by(id=course_id).first()
+        if course:
+            return dict(
+                id=course.id,
+                tutor_id=course.tutor_id,
+                name=course.name,
+                subject_name=course.subject_name,
+                type=course.type,
+                price=course.price,
+                description=course.description
+            )
+        else:
+            return dict(status='failed', message='Course not found')
