@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./RegistrationPage.css";
 import { Container, Form, Col, Row, Nav } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function RegistrationPage({ isStd }) {
+function RegistrationPage() {
   const navigate = useNavigate();
-  const [isStudent, setIsStudent] = useState(isStd);
+  const location = useLocation();
+  const [isStudent, setIsStudent] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -17,6 +18,12 @@ function RegistrationPage({ isStd }) {
     social_security_number: "",
   });
   const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    if (location.state && location.state.isStudent !== null) {
+      setIsStudent(location.state.isStudent);
+    }
+  }, [location]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -68,7 +75,8 @@ function RegistrationPage({ isStd }) {
           <Col>
             <Nav
               variant="underline"
-              defaultActiveKey={isStd ? "student" : "tutor"}
+              defaultActiveKey={isStudent ? "student" : "tutor"}
+              activeKey={isStudent ? "student" : "tutor"}
               onSelect={(key) => setIsStudent(key === "student")}
             >
               <Nav.Item>

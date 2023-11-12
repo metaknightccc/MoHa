@@ -28,9 +28,10 @@
 
 .Nav-Main-Right{
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: space-between;
-    position: relative; /* Added to ensure header is on top of sidebar */
+    align-items: center;
+
     z-index: 2;
 }
 
@@ -101,6 +102,6 @@ nav input[type="text"] {
 }
 
 .dropdown-toggle {
-    width: 80px;
-    height: 80px;
+    width: 65px;
+    height: 65px;
 }
