@@ -24,7 +24,6 @@ def jaccard_similarity(query, document):
 class SearchController(TGController):
     @expose("json")
     def index(self, **kwargs):
-        print("========================")
         # if no query provided at all
         if not kwargs:
             session = DBSession()
@@ -35,7 +34,6 @@ class SearchController(TGController):
             print("========================")
             query = kwargs.get('q', '')
             priority = kwargs.get('pri', 'rel')
-            #subject_name, tutor_name, type = query.split('%20')
             if query == '':
                 session = DBSession()
                 matching_courses = session.query(Course).limit(5).all()
@@ -47,38 +45,53 @@ class SearchController(TGController):
 
                 session = DBSession()
                 courses = session.query(Course).all()
+                # generate similarity score for each course
                 course_similarity = {}
                 for course in courses:
-                    course_similarity[course] = jaccard_similarity(lemma, course.lemmas.split(' '))
-                sorted_courses = sorted(course_similarity.items(), key=lambda x: x[1], reverse=True)
-                matching_courses = [item[0] for item in sorted_courses]
+                    course_lemma = course.lemmas
+                    # check if the lemma has only one token
+                    if course_lemma.find(' '):
+                        course_lemma = course_lemma.split(' ')
+                    course_similarity[course] = jaccard_similarity(lemma, course_lemma)
 
-                # add tutor_name
-                for matching_course in matching_courses:
-                    print(matching_course.name)
-                    print(course_similarity[matching_course])
-
-
-
-                # arr = query.split()
-                # print(arr)
-                # subject_name = arr[0]
-                # tutor_name = arr[1]
-                # type = arr[2]
-
-                # session = DBSession()
+                # filter out courses with negative similarity score
+                matching_courses = dict()
+                for item in course_similarity.items():
+                    if not item[1] < 0:
+                        matching_courses[item[0]] = item[1]
                 
-                # tutor_id = session.query(Tutor).filter_by(first_name = tutor_name).first()
-                # matching_courses = session.query(Course).filter(
-                #     Course.subject_name == subject_name,
-                #     Course.tutor_id == tutor_id,
-                #     Course.type == type
-                # ).all()
+                # matching_courses = [item[0] for item in course_similarity if not item[1] < 0]
+
+                print("here")
+                result = []
+                if priority == 'rel': # sort by relevance
+                    sorted_courses = sorted(matching_courses.items(), key=lambda x: x[1], reverse=True)
+                    result = [item[0] for item in sorted_courses]
+                    print(type(sorted_courses) == dict)
+                elif priority == 'lat': # sort by latest
+                    result = matching_courses.keys()
+                elif priority == 'rat': # sort by rating
+                    course_ratings = dict()
+                    for course in matching_courses.keys():
+                        # if the rating is None, then assign 0
+                        if course.avg_rating:
+                            course_ratings[course] = course.avg_rating
+                        else:
+                            course_ratings[course] = 0
+                    sorted_courses = sorted(course_ratings.items(), key=lambda x: x[1], reverse=True)
+                    result = [item[0] for item in sorted_courses]
+                else: # invalid priority
+                    return dict(error="invalid priority").json()
+                
+                print("there")
+
+                for r in result:
+                    print(r.name)
+                    print(course_similarity[r])
+                    print(r.avg_rating)
         
         print("========================")
-        print("here")
-        # for row in matching_courses:
-        #     print(row.name + "\n")
-        response = json.dumps(sqlalchemy_to_json(matching_courses))
+
+        response = json.dumps(sqlalchemy_to_json(result))
         return response
   
