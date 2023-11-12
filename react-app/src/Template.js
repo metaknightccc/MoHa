@@ -7,18 +7,43 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import SearchBar from "./SearchBar";
 
+const loggedInOptions = {
+  dashboard: "Dashboard",
+  signout: "Sign Out",
+}
+
+const loggedOutOptions = {
+  login: "Login",
+  register: "Register",
+}
+
+const routeToState = {
+  register: { isStudent: true },
+};
+
 function Template() {
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLogged(true);
+    }
+  }, []);
 
   return (
     <div className="Template">
       <div className="Header">
         <div className="Nav-Main">
           <div className="Nav-Main-Left">
-            <Navbar expand="lg">
+            <Navbar expand="lg" style={{
+              margin: "0px",
+              padding: "0px",
+            }}>
               <Navbar.Brand href="/">
                 <img
                   src={'./assets/logo.png'}
@@ -44,7 +69,9 @@ function Template() {
 
                   <Nav.Item>
                     <Nav.Link
-                      href="/reg/register_tutor"
+                      as={Link}
+                      to={"/register"}
+                      state={{ isStudent: false }}
                       className="custom-link"
                     >
                       Become a Tutor
@@ -97,8 +124,19 @@ function Template() {
                     </div>
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
-                  <Dropdown.Item href="/signout">Sign Out</Dropdown.Item>
+                  {/* <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
+                  <Dropdown.Item href="/signout">Sign Out</Dropdown.Item> */}
+                  {Object.entries(isLogged ? loggedInOptions : loggedOutOptions).map(([route, title]) => {
+                    return (
+                      <Dropdown.Item as={Link}  
+                        to={`/${route}`}
+                        state={routeToState[route]}
+                        key={route}
+                      >
+                        {title}
+                      </Dropdown.Item>
+                    );
+                  })}
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -111,7 +149,7 @@ function Template() {
       </div>
 
       <div className="Footer">© 2023 Moha. All rights reserved.</div>
-    </div>
+    </div >
   );
 }
 

@@ -4,13 +4,31 @@ import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
 import Profile from './Profile' 
 import AddCoursePage from './AddCoursePage';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
   const endpoint = '/dashboard';
+  const coursemod = '/course';
+
+  useEffect(() => {
+    axios.get('/dashboard')
+      .then(response => {
+        if(response.status === 200) {
+          console.log(response.data);
+        }
+      })
+      .catch(error => {
+        if(error.response.status === 401) {
+          console.log('Unauthorized');
+          navigate('/login', {state: { message: 'Unauthorized' }});
+        }
+      });
+  }, []);
 
   const fetchData = (key) => {
     if (key === '#profile' && profileData == null) {

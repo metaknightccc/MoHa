@@ -17,6 +17,7 @@ class Tutor(DeclarativeBase):
     phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
     #courses = relationship('Course', back_populates='tutor_id')
+    preference = Column(Text, nullable=True) #preference of the student
     social_security_number = Column(String, nullable=False)# todo: encrypt using hash method
     _password = Column('password',String, nullable=False)
     @classmethod
@@ -62,14 +63,14 @@ class Tutor(DeclarativeBase):
         return self.password[64:] == hash.hexdigest()
 
 
-    
+'''    
 class Rating(DeclarativeBase):#made seperately to store user review and calculated rating based on tutor id
     __tablename__ = 'rating'
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'), primary_key=True)
     student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
     quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
     review = Column(Text, nullable=True, default= "User left with a good impression!")
-    
+'''
     
 
 class Student(DeclarativeBase):
@@ -166,13 +167,25 @@ class Course(DeclarativeBase):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
+    student_id = Column(BigInteger, ForeignKey('student.id'), nullable=True)
     name = Column(String, nullable=False)
     pic = Column(String, nullable = True)
     subject_name = Column(String, ForeignKey('subject.subject_name'))
     type = Column(String, nullable=False)
-    price = Column(Float, nullable = False, default= 0.0)
+    price = Column(Float, nullable=False, default=0.0)
+    avg_rating = Column(Float, nullable=True)
     description = Column(Text, nullable=True)
     lemmas = Column(Text, nullable=True)
+    def cal_rating():
+        related_classes = Course_Class.query.filter_by(course_id=self.id, student_id=student_id).all()
+        if related_classes:
+            total_rating = sum([course_class.quant_rating for course_class in related_classes])
+            avg_rating = total_rating / len(related_classes)
+            #return average_rating
+        else:
+            avg_rating = None
+
+   
     
 class Course_Class(DeclarativeBase):
     __tablename__ = 'course_class'
@@ -180,10 +193,15 @@ class Course_Class(DeclarativeBase):
     student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
     begin_time = Column(DateTime) #planned time to start
     end_time = Column(DateTime) #planned time to end
+    t_begin_time = Column(DateTime)#true time started
+    t_end_time = Column(DateTime)#true time ended
     duration = Column(BigInteger, nullable=True) #the real duration of the class taken, stored in seconds
     normal = Column(Boolean, default= True)
     side_note = Column(Text, nullable=True)
     taken =  Column(Boolean, default= False)
+    price = Column(Float, nullable = False, default= 0.0)
+    quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
+    review = Column(Text, nullable=True, default= "User left with a good impression!")
     
 class Subject(DeclarativeBase):
     __tablename__ = 'subject'

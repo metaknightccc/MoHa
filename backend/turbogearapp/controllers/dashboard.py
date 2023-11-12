@@ -5,14 +5,15 @@ import transaction
 import json
 import os
 from PIL import Image
-
+#import './controllers/course.py'
 class DashboardController(TGController):
+    '''
     @expose('json')
     def get_existing_subjects(self):
         existing_subjects = DBSession.query(Subject).all()
         subjects = [{'subject_name': subject.subject_name, 'major': subject.major, 'academic': subject.academic} for subject in existing_subjects]
         return json.dumps(subjects).encode('utf-8')
-
+    '''
     @expose('json')
     def index(self, **kwargs):
         return dict(page='profile')
@@ -24,7 +25,7 @@ class DashboardController(TGController):
     @expose('json')
     def security(self, **kwargs):
         return dict(page='security')
-
+    '''
     @expose('json')
     def add_course(self, **kwargs):
         user_type = request.environ.get('USER_TYPE')
@@ -59,8 +60,7 @@ class DashboardController(TGController):
         transaction.commit()
 
         return dict(page='add_course')
-
-
+    '''
     @expose('json')
     def upload_image(self, **kwargs):
         # print('==============122121221============')
