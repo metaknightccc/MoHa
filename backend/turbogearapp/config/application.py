@@ -11,6 +11,7 @@ from webob import exc
 SECRET_KEY = "your-secret-key"  # use your secret key here
 ROUTE_TO_AUTHENTICATE = [
     '/dashboard',
+    '/course/add_course',
 ]
 
 def jwt_middleware(app):
@@ -20,7 +21,7 @@ def jwt_middleware(app):
         print('Authorization header:', auth_header)  # add this line to print the header
         print('Request path:', request_path)  # add this line to print the request path
 
-        # check if the request path is in the list of routes that require authentication
+        # # check if the request path is in the list of routes that require authentication
         if not any(request_path.startswith(auth_path) for auth_path in ROUTE_TO_AUTHENTICATE):
             return app(environ, start_response)
         
