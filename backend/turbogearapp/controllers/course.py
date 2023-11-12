@@ -5,6 +5,7 @@ import transaction
 import json
 import os
 from PIL import Image
+import spacy
 
 
 class CourseController(TGController):
@@ -26,14 +27,20 @@ class CourseController(TGController):
         # Get the tutor's ID
         tutor_id = request.environ.get('REMOTE_USER')
 
+        nlp = spacy.load('en_core_web_sm')
+        name=request.json['name'],
+        description = request.json.get('description')
+        doc = nlp(' '.join([name, type, description]))
+        lemmas = ' '.join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
         new_course = Course(
+            name = name,
             tutor_id=tutor_id,
-            name=request.json['name'],
             subject_name=request.json['subject_name'],
             type=request.json['type'],
             price=float(request.json['price']),  # Parse price as a float
             pic=request.json['pic'],  # Add pic
-            description=request.json.get('description'),  # Optionally provide description
+            description = description,
+            lemmas = lemmas,
         )
 
         coursecheck = DBSession.query(Subject).filter_by(subject_name=new_course.subject_name).first()
