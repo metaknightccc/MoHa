@@ -167,7 +167,6 @@ class Course(DeclarativeBase):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
-    #student_id = Column(BigInteger, ForeignKey('student.id'), nullable=True)
     name = Column(String, nullable=False)
     pic = Column(String, nullable = True)
     subject_name = Column(String, ForeignKey('subject.subject_name'))
