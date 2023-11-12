@@ -13,9 +13,14 @@ tutor_count = cur.fetchone()[0]
 
 print(tutor_count)
 
-test_subject = ('test_subject', 'test_major', True)
+# check if test subject exists
+cur.execute("SELECT COUNT(*) FROM subject WHERE subject_name = 'test_subject';")
+if cur.fetchone()[0] == 0:
+    test_subject = ('test_subject', 'test_major', True)
+    cur.execute("INSERT INTO subject (subject_name, major, academic) VALUES (%s, %s, %s)", test_subject)
 
-cur.execute("INSERT INTO subject (subject_name, major, academic) VALUES (%s, %s, %s)", test_subject)
+
+
 nlp = spacy.load('en_core_web_sm')
 
 fake = faker.Faker()
@@ -27,10 +32,11 @@ for i in range(1,101):
     price = random.randint(1, 100)
     description = fake.text(max_nb_chars=200, ext_word_list=None)
     doc = nlp(' '.join([name, type, description]))
-    lemmas = ' '.join([token.lemma_ for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
+    lemmas = ' '.join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
     print(lemmas)
-    cur.execute("INSERT INTO course (id, tutor_id, name, subject_name, type, price, description, lemmas) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
-                (i, rtid, name, 'test_subject', type, price, description, lemmas))
+    avg_rating = random.randint(1, 5)
+    cur.execute("INSERT INTO course (id, tutor_id, name, subject_name, type, price, description, lemmas, avg_rating) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                (i, rtid, name, 'test_subject', type, price, description, lemmas, avg_rating))
 
 conn.commit()
 cur.close()
