@@ -3,7 +3,7 @@ import axios from 'axios';
 import './AddCoursePage.css';
 import { Form, Button } from 'react-bootstrap';
 
-const AddClassPage = () => {
+const AddCoursePage = () => {
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -21,7 +21,7 @@ const AddClassPage = () => {
 
   const fetchExistingSubjects = async () => {
     try {
-      const response = await fetch('/dashboard/get_existing_subjects');
+      const response = await fetch('/course/get_existing_subjects');
       if (response.ok) {
         const subjects = await response.json();
         setExistingSubjects(subjects);
@@ -44,7 +44,7 @@ const AddClassPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Your submit logic here
-    axios.post('/dashboard/add_course', formData)
+    axios.post('/course/add_course', formData)
       .then((response) => {
         // Handle the response data as needed
         console.log('Course added:', response.data);
@@ -163,4 +163,4 @@ const AddClassPage = () => {
   );
 };
 
-export default AddClassPage;
+export default AddCoursePage;

@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
   const endpoint = '/dashboard';
+  const coursemod = '/course';
 
   const fetchData = (key) => {
     if (key === '#profile' && profileData == null) {
