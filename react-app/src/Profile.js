@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Container, Form, Col, Row, Nav, Image, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
+import { Modal, Button, Container, Form, Col, Row, Nav, Image, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClassSlot from "./ClassSlot";
@@ -87,8 +87,13 @@ const Profile = ({ data }) => {
     fetchAvatarPath();
   }, []);
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const handleInputChange = (e) => {
     document.getElementById('fileInput').click();
+    handleShow();
   };
 
   const uploadImage = (event) => {
@@ -119,6 +124,110 @@ const Profile = ({ data }) => {
   return (
     <div>
       <Container>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="avatar-section">
+              <h2 className="mb-3">Avatar Editor Demo</h2>
+              <p>Drag and Drop an Image:</p>
+              {/* <Dropzone onDrop={handleDrop} noClick noKeyboard>
+                {({ getRootProps, getInputProps }) => (
+                  <div className="dropzone" {...getRootProps()}>
+                    <AvatarEditor
+                      ref={editorRef}
+                      color={[200, 200, 200, 0.6]}
+                      scale={scale}
+                      width={250}
+                      crossOrigin="anonymous"
+                      height={250}
+                      image={originalImage}
+                      rotate={rotate}
+                      position={position}
+                      onPositionChange={handlePositionChange}
+                    />
+                    <input {...getInputProps()} />
+                  </div>
+                )}
+              </Dropzone> */}
+              {/* <Form className="avatar-form" onSubmit={handleSubmit}>
+                <Form.Group className="w-100 my-3" controlId="upload">
+                  <Form.Label className="file-btn btn btn-primary">
+                    Upload
+                    <Form.Control
+                      className="file-input-hidden"
+                      type="file"
+                      onChange={handleAdd}
+                      accept="image/*"
+                    />
+                  </Form.Label>
+                </Form.Group>
+                <Form.Group className="w-100 mb-3" controlId="zoom">
+                  <Form.Label>Zoom</Form.Label>
+                  <Form.Control
+                    type="range"
+                    onChange={handleZoom}
+                    min={1}
+                    max={2}
+                    step={0.01}
+                    defaultValue={scale}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="rotate">
+                  <Form.Label className="w-100">Rotate</Form.Label>
+                  <Button onClick={() => handleRotate("left")} className="mr-3">
+                    Left
+                  </Button>
+                  <Button onClick={() => handleRotate("right")}>Right</Button>
+                </Form.Group>
+                <Button className="mt-5" type="submit">
+                  Crop / Save
+                </Button>
+              </Form> */}
+            </div>
+            {/* <ul>
+              <li>{`Image: ${
+                typeof originalImage === "object" ? originalImage.name : originalImage
+              }`}</li>
+              <li>{`Zoom: ${scale}`}</li>
+              <li>{`Rotate: ${rotate}°`}</li>
+              <li>{`Position X: ${+position.x.toFixed(5)}`}</li>
+              <li>{`Position Y: ${+position.y.toFixed(5)}`}</li>
+              {croppedImage && (
+                <>
+                  <li className="mb-3">Cropped Image:</li>
+                  <Image alt="cropped" src={croppedImage} />
+                </>
+              )}
+            </ul> */}
+            {/* <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  autoFocus
+                />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlTextarea1"
+              >
+                <Form.Label>Example textarea</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+            </Form> */}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Row>
           <h1>Hi, {displayFirstname} {displayLastname}</h1>
         </Row>
