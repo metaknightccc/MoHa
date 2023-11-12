@@ -174,7 +174,7 @@ class Course(DeclarativeBase):
     price = Column(Float, nullable=False, default=0.0)
     avg_rating = Column(Float, nullable=True)
     description = Column(Text, nullable=True)
-    lemma = Column(Text, nullable=True)
+    lemmas = Column(Text, nullable=True)
     def cal_rating():
         related_classes = Course_Class.query.filter_by(course_id=self.id, student_id=student_id).all()
         if related_classes:
