@@ -32,7 +32,7 @@ class CourseController(TGController):
             subject_name=request.json['subject_name'],
             type=request.json['type'],
             price=float(request.json['price']),  # Parse price as a float
-            pic=request.json['pic'],  # Add pic
+            #pic=request.json['pic'],  # Add pic
             description=request.json.get('description'),  # Optionally provide description
         )
 
@@ -51,3 +51,22 @@ class CourseController(TGController):
         transaction.commit()
 
         return dict(page='add_course')
+    
+    @expose('json')
+    def get_course_pic(self, **kwargs):
+        if 'pic' not in request.json:
+            return dict(status='failed', message='No file uploaded')
+        print('=====Loading pic=====')
+        tutor_id = request.environ.get('REMOTE_USER')
+        uploaded_file = request.json['pic']
+        filename = f'user_{tutor_id}.png'  # Adjust file naming as needed
+
+        # Change the path as per your system
+        file_path = os.path.join('./assets/course_pic', filename)
+
+        with open(file_path, 'wb') as f:
+            f.write(uploaded_file.file.read())
+
+        return dict(status='success', message='File uploaded')
+
+        
