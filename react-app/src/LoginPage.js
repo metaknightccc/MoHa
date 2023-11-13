@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import useToken from './hook/useToken';
 
 const ERROR_STATUS = {
   Unauthorized: 'Please login to access this page',
@@ -11,6 +12,7 @@ const ERROR_STATUS = {
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [ token, saveToken ] = useToken();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -20,7 +22,7 @@ function Login() {
     if (message && message in ERROR_STATUS) {
       setMessage(ERROR_STATUS[message]);
     } else {
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token');
       if (token) {
         navigate('/dashboard');
       }
@@ -35,7 +37,8 @@ function Login() {
       .post('/login', credentials)
       .then((response) => {
         if (response.data.status === 'success') {
-          localStorage.setItem('token', response.data.token);
+          // localStorage.setItem('token', response.data.token);
+          saveToken(response.data.token);
           setMessage('Success!');
           navigate('/dashboard');
         } else {

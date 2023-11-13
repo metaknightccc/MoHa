@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Template.css";
+import useToken from "./hook/useToken";
 import logo from "./logoWithTxt.svg";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
@@ -7,44 +8,59 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import SearchBar from "./SearchBar";
 import axios from "axios";
 
-const loggedInOptions = {
-  dashboard: "Dashboard",
-  logout: "Sign Out",
-}
+const pagesLinks = {
+  Home: '/',
+  Dashboard: '/dashboard',
+  Logout: '/logout',
+  Login: '/login',
+  Register: '/register'
+};
 
-const loggedOutOptions = {
-  login: "Login",
-  register: "Register",
-}
+const loggedInOptions = ['Dashboard', 'Logout'];
+const loggedOutOptions = ['Login', 'Register'];
 
 const routeToState = {
-  register: { isStudent: true },
+  "/register": { isStudent: true },
 };
 
 function Template() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [token] = useToken();
   const [isLogged, setIsLogged] = useState(false);
+  const [settings, setSettings] = useState(loggedOutOptions);
+
+  useEffect(() => {
+    // const token = localStorage.getItem('token');
+
+    axios.get('/dashboard')
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLogged(true);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          setIsLogged(false);
+        }
+      });
+
+  }, [token, navigate, location]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.get('/dashboard')
-        .then((response) => {
-          if (response.status === 200) {
-            setIsLogged(true);
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 401) {
-            setIsLogged(false);
-          }
-        });
+      setSettings(isLogged ? loggedInOptions : loggedOutOptions);
+    } else {
+      setSettings(loggedOutOptions);
     }
-  }, []);
+  }, [isLogged]);
+
 
   return (
     <div className="Template">
@@ -55,7 +71,7 @@ function Template() {
               margin: "0px",
               padding: "0px",
             }}>
-              <Navbar.Brand href="/">
+              <Navbar.Brand as={Link} to="/">
                 <img
                   src={'./assets/logo.png'}
                   width="50"
@@ -73,7 +89,7 @@ function Template() {
                   activeKey="/home"
                 >
                   <Nav.Item>
-                    <Nav.Link href="/" className="custom-link">
+                    <Nav.Link as={Link} to="/" className="custom-link">
                       Home
                     </Nav.Link>
                   </Nav.Item>
@@ -90,19 +106,31 @@ function Template() {
                   </Nav.Item>
 
                   <Nav.Item>
-                    <Nav.Link href="/search" className="custom-link">
+                    <Nav.Link
+                      as={Link}
+                      to="/search"
+                      className="custom-link"
+                    >
                       Explore
                     </Nav.Link>
                   </Nav.Item>
 
                   <Nav.Item>
-                    <Nav.Link href="/about" className="custom-link">
+                    <Nav.Link
+                      as={Link}
+                      to="/about"
+                      className="custom-link"
+                    >
                       About us
                     </Nav.Link>
                   </Nav.Item>
 
                   <Nav.Item>
-                    <Nav.Link href="/contact" className="custom-link">
+                    <Nav.Link
+                      as={Link}
+                      to="/contact"
+                      className="custom-link"
+                    >
                       Contact us
                     </Nav.Link>
                   </Nav.Item>
@@ -119,7 +147,7 @@ function Template() {
                   className="avatar-dropdown"
                   variant="primary"
                 >
-                  <Image src={'./assets/nyu.jpg'}  roundedCircle fluid />
+                  <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="right">
@@ -137,17 +165,16 @@ function Template() {
                   <Dropdown.Divider />
                   {/* <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
                   <Dropdown.Item href="/signout">Sign Out</Dropdown.Item> */}
-                  {Object.entries(isLogged ? loggedInOptions : loggedOutOptions).map(([route, title]) => {
-                    return (
-                      <Dropdown.Item as={Link}  
-                        to={`/${route}`}
-                        state={routeToState[route]}
-                        key={route}
-                      >
-                        {title}
-                      </Dropdown.Item>
-                    );
-                  })}
+                  {settings.map((setting) => (
+                    <Dropdown.Item
+                      as={Link}
+                      to={pagesLinks[setting]}
+                      state={routeToState[pagesLinks[setting]]}
+                      key={setting}
+                    >
+                      {setting}
+                    </Dropdown.Item>
+                  ))}
                 </Dropdown.Menu>
               </Dropdown>
             </div>
