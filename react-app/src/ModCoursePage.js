@@ -111,7 +111,8 @@ const ModCourse = ({ data }) => {
                                         type="text"
                                         name="course_subject"
                                         value={formData.course_subject}
-                                        onChange={handleInputChange}
+                                        // onChange={handleInputChange}
+                                        readOnly
                                     />
                                 </Form.Group>
                             </ListGroup.Item>
