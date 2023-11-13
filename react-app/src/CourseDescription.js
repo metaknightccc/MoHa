@@ -45,10 +45,15 @@ const CourseDescription = ({ data }) => {
         fetchInfo();
     }, []);
     const handleModify = () => {
-
-        navigate(`/modcourse`, {state: { formData: formData  }}); 
+        if(!isStudent){
+            navigate(`/modcourse`, {state: { formData: formData  }});
+        }
+        else{
+            navigate(`/courseenroll`, {state: { formData: formData  }});
+        } 
         //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
     };
+
     // useEffect(() => {
     //     if (location.state && location.state.isStudent !== null) {
     //       setIsStudent(location.state.isStudent);
@@ -82,7 +87,7 @@ const CourseDescription = ({ data }) => {
                         </ListGroup.Item> */}
                         <ListGroup.Item>
                         {isStudent ? (
-                            <Button variant="primary">
+                            <Button variant="primary" onClick={handleModify}>
                                     Enroll
                             </Button>
                             ) : (
