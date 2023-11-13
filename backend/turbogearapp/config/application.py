@@ -12,6 +12,7 @@ SECRET_KEY = "your-secret-key"  # use your secret key here
 ROUTE_TO_AUTHENTICATE = [
     '/dashboard',
     '/course/add_course',
+    '/course/mod_course',
 ]
 
 def jwt_middleware(app):
