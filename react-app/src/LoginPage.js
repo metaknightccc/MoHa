@@ -37,7 +37,7 @@ function Login() {
         if (response.data.status === 'success') {
           localStorage.setItem('token', response.data.token);
           setMessage('Success!');
-          navigate('/');
+          navigate('/dashboard');
         } else {
           setMessage('Unsuccessful: Bad username or password!');
         }

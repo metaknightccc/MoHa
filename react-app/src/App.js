@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './LoginPage';
+import LogoutPage from './LogoutPage';
 import HomePage from './HomePage';
 import Template from './Template';
 import RegistrationPage from './RegistrationPage';
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/" element={<Template />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path='logout' element={<LogoutPage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="search" element={<SearchResultPage />} />
           <Route path="dashboard" element={<DashboardPage />} />

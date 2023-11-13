@@ -10,10 +10,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Outlet } from "react-router-dom";
 
 import SearchBar from "./SearchBar";
+import axios from "axios";
 
 const loggedInOptions = {
   dashboard: "Dashboard",
-  signout: "Sign Out",
+  logout: "Sign Out",
 }
 
 const loggedOutOptions = {
@@ -31,7 +32,17 @@ function Template() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setIsLogged(true);
+      axios.get('/dashboard')
+        .then((response) => {
+          if (response.status === 200) {
+            setIsLogged(true);
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            setIsLogged(false);
+          }
+        });
     }
   }, []);
 
