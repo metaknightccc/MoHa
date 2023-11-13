@@ -71,7 +71,7 @@ const AddCoursePage = () => {
         />
       </Form.Group>
 
-        <Form.Group controlId="name">
+        <Form.Group controlId="course name">
           <Form.Label>Class Name</Form.Label>
           <Form.Control
             type="text"
@@ -80,7 +80,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="type">
+        <Form.Group controlId="type(online, in-person, etc)">
           <Form.Label>Class Type</Form.Label>
           <Form.Control
             type="text"
@@ -89,7 +89,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="price">
+        <Form.Group controlId="estimated hourly price">
           <Form.Label>Price</Form.Label>
           <Form.Control
             type="number"
@@ -98,7 +98,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="description">
+        <Form.Group controlId="course description">
           <Form.Label>Class Description</Form.Label>
           <Form.Control
             as="textarea"
