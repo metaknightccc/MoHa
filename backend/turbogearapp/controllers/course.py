@@ -76,3 +76,26 @@ class CourseController(TGController):
             )
         else:
             return dict(status='failed', message='Course not found')
+    
+    
+    @expose('json')
+    def get_course_pic(self, **kwargs):
+        return dict(page='add_course')
+    
+    @expose('json')
+    def mod_course(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        if user_type != 'tutor':
+            return dict(status='failed', message='User is not a tutor')
+        course_id  = request.json['course_id']
+        course = DBSession.query(Course).filter_by(id=course_id).first()
+        print(course)
+        course.name = request.json['course_name']
+        #course.subject_name = request.json['subject_name']
+        course.type = request.json['course_type']
+        course.price = float(request.json['course_price'])
+        course.description = request.json.get('course_description')
+        print(course)
+        print('====Mod course====')
+        transaction.commit()
+        return dict(page='dashboard', message='successfully modded course!')
