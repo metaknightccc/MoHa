@@ -17,7 +17,7 @@ const CourseDescription = ({ data }) => {
         course_price: '',
         course_description: '',
     });
-
+    const [isStudent, setIsStudent] = useState();
 
     const fetchInfo = async () => {
         try {
@@ -31,6 +31,9 @@ const CourseDescription = ({ data }) => {
                 course_price: response.data.price,
                 course_description: response.data.description,
             });
+            setIsStudent(response.data.user_type==='student');
+            console.log(isStudent);
+            console.log(response.data.user_type);
         }
         catch (error) {
             console.error('Error fetching user info:', error);
@@ -42,10 +45,20 @@ const CourseDescription = ({ data }) => {
         fetchInfo();
     }, []);
     const handleModify = () => {
-
-        navigate(`/modcourse`, {state: { formData: formData  }}); 
+        if(!isStudent){
+            navigate(`/modcourse`, {state: { formData: formData  }});
+        }
+        else{
+            navigate(`/courseenroll`, {state: { formData: formData  }});
+        } 
         //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
     };
+
+    // useEffect(() => {
+    //     if (location.state && location.state.isStudent !== null) {
+    //       setIsStudent(location.state.isStudent);
+    //     }
+    //   }, [location]);
 
     return (
         <Container className="courseDes">
@@ -66,11 +79,24 @@ const CourseDescription = ({ data }) => {
                         <ListGroup.Item>Course type: {formData.course_type}</ListGroup.Item>
                         <ListGroup.Item>Course price: {formData.course_price}</ListGroup.Item>
                         <ListGroup.Item>Course Description: {formData.course_description}</ListGroup.Item>
-                        <ListGroup.Item>
+                        
+                        {/* <ListGroup.Item>
                             <Button variant="primary" onClick={handleModify}>
                                 Modify
                             </Button>
+                        </ListGroup.Item> */}
+                        <ListGroup.Item>
+                        {isStudent ? (
+                            <Button variant="primary" onClick={handleModify}>
+                                    Enroll
+                            </Button>
+                            ) : (
+                            <Button variant="primary" onClick={handleModify}>
+                                    Edit
+                            </Button>
+                        )}
                         </ListGroup.Item>
+
                     </ListGroup>
                 </Col>
                 <Col lg={6}>

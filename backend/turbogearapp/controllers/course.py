@@ -64,6 +64,8 @@ class CourseController(TGController):
         course_id = kwargs.get('course_id')
         print(course_id)
         course = DBSession.query(Course).filter_by(id=course_id).first()
+        print(request.environ.get('USER_TYPE'))
+        print('====GetCourseInfo====')
         if course:
             return dict(
                 id=course.id,
@@ -72,7 +74,9 @@ class CourseController(TGController):
                 subject_name=course.subject_name,
                 type=course.type,
                 price=course.price,
-                description=course.description
+                description=course.description,
+                user_type = request.environ.get('USER_TYPE'),
+                
             )
         else:
             return dict(status='failed', message='Course not found')

@@ -85,9 +85,9 @@ const Dashboard = () => {
                 <ListGroup.Item action href="#add_course">
                   Add Course
                 </ListGroup.Item>
-                <ListGroup.Item action href="#mod_course">
+                {/* <ListGroup.Item action href="#mod_course">
                   Modify Course
-                </ListGroup.Item>
+                </ListGroup.Item> */}
               </ListGroup>
             </Col>
             <Col sm={10}>
@@ -108,10 +108,10 @@ const Dashboard = () => {
                   <h3>Add Course</h3>
                   <AddCoursePage />
                 </Tab.Pane>
-                <Tab.Pane eventKey="#mod_course">
+                {/* <Tab.Pane eventKey="#mod_course">
                   <h3>Modify Course</h3>
                   <ModCoursePage />
-                </Tab.Pane>
+                </Tab.Pane> */}
               </Tab.Content>
             </Col>
           </Row>
