@@ -69,14 +69,15 @@ const Profile = ({ data }) => {
     fetchInfo();
   }, []);
 
-  const [avatarPath, setAvatarPath] = useState('');
+  const [avatar, setAvatar] = useState('');
 
-  const fetchAvatarPath = async () => {
+  const fetchAvatar = async () => {
     // axios.get('/dashboard/get_avatar_path')
     try {
-      const response=axios.get('/dashboard/get_avatar_path')
-      setAvatarPath((await response).data.path)
-      // console.log("avatar path===", typeof avatarPath)
+      const response=await axios.get('/dashboard/get_avatar')
+      console.log("=========", response)
+      setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+      console.log("avatar path===", avatar)
     }
     catch (error) {
       console.error('Error fetching avatar path:', error);
@@ -84,7 +85,7 @@ const Profile = ({ data }) => {
   };
 
   useEffect(() => {
-    fetchAvatarPath();
+    fetchAvatar();
   }, []);
 
   const [show, setShow] = useState(false);
@@ -114,6 +115,7 @@ const Profile = ({ data }) => {
         .then((response) => {
           // Handle the response data as needed
           console.log('Image uploaded:', response.data);
+          setAvatar(`data:image/jpeg;base64,${response.data.image}`);
         })
         .catch((error) => {
           console.error('Error uploading image:', error);
@@ -233,7 +235,7 @@ const Profile = ({ data }) => {
         </Row>
         <Row>
           <Col xs={2} md={2}>
-            <Image className="avatarImg" src={avatarPath||'./assets/nyu.jpg'} roundedCircle fluid/>
+            <Image className="avatarImg" src={avatar || './assets/nyu.jpg'}  roundedCircle fluid/>
           </Col>  
           <Col xs={2} md={5}>
             <DropdownButton as={ButtonGroup} title="Edit" id="bg-nested-dropdown">

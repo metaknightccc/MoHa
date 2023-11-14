@@ -5,6 +5,7 @@ import transaction
 import json
 import os
 from PIL import Image
+import base64
 #import './controllers/course.py'
 class DashboardController(TGController):
     '''
@@ -64,7 +65,6 @@ class DashboardController(TGController):
     '''
     @expose('json')
     def upload_image(self, **kwargs):
-        # print('==============122121221============')
         uploadImg=request.params['fileaaaa']
         # print(uploadImg)
         img=Image.open(uploadImg.file)
@@ -73,10 +73,11 @@ class DashboardController(TGController):
         
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
-        # print(user_id,user_type)
-        # print(type(user_id))
-        img.save('../react-app/public/assets/'+uploadImg.filename)
+        img.save('./assets/'+uploadImg.filename)
         path_name='./assets/'+uploadImg.filename
+
+        with open(path_name, 'rb') as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
         #TODO: delete the original pic and save every pic with a unique name
 
@@ -85,21 +86,22 @@ class DashboardController(TGController):
             student.pic = path_name
             transaction.commit()
 
-        return dict(page='dashboard')
+        return dict(image=encoded_string)
     
     @expose('json')
-    def get_avatar_path(self, **kwargs):
+    def get_avatar(self, **kwargs):
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                print(student.pic)
-                return dict(path=student.pic)
-        elif user_type == 'tutor':
-            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
-            if tutor:
-                return dict(path=tutor.pic)
+                with open(student.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
+        # elif user_type == 'tutor':
+        #         with open(tutor.pic, 'rb') as image_file:
+        #             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        #         return dict(image=encoded_string)
             
     @expose('json')
     def get_user_info(self, **kwargs):
