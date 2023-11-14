@@ -4,6 +4,7 @@ import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
 import Profile from './Profile' 
 import AddCoursePage from './AddCoursePage';
+import ModCoursePage from './ModCoursePage';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -84,6 +85,9 @@ const Dashboard = () => {
                 <ListGroup.Item action href="#add_course">
                   Add Course
                 </ListGroup.Item>
+                {/* <ListGroup.Item action href="#mod_course">
+                  Modify Course
+                </ListGroup.Item> */}
               </ListGroup>
             </Col>
             <Col sm={10}>
@@ -104,6 +108,10 @@ const Dashboard = () => {
                   <h3>Add Course</h3>
                   <AddCoursePage />
                 </Tab.Pane>
+                {/* <Tab.Pane eventKey="#mod_course">
+                  <h3>Modify Course</h3>
+                  <ModCoursePage />
+                </Tab.Pane> */}
               </Tab.Content>
             </Col>
           </Row>

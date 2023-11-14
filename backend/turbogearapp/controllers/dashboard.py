@@ -16,7 +16,8 @@ class DashboardController(TGController):
     '''
     @expose('json')
     def index(self, **kwargs):
-        return dict(page='profile')
+        user_type = request.environ.get('USER_TYPE')
+        return dict(status='200', page='dashboard', user_type=user_type)
 
     @expose('json')
     def course(self, **kwargs):

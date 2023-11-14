@@ -9,6 +9,7 @@ const AddCoursePage = () => {
     type: '',
     price: 0.0,
     description: '',
+    pic: null,
   });
 
   const [isNewSubject, setIsNewSubject] = useState(false); // State for the "New Subject?" checkbox
@@ -52,17 +53,25 @@ const AddCoursePage = () => {
       .catch((error) => {
         console.error('Error adding course:', error);
       });
+    axios.post('/course/get_course_pic', formData)
     console.log('Form Data:', formData);
   };
 
   return (
     <div className="addClass-page">
-      <Form.Group>
-          <Form.Label>Course Picture</Form.Label>
-          <Form.Control type="file" name="pic" onChange={handleInputChange} />
-        </Form.Group>
+      
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="name">
+      <Form.Group controlId="pic">
+        <Form.Label>Course Picture</Form.Label>
+        <Form.Control
+          type="file"
+          name="pic"
+          accept=".png, .jpg, .jpeg" // Set accepted file types
+          onChange={handleSubmit}
+        />
+      </Form.Group>
+
+        <Form.Group controlId="course name">
           <Form.Label>Class Name</Form.Label>
           <Form.Control
             type="text"
@@ -71,7 +80,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="type">
+        <Form.Group controlId="type(online, in-person, etc)">
           <Form.Label>Class Type</Form.Label>
           <Form.Control
             type="text"
@@ -80,7 +89,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="price">
+        <Form.Group controlId="estimated hourly price">
           <Form.Label>Price</Form.Label>
           <Form.Control
             type="number"
@@ -89,7 +98,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="description">
+        <Form.Group controlId="course description">
           <Form.Label>Class Description</Form.Label>
           <Form.Control
             as="textarea"

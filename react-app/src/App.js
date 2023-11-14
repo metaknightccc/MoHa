@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './LoginPage';
+import LogoutPage from './LogoutPage';
 import HomePage from './HomePage';
 import Template from './Template';
 import RegistrationPage from './RegistrationPage';
@@ -11,6 +12,8 @@ import CourseDescription from './CourseDescription';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddCoursePage from './AddCoursePage';
+import ModCoursePage from './ModCoursePage';
+import CourseEnrollPage from './CourseEnrollPage';
 
 // Set up Axios interceptor to add JWT token to all outgoing requests
 axios.interceptors.request.use((config) => {
@@ -34,10 +37,14 @@ const App = () => {
         <Route path="/" element={<Template />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path='logout' element={<LogoutPage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="search" element={<SearchResultPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="coursedes" element={<CourseDescription />} />
+          <Route path="addcourse" element={<AddCoursePage />} />
+          <Route path="modcourse" element={<ModCoursePage />} />
+          <Route path="courseenroll" element={<CourseEnrollPage />} /> 
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />
