@@ -36,3 +36,5 @@ venv/
 personal_info.py
 
 /backend/turbogear_app.egg-info
+
+/assets
