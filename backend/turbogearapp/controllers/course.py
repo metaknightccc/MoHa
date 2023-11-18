@@ -6,7 +6,8 @@ import json
 import os
 from PIL import Image
 import spacy
-
+import base64
+from io import BytesIO
 
 class CourseController(TGController):
     @expose('json')
@@ -66,6 +67,13 @@ class CourseController(TGController):
         course = DBSession.query(Course).filter_by(id=course_id).first()
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
+        try:
+            with open(course.pic, 'rb') as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                #return dict(image=encoded_string)
+        except:
+            image_file = open('./assets/course_pic/default.png', 'rb')
+            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
             return dict(
                 id=course.id,
@@ -76,6 +84,7 @@ class CourseController(TGController):
                 price=course.price,
                 description=course.description,
                 user_type = request.environ.get('USER_TYPE'),
+                course_pic = encoded_string,
                 
             )
         else:
@@ -84,10 +93,42 @@ class CourseController(TGController):
     
     @expose('json')
     def get_course_pic(self, **kwargs):
-        return dict(page='add_course')
+        #uploadImg=request.params['course_pic']
+        #uploadImg=request.json['course_pic']
+        print("Full Request Object:", request)
+        #uploadImg=request.files['course_pic']
+        uploadImg=request
+        #uploadImg = request.environ['webob.adhoc_attrs']['files']['course_pic']
+        #uploadImg = request.files.get('course_pic')
+        
+        course_id=request.json['course_id']
+        print("uploaded img:",uploadImg)
+        #binary_data = base64.b64decode(uploadImg)
+        img=Image.open(uploadImg.file)
+        #img = Image.open(BytesIO(uploadImg.read()))
+        #img = Image.open(BytesIO(binary_data))
+        # print(img.size)
+        # img.save('../react-app/src/assets/'+uploadImg.filename)
+        
+        #user_type = request.environ.get('USER_TYPE')
+        #course_id = str(request.environ.get('REMOTE_USER'))
+        img.save('./assets/course_pic/'+uploadImg.filename)
+        path_name='./assets/course_pic/'+uploadImg.filename
+
+        with open(path_name, 'rb') as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+        #TODO: delete the original pic and save every pic with a unique name
+
+        course = DBSession.query(Course).filter(Course.id == course_id).first()
+        if course:
+            course.pic = path_name
+            transaction.commit()
+
+        return dict(image=encoded_string)
     
     @expose('json')
-    def mod_course(self, **kwargs):
+    def mod_course(self, **kwargs): #todo: Should be able to take None, and use a default pic
         user_type = request.environ.get('USER_TYPE')
         if user_type != 'tutor':
             return dict(status='failed', message='User is not a tutor')

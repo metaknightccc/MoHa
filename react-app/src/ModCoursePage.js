@@ -16,6 +16,7 @@ const ModCourse = ({ data }) => {
         course_type: '',
         course_price: '',
         course_description: '',
+        course_pic: null,
     });
     //const [id, setId] = useState();
 
@@ -30,6 +31,7 @@ const ModCourse = ({ data }) => {
                 course_type: response.data.type,
                 course_price: response.data.price,
                 course_description: response.data.description,
+                course_pic: response.data.course_pic,
             });
         }
         catch (error) {
@@ -46,31 +48,107 @@ const ModCourse = ({ data }) => {
     }, []);
     
 
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value,
+            
+    //     });
+    //     console.log("form data==",formData);
+    // };
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        const { name, value, type, files } = e.target;
+    
+        // Handle file separately
+        if (type === 'file') {
+            setFormData({
+                ...formData,
+                [name]: files[0], // Assuming you are allowing only single file selection
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
     };
+    
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     // Handle form submission here
+    //     // Use formData to send the updated information to the server
+    //     axios.post('/course/mod_course', formData)
+    //   .then((response) => {
+    //     // Handle the response data as needed
+    //     console.log('Course modded:', response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error modding course:', error);
+    //   });
+    //     axios.post('/course/get_course_pic', formData)
+    //     console.log('Form Data:', formData);
+    //     navigate(`/coursedes`, {state: { course_id: formData.course_id }})
+    // };
     const handleSubmit = (e) => {
         e.preventDefault();
+    
         // Handle form submission here
-        // Use formData to send the updated information to the server
         axios.post('/course/mod_course', formData)
-      .then((response) => {
-        // Handle the response data as needed
-        console.log('Course modded:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error modding course:', error);
-      });
-        axios.post('/course/get_course_pic', formData)
-        console.log('Form Data:', formData);
-        navigate(`/coursedes`, {state: { course_id: formData.course_id }})
+            .then((response) => {
+                // Handle the response data as needed
+                console.log('Course modded:', response.data);
+    
+                // Log form data after the mod_course request completes
+                console.log('Form Data:', formData);
+    
+                // Handle the get_course_pic request here if needed
+                return axios.post('/course/get_course_pic', formData);
+            })
+            .then((response) => {
+                // Handle the get_course_pic response if needed
+            })
+            .catch((error) => {
+                console.error('Error modding course:', error);
+            });
+    
+        navigate(`/coursedes`, { state: { course_id: formData.course_id } });
     };
-
+    
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    
+    //     try {
+    //         // Create a FormData object to handle file uploads
+    //         const formDataWithFile = new FormData();
+    
+    //         // Append each form field to the FormData object
+    //         Object.keys(formData).forEach((key) => {
+    //             formDataWithFile.append(key, formData[key]);
+    //         });
+    
+    //         // Append the file to the FormData object
+    //         formDataWithFile.append('course_pic', formData.course_pic);
+    
+    //         // Send the FormData object to the server
+    //         await axios.post('/course/get_course_pic', formDataWithFile);
+    
+    //         // Continue with the rest of your form submission logic
+    //         axios.post('/course/mod_course', formData)
+    //             .then((response) => {
+    //                 console.log('Course modded:', response.data);
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error modding course:', error);
+    //             });
+    
+    //         navigate(`/coursedes`, { state: { course_id: formData.course_id } });
+    //     } catch (error) {
+    //         console.error('Error submitting form:', error);
+    //     }
+    // };
+    
 
     return (
         <Container className="courseDes">
@@ -146,6 +224,15 @@ const ModCourse = ({ data }) => {
                                         name="course_description"
                                         value={formData.course_description}
                                         onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="coursePic">
+                                    <Form.Label>Course Picture</Form.Label>
+                                    <Form.Control
+                                    type="file"
+                                    name="course_pic"
+                                    accept=".png, .jpg, .jpeg" // Set accepted file types
+                                    onChange={handleInputChange}
                                     />
                                 </Form.Group>
                             </ListGroup.Item>

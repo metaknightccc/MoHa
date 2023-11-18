@@ -109,6 +109,7 @@ const Profile = ({ data }) => {
     if (file){
       const formData = new FormData();
       formData.append('fileaaaa', file);
+      console.log("form data===", formData);
       // const data = Object.fromEntries(formData);
       // console.log("form data===", file)
       axios.post('/dashboard/upload_image', formData)

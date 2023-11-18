@@ -73,8 +73,8 @@ class DashboardController(TGController):
         
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
-        img.save('./assets/'+uploadImg.filename)
-        path_name='./assets/'+uploadImg.filename
+        img.save('./assets/user_pic/'+uploadImg.filename)
+        path_name='./assets/user_pic/'+uploadImg.filename
 
         with open(path_name, 'rb') as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
