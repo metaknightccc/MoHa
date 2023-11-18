@@ -1,6 +1,6 @@
 # controllers/registration.py
 from tg import expose, validate, request, response, TGController
-from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
+from turbogearapp.model import DBSession, Tutor, Student, Course, Subject, Course_Class
 import transaction
 import json
 import os
@@ -8,6 +8,7 @@ from PIL import Image
 import spacy
 import base64
 from io import BytesIO
+import datetime
 
 class CourseController(TGController):
     @expose('json')
@@ -144,3 +145,35 @@ class CourseController(TGController):
         print('====Mod course====')
         transaction.commit()
         return dict(page='dashboard', message='successfully modded course!')
+    
+    
+    @expose('json')
+    def enroll_course(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        if user_type == 'tutor':
+            return dict(status='failed', message='User is a tutor, cannot enroll')
+        student_id=request.environ.get('REMOTE_USER')
+        course_id=request.json['course_id']
+        print("getting Course Info:")
+        cc= DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=student_id).first()
+        print("======Enrolling Course=====")
+        if not cc:
+            new_course_class= Course_Class(
+                enroll=True,
+                course_id=request.json['course_id'],
+                student_id=student_id,
+                begin_time=datetime.datetime.now(),
+                end_time=datetime.datetime.now(),
+                t_begin_time=datetime.datetime.now(),
+                t_end_time=datetime.datetime.now(),
+                duration=0,
+                taken=True,
+                price=float(request.json['price']),
+                quant_rating=0,
+                review="",
+            )
+            DBSession.add(new_course_class)
+            transaction.commit()
+            return dict(status='success', message='successfully enrolled course!')
+        else:
+            return dict(status='failed', message='already enrolled course!')

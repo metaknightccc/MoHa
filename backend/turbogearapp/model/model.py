@@ -188,6 +188,7 @@ class Course(DeclarativeBase):
     
 class Course_Class(DeclarativeBase):
     __tablename__ = 'course_class'
+    enroll = Column(Boolean, default= False)
     course_id = Column(BigInteger, ForeignKey('course.id'), primary_key=True)
     student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
     begin_time = Column(DateTime) #planned time to start
@@ -201,6 +202,7 @@ class Course_Class(DeclarativeBase):
     price = Column(Float, nullable = False, default= 0.0)
     quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
     review = Column(Text, nullable=True, default= "User left with a good impression!")
+    
     
 class Subject(DeclarativeBase):
     __tablename__ = 'subject'
