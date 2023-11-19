@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
+//import { ListGroup, Button, Container, Form, Col, Row, Nav, Image, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import './AddCoursePage.css';
 import { Form, Button } from 'react-bootstrap';
 
 const AddCoursePage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: '',
     type: '',
     price: 0.0,
     description: '',
-    pic: null,
+    course_pic: null,
+    academic: false,
   });
+  const [course_id, setCourse_id] = useState('');
 
   const [isNewSubject, setIsNewSubject] = useState(false); // State for the "New Subject?" checkbox
   const [existingSubjects, setExistingSubjects] = useState([]); // State to store existing subjects
@@ -34,14 +40,25 @@ const AddCoursePage = () => {
     }
   };
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+  
+    // Use a conditional to check the input type
+    const inputValue = type === 'checkbox' ? checked : value;
+  
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: inputValue,
     });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Your submit logic here
@@ -49,13 +66,34 @@ const AddCoursePage = () => {
       .then((response) => {
         // Handle the response data as needed
         console.log('Course added:', response.data);
+        navigate(`/dashboard`, {state: { formData: formData  }});
+        //const id =  response.data.course_id;
+        //setCourse_id(id);
+        //console.log('Course ID:', course_id);
       })
       .catch((error) => {
         console.error('Error adding course:', error);
       });
-    axios.post('/course/get_course_pic', formData)
-    console.log('Form Data:', formData);
+      
+      //fetchcourseid();
+    //axios.post('/course/get_course_pic', course_id)
+    //console.log('Form Data:', course_id);
   };
+
+  // const fetchcourseid = (e) =>{
+  //   try {
+  //     const response =  fetch('/course/add_course');
+  //     if (response.ok) {
+  //       const id =  response.json(course_id);
+  //       setCourse_id(id);
+  //     } else {
+  //       console.error('Failed to fetch course ID');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching ID', error);
+  //   }
+  // };
+  
 
   return (
     <div className="addClass-page">
@@ -65,9 +103,9 @@ const AddCoursePage = () => {
         <Form.Label>Course Picture</Form.Label>
         <Form.Control
           type="file"
-          name="pic"
+          name="course_pic"
           accept=".png, .jpg, .jpeg" // Set accepted file types
-          onChange={handleSubmit}
+          onChange={handleInputChange}
         />
       </Form.Group>
 
@@ -80,7 +118,7 @@ const AddCoursePage = () => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="type(online, in-person, etc)">
+        {/* <Form.Group controlId="type(online, in-person, etc)">
           <Form.Label>Class Type</Form.Label>
           <Form.Control
             type="text"
@@ -88,7 +126,21 @@ const AddCoursePage = () => {
             value={formData.type}
             onChange={handleInputChange}
           />
+        </Form.Group> */}
+        <Form.Group controlId="type">
+          <Form.Label>Class Type</Form.Label>
+            <Form.Select
+              name="type"
+              value={formData.type}
+              onChange={handleInputChange}
+            >
+              <option value="">Select a type</option>
+              <option value="In-person">In-person</option>
+              <option value="Online">Online</option>
+              <option value="Hybrid">Hybrid</option>
+            </Form.Select>
         </Form.Group>
+
         <Form.Group controlId="estimated hourly price">
           <Form.Label>Price</Form.Label>
           <Form.Control

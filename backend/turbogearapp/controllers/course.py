@@ -41,7 +41,7 @@ class CourseController(TGController):
             subject_name=request.json['subject_name'],
             type=type,
             price=float(request.json['price']),  # Parse price as a float
-            pic=request.json['pic'],  # Add pic
+            #pic=request.json['pic'],  # Add pic
             description = description,
             lemmas = lemmas,
         )
@@ -53,14 +53,18 @@ class CourseController(TGController):
             newsub = Subject(
                 subject_name=request.json['subject_name'],
                 major=request.json['major'],
-                academic=request.json['academic'] == 'true',  # Parse academic as a boolean
+                academic=request.json['academic'],  # Parse academic as a boolean
+                
             )
+            print(request.json['academic'])
             DBSession.add(newsub)
             transaction.commit()
             DBSession.add(new_course)
         transaction.commit()
 
-        return dict(page='add_course')
+        return dict(page='dashboard#course',message='successfully added course!')
+    
+
     
     @expose('json')
     def get_course_info(self, **kwargs):
