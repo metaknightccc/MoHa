@@ -28,15 +28,16 @@ class CourseController(TGController):
         tutor_id = request.environ.get('REMOTE_USER')
 
         nlp = spacy.load('en_core_web_sm')
-        name=request.json['name'],
+        name=request.json['name']
         description = request.json.get('description')
+        type=request.json['type']
         doc = nlp(' '.join([name, type, description]))
         lemmas = ' '.join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
         new_course = Course(
             name = name,
             tutor_id=tutor_id,
             subject_name=request.json['subject_name'],
-            type=request.json['type'],
+            type=type,
             price=float(request.json['price']),  # Parse price as a float
             pic=request.json['pic'],  # Add pic
             description = description,
