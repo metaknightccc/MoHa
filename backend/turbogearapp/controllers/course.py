@@ -76,7 +76,7 @@ class CourseController(TGController):
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
         try:
-            with open(course.pic, 'rb') as image_file:
+            with open("./turbogearapp/public" + course.pic, 'rb') as image_file:
                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 #return dict(image=encoded_string)
         except:
