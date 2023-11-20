@@ -5,17 +5,9 @@ import axios from "axios";
 
 const CourseEnrollPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [enrolled, setEnrolled] = useState(false);
-    const [formData, setFormData] = useState({
-        course_id: '',
-        course_tutor_id: '',
-        course_name: '',
-        course_subject: '',
-        course_type: '',
-        course_price: 0.0,
-        course_description: '',
-        course_pic: '',
-    });
+    const [formData, setFormData] = useState();
     // Function to mimic an API call to enroll the user
     const enrollUser = () => {
         // Simulate API call
@@ -51,16 +43,16 @@ const CourseEnrollPage = () => {
     useEffect(() => {
         if(location.state !==null){
             setFormData(location.state.formData);
-            
-            // enrollUser();
         }
-        
-    }, [location]);
+    }, [navigate]);
     
     useEffect(() => {
-        enrollUser();
-        console.log("enrolldata",formData);
+        if(formData !== undefined){
+            enrollUser();
+            console.log("enrolldata",formData);
+        }
     }, [formData]);
+
     return (
         <Container>
             <h1>Enrolling in Course...</h1>
