@@ -191,13 +191,16 @@ class CourseController(TGController):
             return dict(status='failed', message='User is a tutor, cannot enroll')
         student_id=request.environ.get('REMOTE_USER')
         course_id=request.json['course_id']
+        print("======Enrolling Course=====")
+        print("course_id=",course_id)
         print("getting Course Info:")
-        cc= DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=student_id).first()
+        cc= DBSession.query(Course_Class).filter(course_id==course_id, 
+                                                student_id==student_id).first()
         print("======Enrolling Course=====")
         if not cc:
             new_course_class= Course_Class(
                 enroll=True,
-                course_id=request.json['course_id'],
+                course_id=course_id,
                 student_id=student_id,
                 begin_time=datetime.datetime.now(),
                 end_time=datetime.datetime.now(),
@@ -205,7 +208,7 @@ class CourseController(TGController):
                 t_end_time=datetime.datetime.now(),
                 duration=0,
                 taken=True,
-                price=float(request.json['price']),
+                price=float(request.json['course_price']),
                 quant_rating=0,
                 review="",
             )
