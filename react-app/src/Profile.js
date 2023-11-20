@@ -264,9 +264,6 @@ const Profile = ({ data }) => {
           </Form>
           {/* </Col> */}
         </Row>
-        <Row> 
-          <ClassSlot/>
-        </Row>
       </Container>
     </div>
   );

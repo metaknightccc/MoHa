@@ -107,14 +107,9 @@ class DashboardController(TGController):
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                return dict(image=student.pic)
-        else:
-            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
-            if tutor:
-                return dict(image=tutor.pic)
-                # with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
-                #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                # return dict(image=encoded_string)
+                with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
         # elif user_type == 'tutor':
         #         with open(tutor.pic, 'rb') as image_file:
         #             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
@@ -141,7 +136,7 @@ class DashboardController(TGController):
         print("sadasd=====")
         body_str = request.body.decode('utf-8')
         body_dict = json.loads(body_str)
-        edit_first = body_dict['firstname']
+        edit_first = body_dict['firstname'] 
         edit_last = body_dict['lastname']
         # print(edit_first,edit_last)
         if user_type == 'student':
@@ -150,7 +145,7 @@ class DashboardController(TGController):
                 student.first_name = edit_first
                 student.last_name = edit_last
                 transaction.commit()
-                return dict(status='success')      
+                return dict(status='success')
             
     @expose('json')
     def get_user_courses(self, **kwargs):
@@ -161,9 +156,11 @@ class DashboardController(TGController):
         
         courses = []
         for course_class in enrolled_classes:
-            course = course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+            course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
             if course:
-                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic])
+                temp = course.tutor_id
+                tutor = DBSession.query(Tutor).filter_by(id=temp).first()
+                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])
             
         # print("======================")
         # print(courses)
