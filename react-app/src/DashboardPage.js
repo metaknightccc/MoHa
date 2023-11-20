@@ -128,18 +128,9 @@ const Dashboard = () => {
                           </Tab.Pane>
                         )
                       }
-                      <Tab.Pane eventKey="#add_course">
-                        <h3>Add Course</h3>
-                        <AddCoursePage />
-                      </Tab.Pane>
-
                     </>
                   )
                 }
-                {/* <Tab.Pane eventKey="#mod_course">
-                  <h3>Modify Course</h3>
-                  <ModCoursePage />
-                </Tab.Pane> */}
               </Tab.Content>
             </Col>
           </Row>
