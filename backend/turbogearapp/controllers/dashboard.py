@@ -84,8 +84,8 @@ class DashboardController(TGController):
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
 
-        with open(path_name, 'rb') as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        # with open(path_name, 'rb') as image_file:
+        #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
@@ -98,7 +98,7 @@ class DashboardController(TGController):
                 tutor.pic = save_path_name
                 transaction.commit()
 
-        return dict(image=encoded_string)
+        return dict(image=save_path_name)
     
     @expose('json')
     def get_avatar(self, **kwargs):
