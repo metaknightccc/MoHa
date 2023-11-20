@@ -13,7 +13,6 @@ ROUTE_TO_AUTHENTICATE = [
     '/dashboard',
     '/course/add_course',
     '/course/mod_course',
-    '/course/get_course_info',
     '/course/enroll_course',
 ]
 
