@@ -16,6 +16,7 @@ const CourseDescription = ({ data }) => {
         course_type: '',
         course_price: '',
         course_description: '',
+        course_pic: null,
     });
     const [isStudent, setIsStudent] = useState();
 
@@ -30,6 +31,7 @@ const CourseDescription = ({ data }) => {
                 course_type: response.data.type,
                 course_price: response.data.price,
                 course_description: response.data.description,
+                course_pic: response.data.course_pic,
             });
             setIsStudent(response.data.user_type==='student');
             console.log(isStudent);

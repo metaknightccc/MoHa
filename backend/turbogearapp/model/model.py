@@ -11,7 +11,7 @@ class Tutor(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    pic = Column(String, nullable = True)
+    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
     username = Column(String, nullable=False)#was: name
     email = Column(String, nullable=False)
     phone_number = Column(String, nullable=True)
@@ -82,7 +82,7 @@ class Student(DeclarativeBase):
     last_name = Column(String, nullable=False)
     username = Column(String, nullable=False)#was: name
     email = Column(String, nullable=False)
-    pic = Column(String, nullable = True)
+    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
     phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
     _password = Column('password',String, nullable=False)
@@ -168,21 +168,21 @@ class Course(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
     name = Column(String, nullable=False)
-    pic = Column(String, nullable = True)
+    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
     subject_name = Column(String, ForeignKey('subject.subject_name'))
     type = Column(String, nullable=False)
     price = Column(Float, nullable=False, default=0.0)
     avg_rating = Column(Float, nullable=True)
     description = Column(Text, nullable=True)
     lemmas = Column(Text, nullable=True)
-    def cal_rating():
-        related_classes = Course_Class.query.filter_by(course_id=self.id, student_id=student_id).all()
-        if related_classes:
-            total_rating = sum([course_class.quant_rating for course_class in related_classes])
-            avg_rating = total_rating / len(related_classes)
-            #return average_rating
-        else:
-            avg_rating = None
+    # def cal_rating():
+    #     related_classes = Course_Class.query.filter_by(course_id=self.id, student_id=student_id).all()
+    #     if related_classes:
+    #         total_rating = sum([course_class.quant_rating for course_class in related_classes])
+    #         avg_rating = total_rating / len(related_classes)
+    #         #return average_rating
+    #     else:
+    #         avg_rating = None
 
    
     
@@ -202,6 +202,7 @@ class Course_Class(DeclarativeBase):
     price = Column(Float, nullable = False, default= 0.0)
     quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
     review = Column(Text, nullable=True, default= "User left with a good impression!")
+    
     
 class Subject(DeclarativeBase):
     __tablename__ = 'subject'
