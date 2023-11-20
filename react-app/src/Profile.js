@@ -46,7 +46,6 @@ const Profile = ({ data }) => {
 
   const [displayFirstname, setDisplayFirstname] = useState(formData.firstname);
   const [displayLastname, setDisplayLastname] = useState(formData.lastname);
-  const [avatar, setAvatar] = useState(formData.image);
 
   const fetchInfo = async () => {
     try {
@@ -57,12 +56,11 @@ const Profile = ({ data }) => {
         username: response.data.un,
         email: response.data.em,
         phone: response.data.ph,
-        image: response.data.image,
       });
       setDisplayFirstname(response.data.fn);
       setDisplayLastname(response.data.ln);
-      console.log('User info fetched:', response.data.image);
-      setAvatar(`http://localhost:8080${response.data.image}`)
+      // setDisplayAvatar(`http://localhost:8080${response.data.image}`);
+      // setAvatar(`http://localhost:8080${response.data.image}`)
     }
     catch (error) {
       console.error('Error fetching user info:', error);
@@ -73,6 +71,23 @@ const Profile = ({ data }) => {
     fetchInfo();
   }, []);
 
+  const [avatar, setAvatar] = useState('');
+
+  const fetchAvatar = async () => {
+    // axios.get('/dashboard/get_avatar_path')
+    try {
+      const response=await axios.get('/dashboard/get_avatar')
+      setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+      // console.log("avatar path===", avatar)
+    }
+    catch (error) {
+      console.error('Error fetching avatar path:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvatar();
+  }, []);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -83,32 +98,50 @@ const Profile = ({ data }) => {
     handleShow();
   };
 
-  const uploadImage = (event) => {
+  const uploadImage = async (event) => {
     // console.log("upload image===")
     const file = event.target.files[0];
 
-    // setFormData({
-    //   ...formData,
-    //   file: file,
-    // });
-    
+
     if (file){
-      const Temp = new FormData();
-      Temp.append('user_pic', file);
-      // console.log("form data===", formData_new);
+      const formData = new FormData();
+      formData.append('user_pic', file);
       // const data = Object.fromEntries(formData);
       // console.log("form data===", file)
-      axios.post('/dashboard/upload_image', Temp)
+      axios.post('/dashboard/upload_image', formData)
         .then((response) => {
           // Handle the response data as needed
           console.log('Image uploaded:', response.data);
-          setAvatar(`http://localhost:8080${response.data.image}`);
+          setAvatar(`data:image/jpeg;base64,${response.data.image}`);
         })
         .catch((error) => {
           console.error('Error uploading image:', error);
         });
     }
-  }
+  };
+
+
+
+
+
+    
+  //   // if (file){
+  //   //   const Temp = new FormData();
+  //   //   Temp.append('user_pic', file);
+  //   //   // console.log("form data===", formData_new);
+  //   //   // const data = Object.fromEntries(formData);
+  //   //   // console.log("form data===", file)
+  //   //   axios.post('/dashboard/upload_image', Temp)
+  //   //     .then((response) => {
+  //   //       // Handle the response data as needed
+  //   //       console.log('Image uploaded:', response.data);
+  //   //       setAvatar(`http://localhost:8080${response.data.image}`);
+  //   //     })
+  //   //     .catch((error) => {
+  //   //       console.error('Error uploading image:', error);
+  //   //     });
+  //   // }
+  // }
   
   return (
     <div>

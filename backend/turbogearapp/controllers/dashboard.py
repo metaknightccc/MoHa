@@ -6,6 +6,7 @@ import json
 import os
 from PIL import Image
 import base64
+from datetime import datetime
 #import './controllers/course.py'
 class DashboardController(TGController):
     '''
@@ -75,7 +76,9 @@ class DashboardController(TGController):
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
         original_file_name, original_file_extension = os.path.splitext(uploadImg.filename)
-        file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        file_name = f'{user_type}_{user_id}_{timestamp}_{original_file_extension}'
+        # file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
             # Save the image with the course_id as the filename
         img = Image.open(uploadImg.file)
         img.save(f'./turbogearapp/public/assets/user_pic/{file_name}')
@@ -85,43 +88,41 @@ class DashboardController(TGController):
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
 
-        # with open(path_name, 'rb') as image_file:
-        #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        with open(path_name, 'rb') as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
+                os.remove("./turbogearapp/public" + student.pic)
                 student.pic = save_path_name
                 transaction.commit()
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
+                os.remove("./turbogearapp/public" + tutor.pic)
                 tutor.pic = save_path_name
                 transaction.commit()
 
-        return dict(image=save_path_name)
+        return dict(image=encoded_string)
     
-    # @expose('json')
-    # def get_avatar(self, **kwargs):
-    #     user_type = request.environ.get('USER_TYPE')
-    #     user_id = str(request.environ.get('REMOTE_USER'))
-    #     if user_type == 'student':
-    #         student = DBSession.query(Student).filter(Student.id == user_id).first()
-    #         if student:
-    #             return dict(image=student.pic)
-    #     else:
-    #         tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
-    #         if tutor:
-    #             return dict(image=tutor.pic)
-    #             # merge 
-    #             # with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
-    #             #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-    #             # return dict(image=encoded_string)
+    @expose('json')
+    def get_avatar(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = str(request.environ.get('REMOTE_USER'))
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+            if student:
+                with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
+        else:
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                with open("./turbogearapp/public" + tutor.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
 
-    #     # elif user_type == 'tutor':
-    #     #         with open(tutor.pic, 'rb') as image_file:
-    #     #             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-    #     #         return dict(image=encoded_string)
             
     @expose('json')
     def get_user_info(self, **kwargs):
@@ -135,8 +136,7 @@ class DashboardController(TGController):
                             ,ln=student.last_name
                             ,un=student.username
                             ,em=student.email
-                            ,pn=student.phone_number
-                            ,image=student.pic)
+                            ,pn=student.phone_number)
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
@@ -145,8 +145,7 @@ class DashboardController(TGController):
                             ,ln=tutor.last_name
                             ,un=tutor.username
                             ,em=tutor.email
-                            ,pn=tutor.phone_number
-                            ,image=tutor.pic)
+                            ,pn=tutor.phone_number)
             
     @expose('json')
     def update_user_info(self, **kwargs):
