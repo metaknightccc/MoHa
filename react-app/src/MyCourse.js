@@ -5,7 +5,7 @@ import axios from "axios";
 import ClassSlot from "./ClassSlot";
 import "./MyCourse.css"
 
-const Profile = ({ data }) => {
+const MyCourse = ({ data }) => {
     // const [formData, setFormData] = useState({
     //     firstname: '',
     //     lastname: '',
@@ -16,6 +16,7 @@ const Profile = ({ data }) => {
     const fetchInfo = async () => {
         try {
             const response = await axios.get('/dashboard/get_user_courses');
+            console.log("xzzzzzzzzzzzzzzzzzz=============        ===");
             // setFormData({
             //     firstname: response.data.fn,
             //     lastname: response.data.ln,
@@ -27,6 +28,7 @@ const Profile = ({ data }) => {
         }
         catch (error) {
             console.error('Error fetching user info:', error);
+            console.log("xppzzzzzzzzzzzzzzzzzz=============        ===");
         }
     };
 
@@ -47,4 +49,4 @@ const Profile = ({ data }) => {
     );
     };
     
-    export default Profile;
+    export default MyCourse;

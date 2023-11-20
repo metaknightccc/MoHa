@@ -6,6 +6,7 @@ import json
 import os
 from PIL import Image
 import base64
+from sqlalchemy.orm import joinedload
 #import './controllers/course.py'
 class DashboardController(TGController):
     '''
@@ -124,7 +125,7 @@ class DashboardController(TGController):
         print("sadasd=====")
         body_str = request.body.decode('utf-8')
         body_dict = json.loads(body_str)
-        edit_first = body_dict['firstname']
+        edit_first = body_dict['firstname'] 
         edit_last = body_dict['lastname']
         # print(edit_first,edit_last)
         if user_type == 'student':
@@ -138,7 +139,14 @@ class DashboardController(TGController):
     @expose('json')
     def get_user_courses(self, **kwargs):
         user_type = request.environ.get('USER_TYPE')
-        user_id = str(request.environ.get('REMOTE_USER'))
-        # enrolled_classes = DBSession.query().filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
-        print('xxxxxxxxxxxxxxxxx')
+        user_id = request.environ.get('REMOTE_USER')
+        enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+        
+        
+        courses = []
+        for course_class in enrolled_classes:
+            print(course_class.course_id,'sadasdasd====')
+            
+        print(courses)
+
         return dict(status='success')
