@@ -50,10 +50,7 @@ function SearchResultPage() {
           <div className="SearchResultPage">
             {arr[i].map((item) => (
               <ClassSlot
-                imgName={"nyu.jpg"}
-                tutorName={item.tutor_id}
-                courseName={item.subject_name}
-                courseDes={"a sample courseDes"}
+                props={item}
               />
             ))}
           </div>
