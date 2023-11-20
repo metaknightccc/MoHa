@@ -18,7 +18,7 @@ const ClassSlot = ({ props }) => {
   if (!tutorName) tutorName = "Not Given";
   return (
     <Card className={cardType} style={{ width: '18rem' }}>
-      <Card.Img className="cardImage" variant={variant} src={`http://localhost:8080${pic}}`} />
+      <Card.Img className="cardImage" variant={variant} src={`http://localhost:8080${pic}`} />
       <Card.Body className="cardBody">
         <Link
           to="/coursedes"
