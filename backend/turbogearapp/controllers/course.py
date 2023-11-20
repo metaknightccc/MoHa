@@ -76,11 +76,11 @@ class CourseController(TGController):
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
         try:
-            with open(course.pic, 'rb') as image_file:
+            with open("./turbogearapp/public" + course.pic, 'rb') as image_file:
                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 #return dict(image=encoded_string)
         except:
-            image_file = open('./turbogearapp/public/assets/course_pic/default.png', 'rb')
+            image_file = open('./turbogearapp/public/assets/default.png', 'rb')
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
             return dict(
@@ -143,6 +143,7 @@ class CourseController(TGController):
             img.save(f'./turbogearapp/public/assets/course_pic/{file_name}')
 
             path_name = f'./turbogearapp/public/assets/course_pic/{file_name}'
+            save_path_name = f'/assets/course_pic/{file_name}'
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
             with open(path_name, 'rb') as image_file:
@@ -153,7 +154,7 @@ class CourseController(TGController):
             # Update the Course instance with the new file path
             course = DBSession.query(Course).filter(Course.id == course_id).first()
             if course:
-                course.pic = path_name
+                course.pic = save_path_name
                 transaction.commit()
 
             return dict(image=encoded_string, filename=file_name)
