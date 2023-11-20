@@ -75,13 +75,13 @@ class CourseController(TGController):
         course = DBSession.query(Course).filter_by(id=course_id).first()
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
-        try:
-            with open("./turbogearapp/public" + course.pic, 'rb') as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                #return dict(image=encoded_string)
-        except:
-            image_file = open('./turbogearapp/public/assets/default.png', 'rb')
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        # try:
+        #     with open("./turbogearapp/public" + course.pic, 'rb') as image_file:
+        #         encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        #         #return dict(image=encoded_string)
+        # except:
+        #     image_file = open('./turbogearapp/public/assets/default.png', 'rb')
+        #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
             return dict(
                 id=course.id,
@@ -92,7 +92,7 @@ class CourseController(TGController):
                 price=course.price,
                 description=course.description,
                 user_type = request.environ.get('USER_TYPE'),
-                course_pic = encoded_string,
+                course_pic = course.pic,
                 
             )
         else:
