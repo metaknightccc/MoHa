@@ -86,12 +86,16 @@ class DashboardController(TGController):
         with open(path_name, 'rb') as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
-        #TODO: delete the original pic and save every pic with a unique name
-
-        student = DBSession.query(Student).filter(Student.id == user_id).first()
-        if student:
-            student.pic = path_name
-            transaction.commit()
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+            if student:
+                student.pic = path_name
+                transaction.commit()
+        else:
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                tutor.pic = path_name
+                transaction.commit()
 
         return dict(image=encoded_string)
     
