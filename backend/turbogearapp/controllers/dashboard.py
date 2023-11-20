@@ -112,6 +112,7 @@ class DashboardController(TGController):
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
                 return dict(image=tutor.pic)
+                # merge 
                 # with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
                 #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 # return dict(image=encoded_string)
