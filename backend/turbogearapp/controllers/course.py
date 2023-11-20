@@ -59,10 +59,12 @@ class CourseController(TGController):
             print(request.json['academic'])
             DBSession.add(newsub)
             transaction.commit()
-            DBSession.add(new_course)
+            DBSession.add(new_course)  
         transaction.commit()
-
-        return dict(page='dashboard#course',message='successfully added course!')
+        #DBSession.flush()
+        DBSession.refresh(new_course)
+        print("new Course id: ", new_course.id)
+        return dict(page='dashboard#course',message='successfully added course!' )
     
 
     
@@ -78,7 +80,7 @@ class CourseController(TGController):
                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 #return dict(image=encoded_string)
         except:
-            image_file = open('./assets/course_pic/default.png', 'rb')
+            image_file = open('./turbogearapp/public/assets/course_pic/default.png', 'rb')
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
             return dict(
@@ -130,7 +132,7 @@ class CourseController(TGController):
     @expose('json')
     def get_course_pic(self, **kwargs):
         try:
-            uploadImg = request.params['course_pic']
+            uploadImg = request.params.get('course_pic')
             course_id = int(request.params['course_id'])
             user_type = request.environ.get('USER_TYPE')
             #img = Image.open(uploadImg.file)
@@ -138,9 +140,9 @@ class CourseController(TGController):
             file_name = f'courseIMG_courseid={course_id}{original_file_extension}'
             # Save the image with the course_id as the filename
             img = Image.open(uploadImg.file)
-            img.save(f'./assets/course_pic/{file_name}')
+            img.save(f'./turbogearapp/public/assets/course_pic/{file_name}')
 
-            path_name = f'./assets/course_pic/{file_name}'
+            path_name = f'./turbogearapp/public/assets/course_pic/{file_name}'
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
             with open(path_name, 'rb') as image_file:

@@ -37,5 +37,8 @@ personal_info.py
 
 /backend/turbogear_app.egg-info
 
-/backend/assets/course_pic/*
-/backend/assets/user_pic/*
+# /backend/assets/course_pic/*
+# /backend/assets/user_pic/*
+
+/backend/turbogearapp/public/assets/course_pic/*
+/backend/turbogearapp/public/assets/user_pic/*
