@@ -6,7 +6,6 @@ import json
 import os
 from PIL import Image
 import base64
-from sqlalchemy.orm import joinedload
 #import './controllers/course.py'
 class DashboardController(TGController):
     '''
@@ -156,8 +155,12 @@ class DashboardController(TGController):
         
         courses = []
         for course_class in enrolled_classes:
-            print(course_class.course_id,'sadasdasd====')
+            course = course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+            if course:
+                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic])
             
-        print(courses)
+        # print("======================")
+        # print(courses)
+        # print("======================")
 
-        return dict(status='success')
+        return dict(status='success', courses=courses)

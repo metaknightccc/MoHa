@@ -75,9 +75,9 @@ const Profile = ({ data }) => {
     // axios.get('/dashboard/get_avatar_path')
     try {
       const response=await axios.get('/dashboard/get_avatar')
-      console.log("=========", response)
+      // console.log("=========", response)
       setAvatar(`data:image/jpeg;base64,${response.data.image}`);
-      console.log("avatar path===", avatar)
+      // console.log("avatar path===", avatar)
     }
     catch (error) {
       console.error('Error fetching avatar path:', error);

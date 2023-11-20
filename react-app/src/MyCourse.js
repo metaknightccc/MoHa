@@ -6,31 +6,20 @@ import ClassSlot from "./ClassSlot";
 import "./MyCourse.css"
 
 const MyCourse = ({ data }) => {
-    // const [formData, setFormData] = useState({
-    //     firstname: '',
-    //     lastname: '',
-    //     username: '',
-    //     email: '',
-    //     phone: '',
-    // });
+
+    const [courses, setCourses] = useState([]);
     const fetchInfo = async () => {
         try {
             const response = await axios.get('/dashboard/get_user_courses');
-            console.log("xzzzzzzzzzzzzzzzzzz=============        ===");
-            // setFormData({
-            //     firstname: response.data.fn,
-            //     lastname: response.data.ln,
-            //     username: response.data.un,
-            //     email: response.data.em,
-            //     phone: response.data.ph,
-            // });
-            
+            // console.log("xzzzzzppppzzzzzzzzzzzzz=============        ===",response.data);
+            setCourses(response.data.courses);
+            // console.log("xzzzzzzzzzzzzzzzzzz=============        ===",courses);
         }
         catch (error) {
             console.error('Error fetching user info:', error);
-            console.log("xppzzzzzzzzzzzzzzzzzz=============        ===");
         }
     };
+
 
     useEffect(() => {
         fetchInfo();
@@ -41,7 +30,8 @@ const MyCourse = ({ data }) => {
         <div>
         <Container>
             <Row>
-            <h1>Hi, 11</h1>
+                <h1>Hi, 11</h1>
+                {courses.map((course, index) => <ClassSlot key={index} course={course} />)}
             </Row>
             
         </Container>
