@@ -26,9 +26,9 @@ const ModCourse = ({ data }) => {
     course_name: "",
     course_subject: "",
     course_type: "",
-    course_price: "",
+    course_price: 0.0,
     course_description: "",
-    course_pic: null,
+    course_pic: "",
   });
   //const [id, setId] = useState();
 
@@ -298,6 +298,14 @@ const ModCourse = ({ data }) => {
               <Row>
                 <Col md={6}>
                   <h1>Hourly Estimated Price {formData.course_price}/h</h1>
+                  {formData.course_pic && (
+                  <Image
+                    className="courseImage"
+                    src={`http://localhost:8080${formData.course_pic}`}
+                    alt="Course Image"
+                    fluid
+                  />
+                )}
                 </Col>
               </Row>
             </Container>

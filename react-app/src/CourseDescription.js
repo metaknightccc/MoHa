@@ -27,9 +27,9 @@ const CourseDescription = ({ data }) => {
     course_name: "",
     course_subject: "",
     course_type: "",
-    course_price: "",
+    course_price: 0.0,
     course_description: "",
-    course_pic: null,
+    course_pic: "",
   });
   const [isStudent, setIsStudent] = useState();
 

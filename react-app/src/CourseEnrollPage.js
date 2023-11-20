@@ -12,9 +12,9 @@ const CourseEnrollPage = () => {
         course_name: '',
         course_subject: '',
         course_type: '',
-        course_price: '',
+        course_price: 0.0,
         course_description: '',
-        course_pic: null,
+        course_pic: '',
     });
     // Function to mimic an API call to enroll the user
     const enrollUser = () => {
@@ -51,11 +51,16 @@ const CourseEnrollPage = () => {
     useEffect(() => {
         if(location.state !==null){
             setFormData(location.state.formData);
-            enrollUser();
+            
+            // enrollUser();
         }
         
-    }, []);
+    }, [location]);
     
+    useEffect(() => {
+        enrollUser();
+        console.log("enrolldata",formData);
+    }, [formData]);
     return (
         <Container>
             <h1>Enrolling in Course...</h1>
