@@ -116,7 +116,7 @@ const Profile = ({ data }) => {
         .then((response) => {
           // Handle the response data as needed
           console.log('Image uploaded:', response.data);
-          setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+          setAvatar(`http://localhost:8080${response.data.image}`);
         })
         .catch((error) => {
           console.error('Error uploading image:', error);
