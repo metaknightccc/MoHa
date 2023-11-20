@@ -80,7 +80,7 @@ class CourseController(TGController):
                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 #return dict(image=encoded_string)
         except:
-            image_file = open('./turbogearapp/public/assets/course_pic/default.png', 'rb')
+            image_file = open('./turbogearapp/public/assets/default.png', 'rb')
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
             return dict(
