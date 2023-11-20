@@ -97,27 +97,87 @@ class CourseController(TGController):
             return dict(status='failed', message='Course not found')
     
     
+    # @expose('json')
+    # #@validate({'course_pic': validate.uploaded_file(upload_type='image/jpeg,image/png')})
+    # def get_course_pic(self, **kwargs):
+    #     # print("==========course pic==========")
+    #     # try:
+            
+    #     #     course_id = kwargs.get('course_id')
+    #     #     course_pic = kwargs.get('course_pic')
+    #     #     print("==========getting course pic==========")
+    #     #     # Access the user id from the session or however you manage user authentication
+    #     #     #user_id = request.identity['user'].user_id  # Replace with your actual user id retrieval method
+    #     #     tutor_id = request.environ.get('REMOTE_USER')
+    #     #     # Save the uploaded file to a designated directory
+    #     #     upload_dir = './assets/course_pic'  # Replace 'your_project' with the actual name of your TurboGears project
+    #     #     if not os.path.exists(upload_dir):
+    #     #         os.makedirs(upload_dir)
+    #     #         print("==========adding course pic path==========")
+    #     #     print("==========course pic path exists==========")
+    #     #     file_path = os.path.join(upload_dir, course_pic.name)
+    #     #     course_pic.save(file_path)
+    #     #     print("==========adding course pic==========")
+
+    #     #     # Store the file path in the course instance
+    #     #     course = DBSession.query(Course).filter(course.id == course_id).first()
+    #     #     if course:
+    #     #         course.pic = file_path
+    #     #         DBSession.flush()  # Use flush before committing
+
+    #     #     return dict(status='success', message='Course pic updated successfully')
+    #     # except Exception as e:
+    #     #     print("======Course Pic Error======")
+    #     #     return dict(status='error', message=str(e))
+
+    #     #uploadImg=request.params['course_pic']
+    #     uploadImg=request.json['course_pic']
+    #     print("Full Request Object:", request)
+    #     #uploadImg=request.files['course_pic']
+    #     #uploadImg=request.files.get('course_pic')
+    #     #uploadImg = request.environ['webob.adhoc_attrs']['files']['course_pic']
+    #     #uploadImg = request.files.get('course_pic')
+        
+    #     course_id=request.json['course_id']
+    #     print("uploaded img:",uploadImg)
+    #     #binary_data = base64.b64decode(uploadImg)
+    #     img=Image.open(uploadImg.file)
+    #     #img = Image.open(BytesIO(uploadImg.read()))
+    #     #img = Image.open(BytesIO(binary_data))
+    #     # print(img.size)
+    #     # img.save('../react-app/src/assets/'+uploadImg.filename)
+        
+    #     #user_type = request.environ.get('USER_TYPE')
+    #     #course_id = str(request.environ.get('REMOTE_USER'))
+    #     img.save('./assets/course_pic/'+uploadImg.name)
+    #     path_name='./assets/course_pic/'+uploadImg.name
+
+    #     with open(path_name, 'rb') as image_file:
+    #         encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+    #     #TODO: delete the original pic and save every pic with a unique name
+
+    #     course = DBSession.query(Course).filter(Course.id == course_id).first()
+    #     if course:
+    #         course.pic = path_name
+    #         transaction.commit()
+
+    #     return dict(image=encoded_string)
+    
+    
+    
+    
     @expose('json')
     def get_course_pic(self, **kwargs):
-        #uploadImg=request.params['course_pic']
-        #uploadImg=request.json['course_pic']
-        print("Full Request Object:", request)
-        #uploadImg=request.files['course_pic']
-        uploadImg=request
-        #uploadImg = request.environ['webob.adhoc_attrs']['files']['course_pic']
-        #uploadImg = request.files.get('course_pic')
-        
-        course_id=request.json['course_id']
-        print("uploaded img:",uploadImg)
-        #binary_data = base64.b64decode(uploadImg)
+        uploadImg=request.params['course_pic']
+        course_id=int(request.params['course_id'])
+        # print(uploadImg)
         img=Image.open(uploadImg.file)
-        #img = Image.open(BytesIO(uploadImg.read()))
-        #img = Image.open(BytesIO(binary_data))
         # print(img.size)
         # img.save('../react-app/src/assets/'+uploadImg.filename)
         
-        #user_type = request.environ.get('USER_TYPE')
-        #course_id = str(request.environ.get('REMOTE_USER'))
+        user_type = request.environ.get('USER_TYPE')
+        #user_id = str(request.environ.get('REMOTE_USER'))
         img.save('./assets/course_pic/'+uploadImg.filename)
         path_name='./assets/course_pic/'+uploadImg.filename
 
@@ -132,6 +192,12 @@ class CourseController(TGController):
             transaction.commit()
 
         return dict(image=encoded_string)
+
+    
+    
+    
+    
+    
     
     @expose('json')
     def mod_course(self, **kwargs): #todo: Should be able to take None, and use a default pic

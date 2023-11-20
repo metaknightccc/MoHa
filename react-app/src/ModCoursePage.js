@@ -57,6 +57,39 @@ const ModCourse = ({ data }) => {
     //     });
     //     console.log("form data==",formData);
     // };
+    const uploadImage = (event) => {
+        // console.log("upload image===")
+        const file = event.target.files[0];
+    
+        // setFormData({
+        //   ...formData,
+        //   file: file,
+        // });
+        
+        if (file){
+          const picformData = new FormData();
+          picformData.append('course_pic', file);
+          picformData.append('course_id', formData.course_id);
+          console.log("picformData", picformData);
+          // const data = Object.fromEntries(formData);
+          // console.log("form data===", file)
+          axios.post('/course/get_course_pic', picformData)
+          //axios.post('/course/get_course_pic', formData)
+            .then((response) => {
+              // Handle the response data as needed
+              console.log('Image uploaded:', response.data);
+              //setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+            })
+            .catch((error) => {
+              console.error('Error uploading image:', error);
+            });
+        }
+      }
+
+
+
+
+
     const handleInputChange = (e) => {
         const { name, value, type, files } = e.target;
     
@@ -104,7 +137,7 @@ const ModCourse = ({ data }) => {
                 console.log('Form Data:', formData);
     
                 // Handle the get_course_pic request here if needed
-                return axios.post('/course/get_course_pic', formData);
+                //return axios.post('/course/get_course_pic', formData);
             })
             .then((response) => {
                 // Handle the get_course_pic response if needed
@@ -232,7 +265,7 @@ const ModCourse = ({ data }) => {
                                     type="file"
                                     name="course_pic"
                                     accept=".png, .jpg, .jpeg" // Set accepted file types
-                                    onChange={handleInputChange}
+                                    onChange={uploadImage}
                                     />
                                 </Form.Group>
                             </ListGroup.Item>
