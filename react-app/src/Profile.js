@@ -76,7 +76,7 @@ const Profile = ({ data }) => {
     try {
       const response=await axios.get('/dashboard/get_avatar')
       console.log("=========", response)
-      setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+      setAvatar(`http://localhost:8080${response.data.image}`);
       console.log("avatar path===", avatar)
     }
     catch (error) {
@@ -263,9 +263,6 @@ const Profile = ({ data }) => {
             {showSubmit && <Button type="submit">Save changes</Button>}{' '} 
           </Form>
           {/* </Col> */}
-        </Row>
-        <Row> 
-          <ClassSlot/>
         </Row>
       </Container>
     </div>

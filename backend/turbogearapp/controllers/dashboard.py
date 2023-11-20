@@ -1,6 +1,6 @@
 # controllers/registration.py
 from tg import expose, validate, request, response, TGController
-from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
+from turbogearapp.model import DBSession, Tutor, Student, Course, Subject, Course_Class
 import transaction
 import json
 import os
@@ -116,6 +116,7 @@ class DashboardController(TGController):
                 # with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
                 #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 # return dict(image=encoded_string)
+
         # elif user_type == 'tutor':
         #         with open(tutor.pic, 'rb') as image_file:
         #             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
@@ -142,7 +143,7 @@ class DashboardController(TGController):
         print("sadasd=====")
         body_str = request.body.decode('utf-8')
         body_dict = json.loads(body_str)
-        edit_first = body_dict['firstname']
+        edit_first = body_dict['firstname'] 
         edit_last = body_dict['lastname']
         # print(edit_first,edit_last)
         if user_type == 'student':
@@ -152,3 +153,24 @@ class DashboardController(TGController):
                 student.last_name = edit_last
                 transaction.commit()
                 return dict(status='success')
+            
+    @expose('json')
+    def get_user_courses(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = request.environ.get('REMOTE_USER')
+        enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+        
+        
+        courses = []
+        for course_class in enrolled_classes:
+            course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+            if course:
+                temp = course.tutor_id
+                tutor = DBSession.query(Tutor).filter_by(id=temp).first()
+                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])
+            
+        # print("======================")
+        # print(courses)
+        # print("======================")
+
+        return dict(status='success', courses=courses)

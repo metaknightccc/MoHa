@@ -5,6 +5,7 @@ import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
 import Profile from './Profile'
 import AddCoursePage from './AddCoursePage';
 import ModCoursePage from './ModCoursePage';
+import MyCoursePage from './MyCoursePage';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -113,7 +114,7 @@ const Dashboard = () => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="#course">
                         <h3>My Courses</h3>
-                        {courseData ? <div>{JSON.stringify(courseData)}</div> : 'Loading...'}
+                        <MyCoursePage />
                       </Tab.Pane>
                       <Tab.Pane eventKey="#security">
                         <h3>Security</h3>
@@ -127,18 +128,9 @@ const Dashboard = () => {
                           </Tab.Pane>
                         )
                       }
-                      <Tab.Pane eventKey="#add_course">
-                        <h3>Add Course</h3>
-                        <AddCoursePage />
-                      </Tab.Pane>
-
                     </>
                   )
                 }
-                {/* <Tab.Pane eventKey="#mod_course">
-                  <h3>Modify Course</h3>
-                  <ModCoursePage />
-                </Tab.Pane> */}
               </Tab.Content>
             </Col>
           </Row>
