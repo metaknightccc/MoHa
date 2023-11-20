@@ -1,6 +1,6 @@
 # controllers/registration.py
 from tg import expose, validate, request, response, TGController
-from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
+from turbogearapp.model import DBSession, Tutor, Student, Course, Subject, Course_Class
 import transaction
 import json
 import os
@@ -150,4 +150,23 @@ class DashboardController(TGController):
                 student.first_name = edit_first
                 student.last_name = edit_last
                 transaction.commit()
-                return dict(status='success')
+                return dict(status='success')      
+            
+    @expose('json')
+    def get_user_courses(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = request.environ.get('REMOTE_USER')
+        enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+        
+        
+        courses = []
+        for course_class in enrolled_classes:
+            course = course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+            if course:
+                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic])
+            
+        # print("======================")
+        # print(courses)
+        # print("======================")
+
+        return dict(status='success', courses=courses)
