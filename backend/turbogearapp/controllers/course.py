@@ -143,6 +143,7 @@ class CourseController(TGController):
             img.save(f'./turbogearapp/public/assets/course_pic/{file_name}')
 
             path_name = f'./turbogearapp/public/assets/course_pic/{file_name}'
+            save_path_name = f'/assets/course_pic/{file_name}'
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
             with open(path_name, 'rb') as image_file:
@@ -153,7 +154,7 @@ class CourseController(TGController):
             # Update the Course instance with the new file path
             course = DBSession.query(Course).filter(Course.id == course_id).first()
             if course:
-                course.pic = path_name
+                course.pic = save_path_name
                 transaction.commit()
 
             return dict(image=encoded_string, filename=file_name)
