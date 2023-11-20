@@ -108,7 +108,7 @@ const Profile = ({ data }) => {
     
     if (file){
       const formData = new FormData();
-      formData.append('fileaaaa', file);
+      formData.append('user_pic', file);
       console.log("form data===", formData);
       // const data = Object.fromEntries(formData);
       // console.log("form data===", file)

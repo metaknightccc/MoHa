@@ -65,7 +65,7 @@ class DashboardController(TGController):
     '''
     @expose('json')
     def upload_image(self, **kwargs):
-        uploadImg=request.params['fileaaaa']
+        uploadImg=request.params['user_pic']
         # print(uploadImg)
         img=Image.open(uploadImg.file)
         # print(img.size)
@@ -73,8 +73,15 @@ class DashboardController(TGController):
         
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
-        img.save('./assets/user_pic/'+uploadImg.filename)
-        path_name='./assets/user_pic/'+uploadImg.filename
+        original_file_name, original_file_extension = os.path.splitext(uploadImg.filename)
+        file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
+            # Save the image with the course_id as the filename
+        img = Image.open(uploadImg.file)
+        img.save(f'./assets/user_pic/{file_name}')
+
+        path_name = f'./assets/user_pic/{file_name}'
+            #for now: no need deletion since it would overwrite the previous img
+            # Open the saved image file and encode it to base64
 
         with open(path_name, 'rb') as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
