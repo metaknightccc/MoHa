@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DashboardPage.css';
 import { Container, Col, Row, Tab, ListGroup } from 'react-bootstrap';
-import Profile from './Profile' 
+import Profile from './Profile'
 import AddCoursePage from './AddCoursePage';
 import ModCoursePage from './ModCoursePage';
 import { useNavigate } from 'react-router-dom';
@@ -13,20 +13,25 @@ const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState(null);
   const endpoint = '/dashboard';
   const coursemod = '/course';
 
   useEffect(() => {
+    setLoading(true);
     axios.get('/dashboard')
       .then(response => {
-        if(response.status === 200) {
+        if (response.status === 200) {
           console.log(response.data);
+          setUserType(response.data.user_type);
+          setLoading(false);
         }
       })
       .catch(error => {
-        if(error.response.status === 401) {
+        if (error.response.status === 401) {
           console.log('Unauthorized');
-          navigate('/login', {state: { message: 'Unauthorized' }});
+          navigate('/login', { state: { message: 'Unauthorized' } });
         }
       });
   }, []);
@@ -72,42 +77,64 @@ const Dashboard = () => {
           <Row className='padding-top-row'>
             <Col sm={2} >
               <ListGroup>
-                <ListGroup.Item action href="#profile">
-                  Profile
-                </ListGroup.Item>
-                <ListGroup.Item action href="#course">
-                  My Courses
-                </ListGroup.Item>
-                <ListGroup.Item action href="#security">
-                  Security
-                </ListGroup.Item>
-              
-                <ListGroup.Item action href="#add_course">
-                  Add Course
-                </ListGroup.Item>
-                {/* <ListGroup.Item action href="#mod_course">
-                  Modify Course
-                </ListGroup.Item> */}
+                {
+                  !loading && (
+                    <>
+                      <ListGroup.Item action href="#profile">
+                        Profile
+                      </ListGroup.Item>
+                      <ListGroup.Item action href="#course">
+                        My Courses
+                      </ListGroup.Item>
+                      <ListGroup.Item action href="#security">
+                        Security
+                      </ListGroup.Item>
+                      {
+                        // Check if the user is a tutor
+                        userType === 'tutor' && (
+                          <ListGroup.Item action href="#add_course">
+                            Add Course
+                          </ListGroup.Item>
+                        )
+                      }
+                    </>
+                  )
+                }
               </ListGroup>
             </Col>
             <Col sm={10}>
               <Tab.Content>
-                <Tab.Pane eventKey="#profile">
-                  <h3>Profile</h3>
-                  <Profile/>
-                </Tab.Pane>
-                <Tab.Pane eventKey="#course">
-                  <h3>My Courses</h3>
-                  {courseData ? <div>{JSON.stringify(courseData)}</div> : 'Loading...'}
-                </Tab.Pane>
-                <Tab.Pane eventKey="#security">
-                  <h3>Security</h3>
-                  {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
-                </Tab.Pane>
-                <Tab.Pane eventKey="#add_course">
-                  <h3>Add Course</h3>
-                  <AddCoursePage />
-                </Tab.Pane>
+                {
+                  !loading && (
+                    <>
+                      <Tab.Pane eventKey="#profile">
+                        <h3>Profile</h3>
+                        <Profile />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="#course">
+                        <h3>My Courses</h3>
+                        {courseData ? <div>{JSON.stringify(courseData)}</div> : 'Loading...'}
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="#security">
+                        <h3>Security</h3>
+                        {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
+                      </Tab.Pane>
+                      {
+                        userType === 'tutor' && (
+                          <Tab.Pane eventKey="#add_course">
+                            <h3>Add Course</h3>
+                            <AddCoursePage />
+                          </Tab.Pane>
+                        )
+                      }
+                      <Tab.Pane eventKey="#add_course">
+                        <h3>Add Course</h3>
+                        <AddCoursePage />
+                      </Tab.Pane>
+
+                    </>
+                  )
+                }
                 {/* <Tab.Pane eventKey="#mod_course">
                   <h3>Modify Course</h3>
                   <ModCoursePage />
