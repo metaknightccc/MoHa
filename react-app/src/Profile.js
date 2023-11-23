@@ -59,6 +59,8 @@ const Profile = ({ data }) => {
       });
       setDisplayFirstname(response.data.fn);
       setDisplayLastname(response.data.ln);
+      // setDisplayAvatar(`http://localhost:8080${response.data.image}`);
+      // setAvatar(`http://localhost:8080${response.data.image}`)
     }
     catch (error) {
       console.error('Error fetching user info:', error);
@@ -75,9 +77,8 @@ const Profile = ({ data }) => {
     // axios.get('/dashboard/get_avatar_path')
     try {
       const response=await axios.get('/dashboard/get_avatar')
-      console.log("=========", response)
       setAvatar(`data:image/jpeg;base64,${response.data.image}`);
-      console.log("avatar path===", avatar)
+      // console.log("avatar path===", avatar)
     }
     catch (error) {
       console.error('Error fetching avatar path:', error);
@@ -97,37 +98,55 @@ const Profile = ({ data }) => {
     handleShow();
   };
 
-  const uploadImage = (event) => {
+  const uploadImage = async (event) => {
     // console.log("upload image===")
     const file = event.target.files[0];
 
-    // setFormData({
-    //   ...formData,
-    //   file: file,
-    // });
-    
+
     if (file){
       const formData = new FormData();
       formData.append('user_pic', file);
-      console.log("form data===", formData);
       // const data = Object.fromEntries(formData);
       // console.log("form data===", file)
       axios.post('/dashboard/upload_image', formData)
         .then((response) => {
           // Handle the response data as needed
           console.log('Image uploaded:', response.data);
-          setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+          setAvatar(`http://localhost:8080${response.data.image}`);
         })
         .catch((error) => {
           console.error('Error uploading image:', error);
         });
     }
-  }
+  };
+
+
+
+
+
+    
+  //   // if (file){
+  //   //   const Temp = new FormData();
+  //   //   Temp.append('user_pic', file);
+  //   //   // console.log("form data===", formData_new);
+  //   //   // const data = Object.fromEntries(formData);
+  //   //   // console.log("form data===", file)
+  //   //   axios.post('/dashboard/upload_image', Temp)
+  //   //     .then((response) => {
+  //   //       // Handle the response data as needed
+  //   //       console.log('Image uploaded:', response.data);
+  //   //       setAvatar(`http://localhost:8080${response.data.image}`);
+  //   //     })
+  //   //     .catch((error) => {
+  //   //       console.error('Error uploading image:', error);
+  //   //     });
+  //   // }
+  // }
   
   return (
     <div>
       <Container>
-        <Modal show={show} onHide={handleClose}>
+        {/* <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
@@ -135,7 +154,7 @@ const Profile = ({ data }) => {
             <div className="avatar-section">
               <h2 className="mb-3">Avatar Editor Demo</h2>
               <p>Drag and Drop an Image:</p>
-              {/* <Dropzone onDrop={handleDrop} noClick noKeyboard>
+              <Dropzone onDrop={handleDrop} noClick noKeyboard>
                 {({ getRootProps, getInputProps }) => (
                   <div className="dropzone" {...getRootProps()}>
                     <AvatarEditor
@@ -153,8 +172,8 @@ const Profile = ({ data }) => {
                     <input {...getInputProps()} />
                   </div>
                 )}
-              </Dropzone> */}
-              {/* <Form className="avatar-form" onSubmit={handleSubmit}>
+              </Dropzone>
+              <Form className="avatar-form" onSubmit={handleSubmit}>
                 <Form.Group className="w-100 my-3" controlId="upload">
                   <Form.Label className="file-btn btn btn-primary">
                     Upload
@@ -187,9 +206,9 @@ const Profile = ({ data }) => {
                 <Button className="mt-5" type="submit">
                   Crop / Save
                 </Button>
-              </Form> */}
+              </Form>
             </div>
-            {/* <ul>
+            <ul>
               <li>{`Image: ${
                 typeof originalImage === "object" ? originalImage.name : originalImage
               }`}</li>
@@ -203,8 +222,8 @@ const Profile = ({ data }) => {
                   <Image alt="cropped" src={croppedImage} />
                 </>
               )}
-            </ul> */}
-            {/* <Form>
+            </ul>
+            <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -220,7 +239,7 @@ const Profile = ({ data }) => {
                 <Form.Label>Example textarea</Form.Label>
                 <Form.Control as="textarea" rows={3} />
               </Form.Group>
-            </Form> */}
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -230,7 +249,7 @@ const Profile = ({ data }) => {
               Save Changes
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
         <Row>
           <h1>Hi, {displayFirstname} {displayLastname}</h1>
         </Row>
@@ -263,9 +282,6 @@ const Profile = ({ data }) => {
             {showSubmit && <Button type="submit">Save changes</Button>}{' '} 
           </Form>
           {/* </Col> */}
-        </Row>
-        <Row> 
-          <ClassSlot/>
         </Row>
       </Container>
     </div>

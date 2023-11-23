@@ -1,11 +1,12 @@
 # controllers/registration.py
 from tg import expose, validate, request, response, TGController
-from turbogearapp.model import DBSession, Tutor, Student, Course, Subject
+from turbogearapp.model import DBSession, Tutor, Student, Course, Subject, Course_Class
 import transaction
 import json
 import os
 from PIL import Image
 import base64
+from datetime import datetime
 #import './controllers/course.py'
 class DashboardController(TGController):
     '''
@@ -65,6 +66,7 @@ class DashboardController(TGController):
     '''
     @expose('json')
     def upload_image(self, **kwargs):
+        print("uploading image.....")
         uploadImg=request.params['user_pic']
         # print(uploadImg)
         img=Image.open(uploadImg.file)
@@ -74,7 +76,9 @@ class DashboardController(TGController):
         user_type = request.environ.get('USER_TYPE')
         user_id = str(request.environ.get('REMOTE_USER'))
         original_file_name, original_file_extension = os.path.splitext(uploadImg.filename)
-        file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        file_name = f'{user_type}_{user_id}_{timestamp}_{original_file_extension}'
+        # file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
             # Save the image with the course_id as the filename
         img = Image.open(uploadImg.file)
         img.save(f'./turbogearapp/public/assets/user_pic/{file_name}')
@@ -84,21 +88,23 @@ class DashboardController(TGController):
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
 
-        with open(path_name, 'rb') as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        # with open(path_name, 'rb') as image_file:
+        #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
+                os.remove("./turbogearapp/public" + student.pic)
                 student.pic = save_path_name
                 transaction.commit()
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
+                os.remove("./turbogearapp/public" + tutor.pic)
                 tutor.pic = save_path_name
                 transaction.commit()
 
-        return dict(image=encoded_string)
+        return dict(image=save_path_name)
     
     @expose('json')
     def get_avatar(self, **kwargs):
@@ -107,18 +113,16 @@ class DashboardController(TGController):
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                return dict(image=student.pic)
+                with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
-                return dict(image=tutor.pic)
-                # with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
-                #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                # return dict(image=encoded_string)
-        # elif user_type == 'tutor':
-        #         with open(tutor.pic, 'rb') as image_file:
-        #             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-        #         return dict(image=encoded_string)
+                with open("./turbogearapp/public" + tutor.pic, 'rb') as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                return dict(image=encoded_string)
+
             
     @expose('json')
     def get_user_info(self, **kwargs):
@@ -133,6 +137,15 @@ class DashboardController(TGController):
                             ,un=student.username
                             ,em=student.email
                             ,pn=student.phone_number)
+        else:
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                print(tutor.first_name,tutor.last_name,tutor.username,tutor.email,tutor.phone_number)
+                return dict(fn=tutor.first_name
+                            ,ln=tutor.last_name
+                            ,un=tutor.username
+                            ,em=tutor.email
+                            ,pn=tutor.phone_number)
             
     @expose('json')
     def update_user_info(self, **kwargs):
@@ -141,7 +154,7 @@ class DashboardController(TGController):
         print("sadasd=====")
         body_str = request.body.decode('utf-8')
         body_dict = json.loads(body_str)
-        edit_first = body_dict['firstname']
+        edit_first = body_dict['firstname'] 
         edit_last = body_dict['lastname']
         # print(edit_first,edit_last)
         if user_type == 'student':
@@ -151,3 +164,24 @@ class DashboardController(TGController):
                 student.last_name = edit_last
                 transaction.commit()
                 return dict(status='success')
+            
+    @expose('json')
+    def get_user_courses(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        user_id = request.environ.get('REMOTE_USER')
+        enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+        
+        
+        courses = []
+        for course_class in enrolled_classes:
+            course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+            if course:
+                temp = course.tutor_id
+                tutor = DBSession.query(Tutor).filter_by(id=temp).first()
+                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])
+            
+        # print("======================")
+        # print(courses)
+        # print("======================")
+
+        return dict(status='success', courses=courses)
