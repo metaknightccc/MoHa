@@ -70,7 +70,6 @@ class CourseController(TGController):
     
     @expose('json')
     def get_course_info(self, **kwargs):
-        is_enrolled = False
         course_id = kwargs.get('course_id')
         print(course_id)
         course = DBSession.query(Course).filter_by(id=course_id).first()
