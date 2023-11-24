@@ -82,7 +82,7 @@ class Student(DeclarativeBase):
     last_name = Column(String, nullable=False)
     username = Column(String, nullable=False)#was: name
     email = Column(String, nullable=False)
-    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
+    pic = Column(String, nullable = True, default="/assets/default.png")
     phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
     _password = Column('password',String, nullable=False)
@@ -168,7 +168,7 @@ class Course(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
     name = Column(String, nullable=False)
-    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
+    pic = Column(String, nullable = True, default="/assets/default.png")
     subject_name = Column(String, ForeignKey('subject.subject_name'))
     type = Column(String, nullable=False)
     price = Column(Float, nullable=False, default=0.0)
