@@ -94,13 +94,15 @@ class DashboardController(TGController):
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                os.remove("./turbogearapp/public" + student.pic)
+                #os.remove("./turbogearapp/public" + student.pic)
+                os.remove('./turbogearapp/public' + student.pic)
                 student.pic = save_path_name
                 transaction.commit()
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
-                os.remove("./turbogearapp/public" + tutor.pic)
+                #os.remove("./turbogearapp/public" + tutor.pic)
+                os.remove('./turbogearapp/public' + tutor.pic)
                 tutor.pic = save_path_name
                 transaction.commit()
 
@@ -113,13 +115,15 @@ class DashboardController(TGController):
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                with open("./turbogearapp/public" + student.pic, 'rb') as image_file:
+                #with open("/turbogearapp/public" + student.pic, 'rb') as image_file:
+                with open('./turbogearapp/public' + student.pic, 'rb') as image_file:
                     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 return dict(image=encoded_string)
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
-                with open("./turbogearapp/public" + tutor.pic, 'rb') as image_file:
+                #with open("/turbogearapp/public" + tutor.pic, 'rb') as image_file:
+                with open('./turbogearapp/public' + tutor.pic, 'rb') as image_file:
                     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
                 return dict(image=encoded_string)
 

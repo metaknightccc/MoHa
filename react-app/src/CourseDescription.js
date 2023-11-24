@@ -24,6 +24,7 @@ const CourseDescription = ({ data }) => {
   const [formData, setFormData] = useState({
     course_id: "",
     tutor_id: "",
+    user_id: "",
     course_name: "",
     course_subject: "",
     course_type: "",
@@ -48,6 +49,7 @@ const CourseDescription = ({ data }) => {
         course_price: response.data.price,
         course_description: response.data.description,
         course_pic: response.data.course_pic,
+        user_id: response.data.user_id,
       });
       setIsStudent(response.data.user_type === "student");
       setIsEnrolled(response.data.is_enrolled === true);
@@ -71,11 +73,14 @@ const CourseDescription = ({ data }) => {
   }, [isStudent, isEnrolled, navigate]);
 
   const handleModify = () => {
-    if (!isStudent) {
+    if (!isStudent && formData.tutor_id === formData.user_id) {
       navigate(`/modcourse`, { state: { formData: formData } });
-    } else {
+    } else if (isStudent) {
       navigate(`/courseenroll`, { state: { formData: formData } });
     }
+    else {
+        navigate(`/dashboard`, { state: { formData: formData } });
+      }
     //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
   };
 
