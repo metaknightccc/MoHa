@@ -65,6 +65,29 @@ class DashboardController(TGController):
         return dict(page='add_course')
     '''
     @expose('json')
+    def update_course_price(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        if user_type != 'tutor' and request.environ.get('REMOTE_USER') != request.json['tutor_id']:
+            return dict(status='failed', message='User is not a tutor/user is not the owner of the course')
+
+        course_id = request.json['course_id']
+        
+        #new_price = request.json['new_price']
+        total_price = 0.0
+        course_classes = DBSession.query(Course_Class).filter_by(course_id=course_id).all()
+        if course_classes:
+            for cc in course_classes:
+                total_price += cc.price
+            course = DBSession.query(Course).filter_by(id=course_id).first()
+            course.price = total_price
+            print('=====Updating course price=====')
+            transaction.commit()
+            return dict(status='success')
+        else:
+            return dict(status='failed', message='Course not found')
+    
+    
+    @expose('json')
     def upload_image(self, **kwargs):
         print("uploading image.....")
         uploadImg=request.params['user_pic']
@@ -74,7 +97,7 @@ class DashboardController(TGController):
         # img.save('../react-app/src/assets/'+uploadImg.filename)
         
         user_type = request.environ.get('USER_TYPE')
-        user_id = str(request.environ.get('REMOTE_USER'))
+        user_id = request.environ.get('REMOTE_USER')
         original_file_name, original_file_extension = os.path.splitext(uploadImg.filename)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         file_name = f'{user_type}_{user_id}{original_file_extension}'
@@ -176,20 +199,29 @@ class DashboardController(TGController):
             
     @expose('json')
     def get_user_courses(self, **kwargs):
+        print("========get_user_courses=========")
         user_type = request.environ.get('USER_TYPE')
         user_id = request.environ.get('REMOTE_USER')
-        enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
-        
-        
         courses = []
-        for course_class in enrolled_classes:
-            course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
-            if course:
-                temp = course.tutor_id
-                tutor = DBSession.query(Tutor).filter_by(id=temp).first()
-                courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])
-            
-        # print("======================")
+        if user_type == 'student':
+            enrolled_classes = DBSession.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+       
+            #courses = []
+            for course_class in enrolled_classes:
+                course = DBSession.query(Course).filter_by(id=course_class.course_id).first()
+                if course:
+                    temp = course.tutor_id
+                    tutor = DBSession.query(Tutor).filter_by(id=temp).first()
+                    courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])
+        else:
+            mycourses = DBSession.query(Course).filter(Course.tutor_id == user_id).all()
+            #courses = []
+            for mycourse in mycourses:
+                course = DBSession.query(Course).filter_by(id=mycourse.id).first()
+                if course:
+                    temp = course.tutor_id
+                    tutor = DBSession.query(Tutor).filter_by(id=temp).first()
+                    courses.append([course.id, course.tutor_id, course.name, course.subject_name, course.type, course.price, course.description, course.pic, tutor.first_name+' '+tutor.last_name])        # print("======================")
         # print(courses)
         # print("======================")
 
