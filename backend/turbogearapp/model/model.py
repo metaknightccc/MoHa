@@ -11,7 +11,7 @@ class Tutor(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
+    pic = Column(String, nullable = True, default="/assets/default.png")
     username = Column(String, nullable=False)#was: name
     email = Column(String, nullable=False)
     phone_number = Column(String, nullable=True)
@@ -82,7 +82,7 @@ class Student(DeclarativeBase):
     last_name = Column(String, nullable=False)
     username = Column(String, nullable=False)#was: name
     email = Column(String, nullable=False)
-    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
+    pic = Column(String, nullable = True, default="/assets/default.png")
     phone_number = Column(String, nullable=True)
     tokens = Column(Float, nullable = False, default= 0.0)
     _password = Column('password',String, nullable=False)
@@ -168,13 +168,14 @@ class Course(DeclarativeBase):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tutor_id = Column(BigInteger, ForeignKey('tutor.id'))
     name = Column(String, nullable=False)
-    pic = Column(String, nullable = True, default="./turbogearapp/public/assets/default.png")
+    pic = Column(String, nullable = True, default="/assets/default.png")
     subject_name = Column(String, ForeignKey('subject.subject_name'))
     type = Column(String, nullable=False)
     price = Column(Float, nullable=False, default=0.0)
     avg_rating = Column(Float, nullable=True)
     description = Column(Text, nullable=True)
     lemmas = Column(Text, nullable=True)
+    zoom_id = Column(String, nullable=True)
     # def cal_rating():
     #     related_classes = Course_Class.query.filter_by(course_id=self.id, student_id=student_id).all()
     #     if related_classes:
