@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AddCoursePage from './AddCoursePage';
 import ModCoursePage from './ModCoursePage';
 import CourseEnrollPage from './CourseEnrollPage';
+import CourseMainPage from './CourseMainPage';
 
 // Set up Axios interceptor to add JWT token to all outgoing requests
 axios.interceptors.request.use((config) => {
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="addcourse" element={<AddCoursePage />} />
           <Route path="modcourse" element={<ModCoursePage />} />
           <Route path="courseenroll" element={<CourseEnrollPage />} /> 
+          <Route path="coursemain" element={<CourseMainPage />} />
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />

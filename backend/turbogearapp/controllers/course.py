@@ -70,9 +70,13 @@ class CourseController(TGController):
     
     @expose('json')
     def get_course_info(self, **kwargs):
+        is_enrolled = False
         course_id = kwargs.get('course_id')
         print(course_id)
         course = DBSession.query(Course).filter_by(id=course_id).first()
+        enrolled = DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=request.environ.get('REMOTE_USER')).first()
+        if enrolled:
+            is_enrolled = True
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
         # try:
@@ -93,6 +97,7 @@ class CourseController(TGController):
                 description=course.description,
                 user_type = request.environ.get('USER_TYPE'),
                 course_pic = course.pic,
+                is_enrolled = is_enrolled,
                 
             )
         else:

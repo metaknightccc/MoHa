@@ -18,7 +18,7 @@ import ClassSlot from "./ClassSlot";
 //import "./Profile.css"
 import "./CourseDescription.css";
 
-const CourseDescription = ({ data }) => {
+const CourseMain = ({ data }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -62,22 +62,22 @@ const CourseDescription = ({ data }) => {
     fetchInfo();
   }, []);
 
-  useEffect(() => {
-    // Check if the user is a student and already enrolled
-    if (isStudent && isEnrolled) {
-      // If true, navigate to the course_main page
-      navigate(`/course_main`,{ state: { formData: formData } });
-    }
-  }, [isStudent, isEnrolled, navigate]);
+//   useEffect(() => {
+//     // Check if the user is a student and already enrolled
+//     if (isStudent && isEnrolled) {
+//       // If true, navigate to the course_main page
+//       navigate("/course_main");
+//     }
+//   }, [isStudent, isEnrolled, navigate]);
 
-  const handleModify = () => {
-    if (!isStudent) {
-      navigate(`/modcourse`, { state: { formData: formData } });
-    } else {
-      navigate(`/courseenroll`, { state: { formData: formData } });
-    }
-    //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
-  };
+//   const handleModify = () => {
+//     if (!isStudent) {
+//       navigate(`/modcourse`, { state: { formData: formData } });
+//     } else {
+//       navigate(`/courseenroll`, { state: { formData: formData } });
+//     }
+//     //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
+//   };
 
   // useEffect(() => {
   //     if (location.state && location.state.isStudent !== null) {
@@ -90,6 +90,7 @@ const CourseDescription = ({ data }) => {
       <Row>
         <Col md={12}>
           {/* <h1>Course Description:{formData.course_description}</h1> */}
+          <h1>Course Main Page</h1>
           <h1>Course Name: {formData.course_name}</h1>
         </Col>
       </Row>
@@ -118,7 +119,7 @@ const CourseDescription = ({ data }) => {
                                 Modify
                             </Button>
                         </ListGroup.Item> */}
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               {isStudent ? (
                 <Button variant="primary" onClick={handleModify}>
                   Enroll
@@ -128,7 +129,7 @@ const CourseDescription = ({ data }) => {
                   Edit
                 </Button>
               )}
-            </ListGroup.Item>
+            </ListGroup.Item> */}
           </ListGroup>
         </Col>
         <Col lg={6}>
@@ -152,4 +153,4 @@ const CourseDescription = ({ data }) => {
     </Container>
   );
 };
-export default CourseDescription;
+export default CourseMain;
