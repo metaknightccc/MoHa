@@ -77,7 +77,7 @@ class DashboardController(TGController):
         user_id = str(request.environ.get('REMOTE_USER'))
         original_file_name, original_file_extension = os.path.splitext(uploadImg.filename)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_name = f'{user_type}_{user_id}_{timestamp}_{original_file_extension}'
+        file_name = f'{user_type}_{user_id}{original_file_extension}'
         # file_name = f'userIMG_usertype={user_type}_id={user_id}{original_file_extension}'
             # Save the image with the course_id as the filename
         img = Image.open(uploadImg.file)
@@ -85,28 +85,25 @@ class DashboardController(TGController):
 
         path_name = f'./turbogearapp/public/assets/user_pic/{file_name}'
         save_path_name = f'/assets/user_pic/{file_name}'
-            #for now: no need deletion since it would overwrite the previous img
-            # Open the saved image file and encode it to base64
+        
 
-        # with open(path_name, 'rb') as image_file:
-        #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+        with open(path_name, 'rb') as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
         if user_type == 'student':
             student = DBSession.query(Student).filter(Student.id == user_id).first()
             if student:
-                #os.remove("./turbogearapp/public" + student.pic)
-                os.remove('./turbogearapp/public' + student.pic)
+                # os.remove("./turbogearapp/public" + student.pic)
                 student.pic = save_path_name
                 transaction.commit()
         else:
             tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
             if tutor:
-                #os.remove("./turbogearapp/public" + tutor.pic)
-                os.remove('./turbogearapp/public' + tutor.pic)
+                # os.remove("./turbogearapp/public" + tutor.pic)
                 tutor.pic = save_path_name
                 transaction.commit()
 
-        return dict(image=save_path_name)
+        return dict(image=encoded_string)
     
     @expose('json')
     def get_avatar(self, **kwargs):
@@ -168,6 +165,14 @@ class DashboardController(TGController):
                 student.last_name = edit_last
                 transaction.commit()
                 return dict(status='success')
+        else:
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                tutor.first_name = edit_first
+                tutor.last_name = edit_last
+                transaction.commit()
+                return dict(status='success')    
+        
             
     @expose('json')
     def get_user_courses(self, **kwargs):
