@@ -26,6 +26,7 @@ const ModCourse = ({ data }) => {
     course_name: "",
     course_subject: "",
     course_type: "",
+    user_id: "",
     course_price: 0.0,
     course_description: "",
     course_pic: "",
@@ -46,6 +47,7 @@ const ModCourse = ({ data }) => {
         course_price: response.data.price,
         course_description: response.data.description,
         course_pic: response.data.course_pic,
+        user_id : response.data.user_id,
       });
     } catch (error) {
       console.error("Error fetching user info:", error);

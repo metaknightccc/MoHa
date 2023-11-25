@@ -18,13 +18,12 @@ import ClassSlot from "./ClassSlot";
 //import "./Profile.css"
 import "./CourseDescription.css";
 
-const CourseDescription = ({ data }) => {
+const CourseMain = ({ data }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
     course_id: "",
     tutor_id: "",
-    user_id: "",
     course_name: "",
     course_subject: "",
     course_type: "",
@@ -34,55 +33,52 @@ const CourseDescription = ({ data }) => {
   });
   const [isStudent, setIsStudent] = useState();
   const [isEnrolled, setIsEnrolled] = useState(false);
-
-  const fetchInfo = async () => {
-    try {
-      const response = await axios.get(
-        `/course/get_course_info?course_id=${location.state.course_id}`
-      );
-      setFormData({
-        course_id: response.data.id,
-        tutor_id: response.data.tutor_id,
-        course_name: response.data.name,
-        course_subject: response.data.subject_name,
-        course_type: response.data.type,
-        course_price: response.data.price,
-        course_description: response.data.description,
-        course_pic: response.data.course_pic,
-        user_id: response.data.user_id,
-      });
-      setIsStudent(response.data.user_type === "student");
-      setIsEnrolled(response.data.is_enrolled === true);
-      console.log(isStudent,"; ",isEnrolled);
-      console.log(response.data.user_type);
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    }
-  };
+  
+  // const fetchInfo = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `/course/get_course_info?course_id=${location.state.course_id}`
+  //     );
+  //     setFormData({
+  //       course_id: response.data.id,
+  //       tutor_id: response.data.tutor_id,
+  //       course_name: response.data.name,
+  //       course_subject: response.data.subject_name,
+  //       course_type: response.data.type,
+  //       course_price: response.data.price,
+  //       course_description: response.data.description,
+  //       course_pic: response.data.course_pic,
+  //     });
+  //     setIsStudent(response.data.user_type === "student");
+  //     setIsEnrolled(response.data.is_enrolled === true);
+  //     console.log(isStudent,"; ",isEnrolled);
+  //     console.log(response.data.user_type);
+  //   } catch (error) {
+  //     console.error("Error fetching user info:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchInfo();
+    setFormData(location.state.formData);
+
   }, []);
 
-  useEffect(() => {
-    // Check if the user is a student and already enrolled
-    if (isStudent && isEnrolled) {
-      // If true, navigate to the course_main page
-      navigate(`/coursemain`,{ state: { formData: formData } });
-    }
-  }, [isStudent, isEnrolled, navigate]);
+//   useEffect(() => {
+//     // Check if the user is a student and already enrolled
+//     if (isStudent && isEnrolled) {
+//       // If true, navigate to the course_main page
+//       navigate("/course_main");
+//     }
+//   }, [isStudent, isEnrolled, navigate]);
 
-  const handleModify = () => {
-    if (!isStudent && formData.tutor_id === formData.user_id) {
-      navigate(`/modcourse`, { state: { formData: formData } });
-    } else if (isStudent) {
-      navigate(`/courseenroll`, { state: { formData: formData } });
-    }
-    else {
-        navigate(`/dashboard`, { state: { formData: formData } });
-      }
-    //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
-  };
+//   const handleModify = () => {
+//     if (!isStudent) {
+//       navigate(`/modcourse`, { state: { formData: formData } });
+//     } else {
+//       navigate(`/courseenroll`, { state: { formData: formData } });
+//     }
+//     //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
+//   };
 
   // useEffect(() => {
   //     if (location.state && location.state.isStudent !== null) {
@@ -95,6 +91,7 @@ const CourseDescription = ({ data }) => {
       <Row>
         <Col md={12}>
           {/* <h1>Course Description:{formData.course_description}</h1> */}
+          <h1>Course Main Page</h1>
           <h1>Course Name: {formData.course_name}</h1>
         </Col>
       </Row>
@@ -134,20 +131,6 @@ const CourseDescription = ({ data }) => {
                 </Button>
               )}
             </ListGroup.Item> */}
-            <ListGroup.Item>
-        {isStudent ? (
-          <Button variant="primary" onClick={handleModify}>
-            Enroll
-          </Button>
-        ) : (
-          // Only render the Edit button for the tutor whose ID matches the course's tutor_id
-          formData.tutor_id === formData.user_id && (
-            <Button variant="primary" onClick={handleModify}>
-              Edit
-            </Button>
-          )
-        )}
-      </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col lg={6}>
@@ -171,4 +154,4 @@ const CourseDescription = ({ data }) => {
     </Container>
   );
 };
-export default CourseDescription;
+export default CourseMain;

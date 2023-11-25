@@ -62,7 +62,7 @@ class CourseController(TGController):
             DBSession.add(new_course)  
         transaction.commit()
         #DBSession.flush()
-        DBSession.refresh(new_course)
+        #DBSession.refresh(new_course)
         print("new Course id: ", new_course.id)
         return dict(page='dashboard#course',message='successfully added course!' )
     
@@ -70,9 +70,14 @@ class CourseController(TGController):
     
     @expose('json')
     def get_course_info(self, **kwargs):
+        is_enrolled=False
         course_id = kwargs.get('course_id')
         print(course_id)
         course = DBSession.query(Course).filter_by(id=course_id).first()
+        enrolled = DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=request.environ.get('REMOTE_USER')).first()
+        if enrolled:
+            is_enrolled = True
+
         print(request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
         # try:
@@ -93,7 +98,9 @@ class CourseController(TGController):
                 description=course.description,
                 user_type = request.environ.get('USER_TYPE'),
                 course_pic = course.pic,
-                
+                is_enrolled = is_enrolled,
+                user_id=request.environ.get('REMOTE_USER'),
+                #user_type=request.environ.get('USER_TYPE'),
             )
         else:
             return dict(status='failed', message='Course not found')
@@ -146,7 +153,7 @@ class CourseController(TGController):
             save_path_name = f'/assets/course_pic/{file_name}'
             #for now: no need deletion since it would overwrite the previous img
             # Open the saved image file and encode it to base64
-            with open(path_name, 'rb') as image_file:
+            with open('.turbogearapp/public' + path_name, 'rb') as image_file:
                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
             # TODO: delete the original pic (if needed)
