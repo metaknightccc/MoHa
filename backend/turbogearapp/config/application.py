@@ -10,6 +10,7 @@ from webob import exc
 
 SECRET_KEY = "your-secret-key"  # use your secret key here
 ROUTE_TO_AUTHENTICATE = [
+    'check_auth',
     '/dashboard',
     '/course/add_course',
     '/course/mod_course',
@@ -32,7 +33,8 @@ def jwt_middleware(app):
         token = environ.get('HTTP_AUTHORIZATION', '').split(' ')[1] if 'HTTP_AUTHORIZATION' in environ else None
         if token is None:
             print('No token found')
-            return exc.HTTPUnauthorized('No Token Found')(environ, start_response)
+            environ['USER_TYPE'] = 'visitor'
+            return exc.HTTPFound('No Token Found')(environ, start_response)
 
         # decode the token and set the user identity in the request context
         try:

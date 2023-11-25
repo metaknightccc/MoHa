@@ -7,10 +7,12 @@ import AddCoursePage from './AddCoursePage';
 import ModCoursePage from './ModCoursePage';
 import MyCoursePage from './MyCoursePage';
 import { useNavigate } from 'react-router-dom';
+import useToken from "./hook/useToken";
 
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [ token, saveToken, removeToken ] = useToken();
   const [profileData, setProfileData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
@@ -27,11 +29,15 @@ const Dashboard = () => {
           console.log(response.data);
           setUserType(response.data.user_type);
           setLoading(false);
-        }
+        } 
       })
       .catch(error => {
         if (error.response.status === 401) {
           console.log('Unauthorized');
+          removeToken();
+          navigate('/login', { state: { message: 'Unauthorized' } });
+        }
+        else if (error.status === 302) {
           navigate('/login', { state: { message: 'Unauthorized' } });
         }
       });
