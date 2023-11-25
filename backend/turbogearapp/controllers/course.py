@@ -224,3 +224,32 @@ class CourseController(TGController):
             return dict(status='success', message='successfully enrolled course!')
         else:
             return dict(status='failed', message='already enrolled course!')
+        
+    @expose('json')
+    def get_course_class(self, **kwargs):
+        course_id=request.json['course_id']
+        user_id=request.environ.get('REMOTE_USER')
+        user_type = request.environ.get('USER_TYPE')
+        ccs=[]
+        if user_type == 'tutor':
+            allccs=DBSession.query(Course_Class).filter_by(tutor_id=user_id, course_id=course_id,).all() #todo: confirmed = true, tutor should accept the class to teach
+            for cc in allccs:
+                if not cc.enroll:
+                    ccs.append([cc.begin_time, cc.end_time, cc.t_begin_time, cc.t_end_time, cc.duration, cc.normal, cc.side_note, cc.taken, cc.price, cc.quant_rating, cc.review])
+            
+        elif user_type == 'student':
+            allccs=DBSession.query(Course_Class).filter_by(student_id=user_id, course_id=course_id).all()
+            for cc in allccs:
+                if not cc.enroll:
+                    ccs.append([cc.begin_time, cc.end_time, cc.t_begin_time, cc.t_end_time, cc.duration, cc.normal, cc.side_note, cc.taken, cc.price, cc.quant_rating, cc.review])
+        else:
+            return dict(status='failed', message='User is not a tutor or student')
+        return dict(status='success', message='successfully get course class!', course_class=ccs)
+    
+    @expose('json')
+    def add_course_class(self, **kwargs):
+        user_id=request.environ.get('REMOTE_USER')
+        course_id=request.json['course_id']
+        student_id=request.environ.get('REMOTE_USER')
+        
+        return dict(status='success', message='successfully added course class!')
