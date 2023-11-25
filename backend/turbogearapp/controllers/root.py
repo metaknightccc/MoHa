@@ -174,3 +174,6 @@ class RootController(BaseController):
         flash(_('We hope to see you soon!'))
         return HTTPFound(location=came_from)
     
+    def check_auth(self, **kwargs):
+        user_type = request.environ.get('USER_TYPE')
+        return dict(status='200', page='dashboard', user_type=user_type)

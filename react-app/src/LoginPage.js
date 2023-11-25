@@ -12,7 +12,7 @@ const ERROR_STATUS = {
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [ token, saveToken ] = useToken();
+  const [token, saveToken, removeToken] = useToken();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -22,12 +22,23 @@ function Login() {
     if (message && message in ERROR_STATUS) {
       setMessage(ERROR_STATUS[message]);
     } else {
-      // const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token');
       if (token) {
-        navigate('/dashboard');
+        axios.get('check_auth')
+          .then((response) => {
+            if (response.status === 200) {
+              navigate('/dashboard');
+            }
+
+          })
+          .catch((error) => {
+            if (error.status === 302) {
+              removeToken();
+            }
+          });
       }
     }
-  }, [navigate, location.state]);
+  }, [navigate, location.state, removeToken]);
 
   const handleLogin = (e) => {
     e.preventDefault();
