@@ -68,7 +68,7 @@ const CourseDescription = ({ data }) => {
     // Check if the user is a student and already enrolled
     if (isStudent && isEnrolled) {
       // If true, navigate to the course_main page
-      navigate(`/course_main`,{ state: { formData: formData } });
+      navigate(`/coursemain`,{ state: { formData: formData } });
     }
   }, [isStudent, isEnrolled, navigate]);
 
@@ -123,7 +123,7 @@ const CourseDescription = ({ data }) => {
                                 Modify
                             </Button>
                         </ListGroup.Item> */}
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               {isStudent ? (
                 <Button variant="primary" onClick={handleModify}>
                   Enroll
@@ -133,7 +133,21 @@ const CourseDescription = ({ data }) => {
                   Edit
                 </Button>
               )}
-            </ListGroup.Item>
+            </ListGroup.Item> */}
+            <ListGroup.Item>
+        {isStudent ? (
+          <Button variant="primary" onClick={handleModify}>
+            Enroll
+          </Button>
+        ) : (
+          // Only render the Edit button for the tutor whose ID matches the course's tutor_id
+          formData.tutor_id === formData.user_id && (
+            <Button variant="primary" onClick={handleModify}>
+              Edit
+            </Button>
+          )
+        )}
+      </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col lg={6}>

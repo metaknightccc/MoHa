@@ -100,6 +100,7 @@ class CourseController(TGController):
                 course_pic = course.pic,
                 is_enrolled = is_enrolled,
                 user_id=request.environ.get('REMOTE_USER'),
+                #user_type=request.environ.get('USER_TYPE'),
             )
         else:
             return dict(status='failed', message='Course not found')

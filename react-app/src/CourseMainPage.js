@@ -33,33 +33,34 @@ const CourseMain = ({ data }) => {
   });
   const [isStudent, setIsStudent] = useState();
   const [isEnrolled, setIsEnrolled] = useState(false);
-
-  const fetchInfo = async () => {
-    try {
-      const response = await axios.get(
-        `/course/get_course_info?course_id=${location.state.course_id}`
-      );
-      setFormData({
-        course_id: response.data.id,
-        tutor_id: response.data.tutor_id,
-        course_name: response.data.name,
-        course_subject: response.data.subject_name,
-        course_type: response.data.type,
-        course_price: response.data.price,
-        course_description: response.data.description,
-        course_pic: response.data.course_pic,
-      });
-      setIsStudent(response.data.user_type === "student");
-      setIsEnrolled(response.data.is_enrolled === true);
-      console.log(isStudent,"; ",isEnrolled);
-      console.log(response.data.user_type);
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    }
-  };
+  
+  // const fetchInfo = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `/course/get_course_info?course_id=${location.state.course_id}`
+  //     );
+  //     setFormData({
+  //       course_id: response.data.id,
+  //       tutor_id: response.data.tutor_id,
+  //       course_name: response.data.name,
+  //       course_subject: response.data.subject_name,
+  //       course_type: response.data.type,
+  //       course_price: response.data.price,
+  //       course_description: response.data.description,
+  //       course_pic: response.data.course_pic,
+  //     });
+  //     setIsStudent(response.data.user_type === "student");
+  //     setIsEnrolled(response.data.is_enrolled === true);
+  //     console.log(isStudent,"; ",isEnrolled);
+  //     console.log(response.data.user_type);
+  //   } catch (error) {
+  //     console.error("Error fetching user info:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchInfo();
+    setFormData(location.state.formData);
+
   }, []);
 
 //   useEffect(() => {
