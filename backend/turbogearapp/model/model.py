@@ -204,7 +204,7 @@ class Course_Class(DeclarativeBase):
     price = Column(Float, nullable = False, default= 0.0)
     quant_rating = Column(Integer, nullable=False, default=5) #range from 0-5. WARNING: data should be checked before logging in
     review = Column(Text, nullable=True, default= "User left with a good impression!")
-    
+    confirmed= Column(Boolean, default= False)
     
 class Subject(DeclarativeBase):
     __tablename__ = 'subject'

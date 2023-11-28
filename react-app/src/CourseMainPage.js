@@ -31,6 +31,21 @@ const CourseMain = ({ data }) => {
     course_description: "",
     course_pic: "",
   });
+  const [course_class, setCourse_class] = useState({ //todo: cannot do like this, need a nother component
+    begin_time: "", //format by .toISOstring()
+    end_time: "",
+    t_begin_time: "",
+    t_end_time: "",
+    duration: "",
+    normal: true,
+    side_note: "",
+    taken: false,
+    price: 0.0,
+    quant_rating : 0.0,
+    review: "",
+
+
+  });
   const [isStudent, setIsStudent] = useState();
   const [isEnrolled, setIsEnrolled] = useState(false);
   
@@ -58,10 +73,38 @@ const CourseMain = ({ data }) => {
   //   }
   // };
 
-  useEffect(() => {
-    setFormData(location.state.formData);
+  // useEffect(() => {
+    
 
-  }, []);
+  // }, []);
+
+  const fetchInfo = async () => {
+    setFormData(location.state.formData);
+    try{
+      const response = await axios.get(`/course/get_course_class?course_id=${location.state.formData.course_id}`
+      );
+      setCourse_class({
+        begin_time: response.data.begin_time,
+        end_time: response.data.end_time,
+        t_begin_time: response.data.t_begin_time,
+        t_end_time: response.data.t_end_time,
+        duration: response.data.duration,
+        normal: response.data.normal,
+        side_note: response.data.side_note,
+        taken: response.data.taken,
+        price: response.data.price,
+        quant_rating : response.data.quant_rating,
+        review: response.data.review,
+      });
+    }
+    catch (error) {
+      console.error("Error fetching course class:", error);
+    }
+  };
+
+  const handleClassClick = (course_class) => {
+    navigate(`/modcourseclass`, { state: { course_class: course_class } });
+  };
 
 //   useEffect(() => {
 //     // Check if the user is a student and already enrolled
@@ -149,6 +192,31 @@ const CourseMain = ({ data }) => {
               </Col>
             </Row>
           </Container>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12}>
+          <h2>Course Classes</h2>
+          <ListGroup>
+            {course_class.map((course_class) => (
+              <ListGroup.Item
+                key={course_class.course_id} // Replace 'classId' with the actual key in your class object
+                action
+                onClick={() => handleClassClick(course_class)}
+              >
+                <p>Begin Time: {course_class.begin_time}</p>
+                <p>End Time: {course_class.end_time}</p>
+                <p>Duration: {course_class.duration}</p>
+                <p>Normal: {course_class.normal}</p>
+                <p>Side Note: {course_class.side_note}</p>
+                <p>Taken: {course_class.taken}</p>
+                <p>Price: {course_class.price}</p>
+                <p>Quant Rating: {course_class.quant_rating}</p>
+                <p>Review: {course_class.review}</p>
+                {/* Add other class information as needed */}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
         </Col>
       </Row>
     </Container>
