@@ -42,3 +42,4 @@ personal_info.py
 
 /backend/turbogearapp/public/assets/course_pic/*
 /backend/turbogearapp/public/assets/user_pic/*
+/backend/turbogearapp/public/assets/default.png
