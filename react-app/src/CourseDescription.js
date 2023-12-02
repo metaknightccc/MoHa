@@ -67,6 +67,7 @@ const CourseDescription = ({ data }) => {
 
   useEffect(() => {
     fetchInfo();
+    console.log("useeffect: get course info is called, formdata is ",formData);
   }, []);
 
   useEffect(() => {

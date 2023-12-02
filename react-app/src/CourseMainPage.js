@@ -81,12 +81,23 @@ const CourseMain = ({ data }) => {
   // }, []);
 
   const fetchInfo = async () => {
+    if (location.state !== null) {
     setFormData(location.state.formData);
+    }
     console.log("formdata currently is:",formData);
     //onst course_id_s = new FormData();
     //course_id_s.append('course_id',location.state.formData.course_id);
-    axios.post('/course/get_course_class',formData);
-    console.log("formdata.course_id=",formData.course_id);
+    //axios.post('/course/get_course_class',{course_id: location.state.formData.course_id});
+    // try {
+    //   const course_classes = await axios.get(
+    //     `/course/get_course_info?get_course_info=${location.state.course_id}`
+    //   )
+    // }
+    // catch (error) {
+    //   console.error("Error fetching courseclass:", error);
+    // }
+    // setCourse_class(course_classes)
+    // console.log("course_classes=",course_class);
     try{
       const response = await axios.get(`/course/get_course_class?course_id=${location.state.formData.course_id}`
       );
@@ -103,11 +114,12 @@ const CourseMain = ({ data }) => {
       //   quant_rating : response.data.quant_rating,
       //   review: response.data.review,
       // });
-      setCourse_class(response.data);
+      setCourse_class(response.course_class);
     }
     catch (error) {
       console.error("Error fetching course class:", error);
     }
+    console.log("course_class=",course_class);
   };
 
   const handleClassClick = (course_class) => {
@@ -115,7 +127,14 @@ const CourseMain = ({ data }) => {
   };
   useEffect(() => {
     fetchInfo();
-  }, []); 
+  }, [navigate,location]); 
+
+  const handleModify = () => {
+
+      navigate(`/addclass`, { state: { formData: formData } });
+
+    //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
+  };
 
 //   useEffect(() => {
 //     // Check if the user is a student and already enrolled
@@ -221,13 +240,16 @@ const CourseMain = ({ data }) => {
                 <p>Normal: {course_class.normal}</p>
                 <p>Side Note: {course_class.side_note}</p>
                 <p>Taken: {course_class.taken}</p>
-                <p>Price: {course_class.price}</p>
+                {/* <p>Price: {course_class.price}</p>
                 <p>Quant Rating: {course_class.quant_rating}</p>
-                <p>Review: {course_class.review}</p>
+                <p>Review: {course_class.review}</p> */}
                 {/* Add other class information as needed */}
               </ListGroup.Item>
             ))}
           </ListGroup>
+          <Button variant="primary" onClick={handleModify}>
+            Add more Class?
+          </Button>
         </Col>
       </Row>
     </Container>
