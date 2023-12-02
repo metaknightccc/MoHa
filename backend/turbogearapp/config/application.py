@@ -16,6 +16,8 @@ ROUTE_TO_AUTHENTICATE = [
     '/course/mod_course',
     '/course/get_course_info', #added this back for user type -Michael Nov24
     '/course/enroll_course',
+    '/course/get_course_class',
+    '/course/add_course_class',
 ]
 
 def jwt_middleware(app):

@@ -239,8 +239,9 @@ class CourseController(TGController):
         
     @expose('json')
     def get_course_class(self, **kwargs):
-        course_id=request.json['course_id']
-        #course_id = request.forms['course_id']
+        #course_id=request.json['course_id']
+        course_id = request.params.get('course_id')
+        print("======Getting Course Class=====")
         user_id=request.environ.get('REMOTE_USER')
         user_type = request.environ.get('USER_TYPE')
         ccs=[]
@@ -256,7 +257,14 @@ class CourseController(TGController):
                 if not cc.enroll:
                     ccs.append([cc.begin_time, cc.end_time, cc.t_begin_time, cc.t_end_time, cc.duration, cc.normal, cc.side_note, cc.taken, cc.price, cc.quant_rating, cc.review])
         else:
+            print("======Getting Course Class failed=====")
+            print("user_type=",user_type)
+            print("user_id=",user_id)
+            print("course_id=",course_id)
             return dict(status='failed', message='User is not a tutor or student')
+        print("======Getting Course Class=====")
+        # for c in ccs:
+        #     print(c.begin_time,c.end_time,c.t_begin_time,c.t_end_time,c.duration,c.normal,c.side_note,c.taken,c.price,c.quant_rating,c.review)
         return dict(status='success', message='successfully get course class!', course_class=ccs)
     
     @expose('json')
