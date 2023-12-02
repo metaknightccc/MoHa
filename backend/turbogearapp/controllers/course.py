@@ -72,13 +72,22 @@ class CourseController(TGController):
     def get_course_info(self, **kwargs):
         is_enrolled=False
         course_id = kwargs.get('course_id')
+        student_id = request.environ.get('REMOTE_USER')
+        user_type = request.environ.get('USER_TYPE')
+        is_student = False
+        
+        if user_type=='student':
+            is_student=True
+            print("====GetCourseInfo: is student====")
+            
         print(course_id)
         course = DBSession.query(Course).filter_by(id=course_id).first()
-        enrolled = DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=request.environ.get('REMOTE_USER')).first()
+        enrolled = DBSession.query(Course_Class).filter_by(course_id=course_id, student_id=student_id).first()
         if enrolled:
             is_enrolled = True
+            print("====GetCourseInfo: is enrolled====")
 
-        print(request.environ.get('USER_TYPE'))
+        #print("getting course info: usertype:",request.environ.get('USER_TYPE'))
         print('====GetCourseInfo====')
         # try:
         #     with open("./turbogearapp/public" + course.pic, 'rb') as image_file:
@@ -88,6 +97,8 @@ class CourseController(TGController):
         #     image_file = open('./turbogearapp/public/assets/default.png', 'rb')
         #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
+            print("====GetCourseInfo2====")
+            print(is_enrolled)
             return dict(
                 id=course.id,
                 tutor_id=course.tutor_id,
@@ -96,10 +107,11 @@ class CourseController(TGController):
                 type=course.type,
                 price=course.price,
                 description=course.description,
-                user_type = request.environ.get('USER_TYPE'),
+                user_type = user_type,
                 course_pic = course.pic,
                 is_enrolled = is_enrolled,
                 user_id=request.environ.get('REMOTE_USER'),
+                is_student = is_student,
                 #user_type=request.environ.get('USER_TYPE'),
             )
         else:
@@ -228,6 +240,7 @@ class CourseController(TGController):
     @expose('json')
     def get_course_class(self, **kwargs):
         course_id=request.json['course_id']
+        #course_id = request.forms['course_id']
         user_id=request.environ.get('REMOTE_USER')
         user_type = request.environ.get('USER_TYPE')
         ccs=[]

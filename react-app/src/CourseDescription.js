@@ -31,9 +31,11 @@ const CourseDescription = ({ data }) => {
     course_price: 0.0,
     course_description: "",
     course_pic: "",
+    is_student: false,
+    is_enrolled: false,
   });
-  const [isStudent, setIsStudent] = useState();
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  // const [isStudent, setIsStudent] = useState();
+  // const [isEnrolled, setIsEnrolled] = useState(false);
 
   const fetchInfo = async () => {
     try {
@@ -50,14 +52,17 @@ const CourseDescription = ({ data }) => {
         course_description: response.data.description,
         course_pic: response.data.course_pic,
         user_id: response.data.user_id,
+        is_student: response.data.is_student,
+        is_enrolled: response.data.is_enrolled,
       });
-      setIsStudent(response.data.user_type === "student");
-      setIsEnrolled(response.data.is_enrolled === true);
-      console.log(isStudent,"; ",isEnrolled);
-      console.log(response.data.user_type);
+      
+      
     } catch (error) {
       console.error("Error fetching user info:", error);
     }
+    console.log(formData.is_student,"; ",formData.is_enrolled);
+    // console.log(response.data.user_type);
+    console.log("get course info is called, formdata is ",formData);
   };
 
   useEffect(() => {
@@ -66,18 +71,20 @@ const CourseDescription = ({ data }) => {
 
   useEffect(() => {
     // Check if the user is a student and already enrolled
-    if (isStudent && isEnrolled) {
+    if (formData.is_student && formData.is_enrolled) {
       // If true, navigate to the course_main page
       navigate(`/coursemain`,{ state: { formData: formData } });
+      console.log("course_main is called, formdata is ",formData);
     }
-  }, [isStudent, isEnrolled, navigate]);
+  // }, [isStudent, isEnrolled, navigate]);
+  },[formData]);
 
   const handleModify = () => {
-    if (!isStudent && formData.tutor_id === formData.user_id) {
+    if (!formData.is_student && formData.tutor_id === formData.user_id) {
       navigate(`/modcourse`, { state: { formData: formData } });
-    } else if (isStudent) {
+    } else if (formData.is_student) {
       navigate(`/courseenroll`, { state: { formData: formData } });
-    }
+    } 
     else {
         navigate(`/dashboard`, { state: { formData: formData } });
       }
@@ -135,7 +142,7 @@ const CourseDescription = ({ data }) => {
               )}
             </ListGroup.Item> */}
             <ListGroup.Item>
-        {isStudent ? (
+        {formData.is_student ? (
           <Button variant="primary" onClick={handleModify}>
             Enroll
           </Button>
