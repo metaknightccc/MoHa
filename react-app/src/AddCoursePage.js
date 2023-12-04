@@ -28,7 +28,7 @@ const AddCoursePage = () => {
 
   const fetchExistingSubjects = async () => {
     try {
-      const response = await fetch("/course/get_existing_subjects");
+      const response = await fetch("/course/get_existing_subjects"); 
       if (response.ok) {
         const subjects = await response.json();
         setExistingSubjects(subjects);

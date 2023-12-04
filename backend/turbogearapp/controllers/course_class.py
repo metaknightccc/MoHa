@@ -31,6 +31,17 @@ class ClassController(TGController):
                                                           Course_Class.student_id == student_id,
                                                           Course_Class.begin_time == begin_time).first()
         return utlis.sqlalchemy_to_json(course_class)
+    
+    @expose('json')
+    def get_enrolled_classes(self, **kwargs):
+        user_id=request.environ.get('REMOTE_USER')
+        user_type = request.environ.get('USER_TYPE')
+        if user_type != 'student':
+            return dict(status='failed', message='Only student can get enroll class.')
+        session = DBSession()
+        classes = session.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
+        return dict(status='success', classes=utlis.sqlalchemy_to_json(classes))
+        
 
     @expose('json')
     def purpose_class(self, **kwargs):
