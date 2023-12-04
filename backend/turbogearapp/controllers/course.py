@@ -63,7 +63,7 @@ class CourseController(TGController):
         transaction.commit()
         #DBSession.flush()
         #DBSession.refresh(new_course)
-        print("new Course id: ", new_course.id)
+        # print("new Course id: ", new_course.id)
         return dict(page='dashboard#course',message='successfully added course!' )
     
 

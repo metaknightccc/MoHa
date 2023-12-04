@@ -12,7 +12,7 @@ import {
   DropdownButton,
   ButtonGroup,
 } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import ClassSlot from "./ClassSlot";
 //import "./Profile.css"
@@ -220,6 +220,9 @@ const CourseMain = ({ data }) => {
                   />
                 )}
               </Col>
+              <Button>
+                <Link to="/rating">Rating</Link>
+              </Button>
             </Row>
           </Container>
         </Col>
