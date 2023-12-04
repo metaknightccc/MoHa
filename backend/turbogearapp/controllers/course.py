@@ -33,12 +33,13 @@ class CourseController(TGController):
         name=request.json['name']
         description = request.json.get('description')
         type=request.json['type']
-        doc = nlp(' '.join([name, type, description]))
+        subject_name=request.json['subject_name']
+        doc = nlp(' '.join([name, type, subject_name, description]))
         lemmas = ' '.join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
         new_course = Course(
             name = name,
             tutor_id=tutor_id,
-            subject_name=request.json['subject_name'],
+            subject_name=subject_name,
             type=type,
             price=float(request.json['price']),  # Parse price as a float
             #pic=request.json['pic'],  # Add pic
@@ -63,7 +64,7 @@ class CourseController(TGController):
         transaction.commit()
         #DBSession.flush()
         #DBSession.refresh(new_course)
-        print("new Course id: ", new_course.id)
+        # print("new Course id: ", new_course.id)
         return dict(page='dashboard#course',message='successfully added course!' )
     
 
@@ -230,6 +231,7 @@ class CourseController(TGController):
                 price=float(request.json['course_price']),
                 quant_rating=0,
                 review="",
+                confirmed=True,
             )
             DBSession.add(new_course_class)
             transaction.commit()
