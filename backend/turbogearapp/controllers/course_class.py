@@ -4,7 +4,6 @@ import transaction
 import json
 import os
 import datetime
-import utlis
 
 class ClassController(TGController):
     @expose('json')
@@ -19,7 +18,7 @@ class ClassController(TGController):
             course = session.query(Course).filter(Course.id == course_id).first()
             if course:
                 classes = session.query(Course_Class).filter(Course_Class.course_id == course_id, Course_Class.enroll == False).all()
-        return utlis.sqlalchemy_to_json(classes)
+        return sqlalchemy_to_json(classes)
     
     @expose('json')
     def get_class(self, **kwargs):
@@ -30,7 +29,7 @@ class ClassController(TGController):
         course_class = session.query(Course_Class).filter(Course_Class.course_id == course_id,
                                                           Course_Class.student_id == student_id,
                                                           Course_Class.begin_time == begin_time).first()
-        return utlis.sqlalchemy_to_json(course_class)
+        return sqlalchemy_to_json(course_class)
     
     @expose('json')
     def get_enrolled_classes(self, **kwargs):
@@ -40,7 +39,7 @@ class ClassController(TGController):
             return dict(status='failed', message='Only student can get enroll class.')
         session = DBSession()
         classes = session.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
-        return dict(status='success', classes=utlis.sqlalchemy_to_json(classes))
+        return dict(status='success', classes=sqlalchemy_to_json(classes))
         
 
     @expose('json')
