@@ -113,6 +113,7 @@ class CourseController(TGController):
                 is_enrolled = is_enrolled,
                 user_id=request.environ.get('REMOTE_USER'),
                 is_student = is_student,
+                zoom_id = course.zoom_id,
                 #user_type=request.environ.get('USER_TYPE'),
             )
         else:
