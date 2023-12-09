@@ -23,6 +23,7 @@ from turbogearapp.controllers.login import LoginController
 from turbogearapp.controllers.dashboard import DashboardController
 
 from turbogearapp.controllers.course import CourseController
+from turbogearapp.controllers.course_class import ClassController
 
 
 __all__ = ['RootController']
@@ -53,6 +54,7 @@ class RootController(BaseController):
 
     dashboard = DashboardController()
     course = CourseController()
+    course_class = ClassController()
 
     def _before(self, *args, **kw):
         response.headers['Access-Control-Allow-Origin'] = '*'
