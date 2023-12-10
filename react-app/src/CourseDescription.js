@@ -125,6 +125,9 @@ const CourseDescription = ({ data }) => {
               Course price: {formData.course_price}
             </ListGroup.Item>
             <ListGroup.Item>
+              Zoom Link: {formData.zoom_id}
+            </ListGroup.Item>
+            <ListGroup.Item>
               Course Description: {formData.course_description}
             </ListGroup.Item>
 

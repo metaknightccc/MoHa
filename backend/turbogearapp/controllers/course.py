@@ -199,7 +199,9 @@ class CourseController(TGController):
         course.type = request.json['course_type']
         course.price = float(request.json['course_price'])
         course.description = request.json.get('course_description')
-        print(course)
+        course.zoom_id = request.json['zoom_id']
+        
+        print("Course Zoom Link: ",course.zoom_id)
         print('====Mod course====')
         transaction.commit()
         return dict(page='dashboard', message='successfully modded course!')
