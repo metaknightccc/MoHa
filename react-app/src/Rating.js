@@ -22,7 +22,7 @@ const Rating = () => {
     event.preventDefault();
 
     try {
-      const response = axios.post('/course/rating_class', {
+      const response = axios.post('/course_class/review_class', {
         rating: rating,
         review: review,
         // course_id: 1,
