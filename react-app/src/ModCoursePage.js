@@ -11,6 +11,7 @@ import {
   Dropdown,
   DropdownButton,
   ButtonGroup,
+  ListGroupItem,
 } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -286,11 +287,13 @@ const ModCourse = ({ data }) => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
+                </ListGroup.Item>
+                <ListGroup.Item>
                 <Form.Group controlId="zoomId">
                   <Form.Label>Zoom Link</Form.Label>
                   <Form.Control
                     type="text"
-                    name="zoom_link"
+                    name="zoom_id"
                     value={formData.zoom_id}
                     onChange={handleInputChange}
                   />
