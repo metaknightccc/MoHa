@@ -35,6 +35,8 @@ const CourseMain = ({ data }) => {
   const [formData, setFormData] = useState({
     course_id: "",
     tutor_id: "",
+    tutor_name: "",
+    tutor_email: "",
     user_id: "",
     course_name: "",
     course_subject: "",
@@ -45,6 +47,7 @@ const CourseMain = ({ data }) => {
     is_student: false,
     is_enrolled: false,
     zoom_id: "",
+
   });
   // const [course_class, setCourse_class] = useState({ //todo: cannot do like this, need a nother component
   //   begin_time: "", //format by .toISOstring()
@@ -192,6 +195,15 @@ const CourseMain = ({ data }) => {
             <ListGroup.Item>Course id: {formData.course_id}</ListGroup.Item>
             <ListGroup.Item>
               Course tutor id: {formData.tutor_id}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Tutor Name: {formData.tutor_name}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Tutor ID: {formData.tutor_id}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Tutor Email: {formData.tutor_email}
             </ListGroup.Item>
             {/* <ListGroup.Item>Course name: {formData.course_name}</ListGroup.Item> */}
 
