@@ -252,7 +252,7 @@ class CourseController(TGController):
     def get_course_class(self, **kwargs):
         #course_id=request.json['course_id']
         course_id = request.params.get('course_id')
-        print("======Getting Course Class=====")
+        # print("======Getting Course Class=====")
         user_id=request.environ.get('REMOTE_USER')
         user_type = request.environ.get('USER_TYPE')
         ccs=[]
@@ -273,7 +273,7 @@ class CourseController(TGController):
             print("user_id=",user_id)
             print("course_id=",course_id)
             return dict(status='failed', message='User is not a tutor or student')
-        print("======Getting Course Class=====")
+        # print("======Getting Course Class=====")
         # for c in ccs:
         #     print(c.begin_time,c.end_time,c.t_begin_time,c.t_end_time,c.duration,c.normal,c.side_note,c.taken,c.price,c.quant_rating,c.review)
         return dict(status='success', message='successfully get course class!', course_class=ccs)
@@ -297,12 +297,16 @@ class CourseController(TGController):
         begin_time=request.json['begin_time']
         end_time=request.json['end_time']
         course_id=request.json['course_id']
+
+        print("begin_time=",begin_time)
+        print("end_time=",end_time)
         
-        cc = DBSession.query(Course_Class).filter_by(
-            course_id = course_id, 
-            student_id = student_id,
-            begin_time = begin_time,
-            end_time = end_time).first()
+        cc = DBSession.query(Course_Class).filter(
+            course_id == course_id, 
+            student_id == student_id,
+            begin_time == begin_time,
+            end_time == end_time).first()
+ 
 
         # Check if the entry exists
         if cc:
