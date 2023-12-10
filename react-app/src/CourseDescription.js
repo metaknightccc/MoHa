@@ -33,6 +33,7 @@ const CourseDescription = ({ data }) => {
     course_pic: "",
     is_student: false,
     is_enrolled: false,
+    zoom_id: "",
   });
   // const [isStudent, setIsStudent] = useState();
   // const [isEnrolled, setIsEnrolled] = useState(false);
@@ -54,6 +55,7 @@ const CourseDescription = ({ data }) => {
         user_id: response.data.user_id,
         is_student: response.data.is_student,
         is_enrolled: response.data.is_enrolled,
+        zoom_id: response.data.zoom_id,
       });
       
       
@@ -121,6 +123,9 @@ const CourseDescription = ({ data }) => {
             <ListGroup.Item>Course type: {formData.course_type}</ListGroup.Item>
             <ListGroup.Item>
               Course price: {formData.course_price}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Zoom Link: {formData.zoom_id}
             </ListGroup.Item>
             <ListGroup.Item>
               Course Description: {formData.course_description}

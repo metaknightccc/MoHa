@@ -21,6 +21,17 @@ import "./CourseDescription.css";
 const CourseMain = ({ data }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  // const [formData, setFormData] = useState({
+  //   course_id: "",
+  //   tutor_id: "",
+  //   user_id: "",
+  //   course_name: "",
+  //   course_subject: "",
+  //   course_type: "",
+  //   course_price: 0.0,
+  //   course_description: "",
+  //   course_pic: "",
+  // });
   const [formData, setFormData] = useState({
     course_id: "",
     tutor_id: "",
@@ -31,6 +42,9 @@ const CourseMain = ({ data }) => {
     course_price: 0.0,
     course_description: "",
     course_pic: "",
+    is_student: false,
+    is_enrolled: false,
+    zoom_id: "",
   });
   // const [course_class, setCourse_class] = useState({ //todo: cannot do like this, need a nother component
   //   begin_time: "", //format by .toISOstring()
@@ -183,6 +197,9 @@ const CourseMain = ({ data }) => {
             <ListGroup.Item>Course type: {formData.course_type}</ListGroup.Item>
             <ListGroup.Item>
               Course price: {formData.course_price}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Zoom Link: {formData.zoom_id}
             </ListGroup.Item>
             <ListGroup.Item>
               Course Description: {formData.course_description}

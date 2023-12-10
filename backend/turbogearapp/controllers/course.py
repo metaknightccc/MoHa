@@ -113,6 +113,7 @@ class CourseController(TGController):
                 is_enrolled = is_enrolled,
                 user_id=request.environ.get('REMOTE_USER'),
                 is_student = is_student,
+                zoom_id = course.zoom_id,
                 #user_type=request.environ.get('USER_TYPE'),
             )
         else:
@@ -198,7 +199,9 @@ class CourseController(TGController):
         course.type = request.json['course_type']
         course.price = float(request.json['course_price'])
         course.description = request.json.get('course_description')
-        print(course)
+        course.zoom_id = request.json['zoom_id']
+        
+        print("Course Zoom Link: ",course.zoom_id)
         print('====Mod course====')
         transaction.commit()
         return dict(page='dashboard', message='successfully modded course!')

@@ -20,16 +20,30 @@ import "./ModCoursePage.css";
 const ModCourse = ({ data }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  // const [formData, setFormData] = useState({
+  //   course_id: "",
+  //   course_tutor_id: "",
+  //   course_name: "",
+  //   course_subject: "",
+  //   course_type: "",
+  //   user_id: "",
+  //   course_price: 0.0,
+  //   course_description: "",
+  //   course_pic: "",
+  // });
   const [formData, setFormData] = useState({
     course_id: "",
-    course_tutor_id: "",
+    tutor_id: "",
+    user_id: "",
     course_name: "",
     course_subject: "",
     course_type: "",
-    user_id: "",
     course_price: 0.0,
     course_description: "",
     course_pic: "",
+    is_student: false,
+    is_enrolled: false,
+    zoom_id: "",
   });
   //const [id, setId] = useState();
 
@@ -48,6 +62,7 @@ const ModCourse = ({ data }) => {
         course_description: response.data.description,
         course_pic: response.data.course_pic,
         user_id : response.data.user_id,
+        zoom_id: response.data.zoom_id,
       });
     } catch (error) {
       console.error("Error fetching user info:", error);
@@ -268,6 +283,15 @@ const ModCourse = ({ data }) => {
                     type="text"
                     name="course_price"
                     value={formData.course_price}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="zoomId">
+                  <Form.Label>Zoom Link</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="zoom_link"
+                    value={formData.zoom_id}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
