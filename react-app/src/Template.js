@@ -34,6 +34,12 @@ function Template() {
   const [token] = useToken();
   const [isLogged, setIsLogged] = useState(false);
   const [settings, setSettings] = useState(loggedOutOptions);
+  const [formData, setFormData] = useState({
+    user_name: "",
+    user_email: "",
+    user_pic: "",
+
+  });
 
   useEffect(() => {
     // const token = localStorage.getItem('token');
@@ -61,6 +67,17 @@ function Template() {
     }
   }, [isLogged]);
 
+  // useEffect(() => {
+  //   try{
+  //   const response = axios.get('/dashboard/get_user_info');
+  //   setFormData({
+  //     user_name: response.data.user_name,
+  //     user_email: response.data.user_email,
+  //     user_pic: response.data.user_pic,
+  //   });
+  // } catch (error) {
+  //   console.error('Error fetching user info:', error);}
+  // });
 
   return (
     <div className="Template">
@@ -157,10 +174,25 @@ function Template() {
                       <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
 
                       <div>
-                        <div className="username">Username</div>
-                        <div className="email">email@example.com</div>
+                        {/* <div className="username">Username</div>
+                        <div className="email">email@example.com</div> */}
                       </div>
                     </div>
+                     {/* <div className="avatar-dropdown-header">
+                  {formData.user_pic ? (
+                    <Image src={formData.user_pic} roundedCircle fluid />
+                  ) : (
+                    <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
+                  )}
+                  <div>
+                    {formData.user_name && (
+                      <div className="username">{formData.user_name}</div>
+                    )}
+                    {formData.user_email && (
+                      <div className="email">{formData.user_email}</div>
+                    )}
+                  </div>
+                </div> */}
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   {/* <Dropdown.Item href="/dashboard">Profile</Dropdown.Item>
