@@ -41,7 +41,8 @@ const ClassListPage = ({ data, userType }) => {
   };
 
   const handlePurpose = (course_id, student_id, begin_time, end_time, accept) => {
-    // todo: send accept to backend
+    // if (accept) 
+    // axios.post("/course_class/confirm_class", {
   };
 
   return (
