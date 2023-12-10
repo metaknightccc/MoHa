@@ -219,8 +219,8 @@ class CourseController(TGController):
         print("======Enrolling Course=====")
         print("course_id=",course_id)
         print("getting Course Info:")
-        cc= DBSession.query(Course_Class).filter(course_id==course_id, 
-                                                student_id==student_id).first()
+        cc= DBSession.query(Course_Class).filter_by(course_id=course_id, 
+                                                student_id=student_id).first()
         print("======Enrolling Course=====")
         if not cc:
             new_course_class= Course_Class(
@@ -236,7 +236,7 @@ class CourseController(TGController):
                 price=float(request.json['course_price']),
                 quant_rating=0,
                 review="",
-                confirmed=True,
+                # confirmed=True,
             )
             DBSession.add(new_course_class)
             transaction.commit()
@@ -281,3 +281,28 @@ class CourseController(TGController):
         student_id=request.environ.get('REMOTE_USER')
         
         return dict(status='success', message='successfully added course class!')
+
+    @expose('json')
+    def rating_class(self, **kwargs):
+        
+        # course_id=request.json['course_id']
+        student_id=request.environ.get('REMOTE_USER')
+        rating=request.json['rating']
+        review=request.json['review']
+        begin_time=request.json['begin_time']
+        end_time=request.json['end_time']
+        course_id=request.json['course_id']
+        
+        cc = DBSession.query(Course_Class).filter(
+            course_id == course_id, 
+            student_id == student_id,
+            begin_time == begin_time,
+            end_time == end_time).first()
+
+        # Check if the entry exists
+        if cc:
+            # Update the rating and review
+            cc.quant_rating = rating
+            cc.review = review
+            transaction.commit()
+            return dict(status='success', message='successfully added course class!')

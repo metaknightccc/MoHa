@@ -6,6 +6,7 @@ import Profile from './Profile'
 import AddCoursePage from './AddCoursePage';
 import ModCoursePage from './ModCoursePage';
 import MyCoursePage from './MyCoursePage';
+import ClassListPage from './ClassListPage';
 import { useNavigate } from 'react-router-dom';
 import useToken from "./hook/useToken";
 
@@ -16,6 +17,7 @@ const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
+  const [classlistData, setClasslistData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState(null);
   const endpoint = '/dashboard';
@@ -68,6 +70,15 @@ const Dashboard = () => {
         .catch(error => {
           console.error('Error fetching security data:', error);
         });
+    } else if (key === '#classlist' && classlistData == null) {
+      try {
+        axios.get("/course_class/get_classes")
+        .then(response => {
+          setClasslistData(response.data);
+        })
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
     }
   };
 
@@ -95,6 +106,9 @@ const Dashboard = () => {
                       </ListGroup.Item>
                       <ListGroup.Item action href="#security">
                         Security
+                      </ListGroup.Item>
+                      <ListGroup.Item action href="#classlist">
+                        Classlist
                       </ListGroup.Item>
                       {
                         // Check if the user is a tutor
@@ -125,6 +139,10 @@ const Dashboard = () => {
                       <Tab.Pane eventKey="#security">
                         <h3>Security</h3>
                         {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="#classlist">
+                        <h3>Classlist</h3>
+                        {classlistData ? <ClassListPage data={classlistData} userType={userType}/> : 'Loading...'}
                       </Tab.Pane>
                       {
                         userType === 'tutor' && (
