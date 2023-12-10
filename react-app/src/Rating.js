@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const Rating = () => {
-  const [rating, setRating] = useState(-1);
+  const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleRatingChange = (event) => {
@@ -33,7 +34,11 @@ const Rating = () => {
         begin_time: location.state.course_class.begin_time,
         end_time: location.state.course_class.end_time,
       });
-      console.log('Submitted Rating:', rating, 'Review:', review);
+     
+      console.log('Submitted Rating:', rating, 'Review:', review); 
+      alert("Course Successful Added!")
+      navigate(`/dashboard`);
+
     }
     catch (error) {
       console.error('Error submitting rating:', error);
