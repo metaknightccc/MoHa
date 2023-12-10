@@ -290,6 +290,7 @@ class CourseController(TGController):
     def rating_class(self, **kwargs):
         
         # course_id=request.json['course_id']
+        print("======Rating Course Class=====")
         student_id=request.environ.get('REMOTE_USER')
         rating=request.json['rating']
         review=request.json['review']
@@ -297,20 +298,22 @@ class CourseController(TGController):
         end_time=request.json['end_time']
         course_id=request.json['course_id']
         
-        cc = DBSession.query(Course_Class).filter(
-            course_id == course_id, 
-            student_id == student_id,
-            begin_time == begin_time,
-            end_time == end_time).first()
+        cc = DBSession.query(Course_Class).filter_by(
+            course_id = course_id, 
+            student_id = student_id,
+            begin_time = begin_time,
+            end_time = end_time).first()
 
         # Check if the entry exists
         if cc:
+            print("======Rating Course Class: found class=====")
             # Update the rating and review
             cc.quant_rating = rating
             cc.review = review
             transaction.commit()
             return dict(status='success', message='successfully added course rating!')
-    
+        else:
+            return dict(status='failed', message='course class not found!')
     # @expose('json')
     # def cal_avg_rating(self):
     #     courses = DBSession.query(Course).all()

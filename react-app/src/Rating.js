@@ -35,7 +35,8 @@ const Rating = () => {
         end_time: location.state.course_class.end_time,
       });
       
-      console.log('Submitted Rating:', rating, 'Review:', review); 
+      console.log('Submitted Rating:', rating, 'Review:', review);
+      console.log('Response:', response.message); 
       alert("Rating Successful Added!")
       navigate(`/dashboard`);
 
