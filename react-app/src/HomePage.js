@@ -22,6 +22,22 @@ const HomePage = () => {
       });
   }, []);
 
+  const getCarouselItems = (numPerSlide) => {
+    const carouselItems = [];
+    for (let i = 0; i < classes.length; i += numPerSlide) {
+      const slideItems = classes.slice(i, i + numPerSlide);
+      carouselItems.push(
+        <Carousel.Item key={i}>
+          <div className="group">
+            {slideItems.map((item, index) => (
+              <ClassSlot key={index} props={item} />
+            ))}
+          </div>
+        </Carousel.Item>
+      );
+    }
+    return carouselItems;
+  };
 
   return (
     <div className="wrap">
@@ -37,16 +53,7 @@ const HomePage = () => {
       </div>
       <div>
         <Carousel interval={10000} pause={false}>
-          {
-            loading ? <div>Loading...</div> :
-            classes.map((item, index) => (
-              <Carousel.Item key={index}>
-                <div className="group">
-                  <ClassSlot props={item} />
-                </div>
-              </Carousel.Item>
-            ))
-          }
+          {loading ? <div>Loading...</div> : getCarouselItems(4)}
         </Carousel>
       </div>
     </div>
