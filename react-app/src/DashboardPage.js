@@ -9,6 +9,7 @@ import MyCoursePage from './MyCoursePage';
 import ClassListPage from './ClassListPage';
 import { useNavigate } from 'react-router-dom';
 import useToken from "./hook/useToken";
+import Security from './Security';
 
 
 const Dashboard = () => {
@@ -138,7 +139,7 @@ const Dashboard = () => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="#security">
                         <h3>Security</h3>
-                        {securityData ? <div>{JSON.stringify(securityData)}</div> : 'Loading...'}
+                        <Security />
                       </Tab.Pane>
                       <Tab.Pane eventKey="#classlist">
                         <h3>Classlist</h3>
