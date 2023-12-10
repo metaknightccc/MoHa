@@ -109,7 +109,7 @@ const ClassListPage = ({ data, userType }) => {
                       userType === "student" &&
                       <div className="classcontent">
                         {
-                          (item.review == "User left with a good impression!" || item.review == "") ?
+                          (item.review == "User left with a good impression!" || item.review == "" || !item.review) ?
                             <Button variant="primary" onClick={() => {
                               handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
                             }}>Comment</Button> : <Button variant="primary">Rated ✓</Button>
