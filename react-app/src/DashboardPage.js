@@ -142,7 +142,7 @@ const Dashboard = () => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="#classlist">
                         <h3>Classlist</h3>
-                        {classlistData ? <ClassListPage data={classlistData}/> : 'Loading...'}
+                        {classlistData ? <ClassListPage data={classlistData} userType={userType}/> : 'Loading...'}
                       </Tab.Pane>
                       {
                         userType === 'tutor' && (

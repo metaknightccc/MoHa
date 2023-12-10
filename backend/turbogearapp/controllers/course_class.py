@@ -54,9 +54,9 @@ class ClassController(TGController):
         if user_type == 'student':
             classes = session.query(Course_Class).filter_by(student_id = user_id).all()
         elif user_type == 'tutor':
-            course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id, enroll = False).all()]
+            course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id).all()]
             for course_id in course_ids:
-                classes += session.query(Course_Class).filter_by(course_id = course_id).all()
+                classes += session.query(Course_Class).filter_by(course_id = course_id, enroll = False).all()
         else:
             return dict(status='failed', message='Only student or tutor can get classes.')
         print(classes)
