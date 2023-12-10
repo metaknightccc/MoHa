@@ -8,9 +8,17 @@ import datetime
 def sqlalchemy_to_json(sqlalchemy_objects):
     result = []
     for obj in sqlalchemy_objects:
-        result.append(
-            {column.name: getattr(obj, column.name) for column in obj.__table__.columns}
-        )
+        obj_dict = {}
+        for column in obj.__table__.columns:
+            value = getattr(obj, column.name)
+            # Convert datetime objects to string
+            if isinstance(value, datetime.datetime):
+                obj_dict[column.name] = value.isoformat()
+            # Add more type checks as needed (e.g., for date, decimal.Decimal, etc.)
+            else:
+                obj_dict[column.name] = value
+        result.append(obj_dict)
+    print(result)
     return result
 
 def get_duration(begin_time, end_time):
@@ -42,15 +50,18 @@ class ClassController(TGController):
         user_type = request.environ.get('USER_TYPE')
         session = DBSession()
         classes = []
+        print(user_type)
         if user_type == 'student':
             classes = session.query(Course_Class).filter_by(student_id = user_id).all()
         elif user_type == 'tutor':
-            course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id, enroll = false).all()]
+            course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id, enroll = False).all()]
             for course_id in course_ids:
                 classes += session.query(Course_Class).filter_by(course_id = course_id).all()
         else:
             return dict(status='failed', message='Only student or tutor can get classes.')
-        return sqlalchemy_to_json(course_class)
+        print(classes)
+        json_data = json.dumps(sqlalchemy_to_json(classes))
+        return json_data.encode('utf-8')
     
     @expose('json')
     def get_enrolled_classes(self, **kwargs):

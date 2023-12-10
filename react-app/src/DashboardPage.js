@@ -17,9 +17,9 @@ const Dashboard = () => {
   const [profileData, setProfileData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [securityData, setSecurityData] = useState(null);
+  const [classlistData, setClasslistData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState(null);
-  const [classlist, setClasslist] = useState(null);
   const endpoint = '/dashboard';
   const coursemod = '/course';
 
@@ -70,11 +70,11 @@ const Dashboard = () => {
         .catch(error => {
           console.error('Error fetching security data:', error);
         });
-    } else if (key === '#classlist' && securityData == null) {
+    } else if (key === '#classlist' && classlistData == null) {
       try {
         axios.get("/course_class/get_classes")
         .then(response => {
-          setClasslist(response.data);
+          setClasslistData(response.data);
         })
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -142,7 +142,7 @@ const Dashboard = () => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="#classlist">
                         <h3>Classlist</h3>
-                        <ClassListPage data={classlist}/>
+                        {classlistData ? <ClassListPage data={classlistData}/> : 'Loading...'}
                       </Tab.Pane>
                       {
                         userType === 'tutor' && (
