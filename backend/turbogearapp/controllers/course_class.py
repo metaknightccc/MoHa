@@ -79,7 +79,7 @@ class ClassController(TGController):
             course = session.query(Course).filter_by(id = course_class.course_id).first()
             class_dict = sqlalchemy_to_json_single(course_class)
             course_dict = sqlalchemy_to_json_single(course)
-            response.append({**class_dict, **course_dict})
+            response.append({**course_dict, **class_dict})
         return json.dumps(response)
             
         # json_data = json.dumps(sqlalchemy_to_json(classes))
