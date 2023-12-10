@@ -4,7 +4,7 @@ import transaction
 import json
 import os
 import datetime
-
+from sqlalchemy.orm import aliased
 def sqlalchemy_to_json(sqlalchemy_objects):
     result = []
     for obj in sqlalchemy_objects:
@@ -202,3 +202,22 @@ class ClassController(TGController):
         course_class.review = review
         transaction.commit()
         return dict(status='success', message='Class review successful.')
+    
+    @expose('json')
+    def cal_course_price(self):
+        # course_classes = DBSession.query(Course_Class).all()
+        # for course_class in course_classes:
+        #     course_class.price = course_class.duration / 60 * course_class.course.price
+        courses = DBSession.query(Course).all()
+        
+        for course in courses:
+             # Use aliased to create a separate alias for Course_Class
+            CourseClassAlias = aliased(Course_Class)
+
+            # Fetch related classes using the aliased class
+            related_classes = DBSession.query(CourseClassAlias).filter_by(course_id=course.id).all()
+            
+            if related_classes:
+                for related_class in related_classes:
+                    related_class.price = related_class.duration / 60 * course.price
+        return dict(status='success', message='Class price calculate successful.')
