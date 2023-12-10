@@ -9,6 +9,7 @@ import spacy
 import base64
 from io import BytesIO
 import datetime
+from sqlalchemy.orm import aliased
 
 class CourseController(TGController):
     @expose('json')
@@ -305,4 +306,52 @@ class CourseController(TGController):
             cc.quant_rating = rating
             cc.review = review
             transaction.commit()
-            return dict(status='success', message='successfully added course class!')
+            return dict(status='success', message='successfully added course rating!')
+    
+    # @expose('json')
+    # def cal_avg_rating(self):
+    #     courses = DBSession.query(Course).all()
+    #     #courses.expunge_all()
+    #     #courses.close()
+    #     for course in courses:
+    #         related_classes = DBSession.query(Course_Class).filter_by(course_id=course.id).all()
+    #         if related_classes:
+    #             total_rating = sum([course_class.quant_rating for course_class in related_classes])
+    #             avg_rating = total_rating / len(related_classes)
+    #             course.avg_rating = avg_rating
+    #             transaction.commit()
+    #         else:
+    #             course.avg_rating = None
+    #             transaction.commit()
+    #     return dict(status='success', message='successfully calculated average rating!')
+    @expose('json')
+    def cal_avg_rating(self):
+        courses = DBSession.query(Course).all()
+        
+        for course in courses:
+            # Use aliased to create a separate alias for Course_Class
+            CourseClassAlias = aliased(Course_Class)
+
+            # Fetch related classes using the aliased class
+            related_classes = DBSession.query(CourseClassAlias).filter_by(course_id=course.id).all()
+
+            if related_classes:
+                # Calculate the total rating using a list comprehension
+                total_rating = sum([course_class.quant_rating for course_class in related_classes])
+
+                # Calculate the average rating
+                avg_rating = total_rating / len(related_classes)
+
+                # Update the course's avg_rating
+                #course.avg_rating = avg_rating
+
+            else:
+                # No related classes, set avg_rating to None
+                avg_rating = None
+
+            # Commit the changes for each course
+            course = DBSession.query(Course).filter_by(id=course.id).first()
+            course.avg_rating = avg_rating
+            #DBSession.commit()
+
+        return dict(status='success', message='successfully calculated average rating!')
