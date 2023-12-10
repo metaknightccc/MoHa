@@ -75,7 +75,7 @@ const AddClassPage = () => {
         // Handle the response data as needed
         console.log("Course added:", response.data);
         alert("Class Successful Added! Wait for tutor to confirm");
-        axios.get(`/course_class/cal_course_price`)
+        //axios.get(`/course_class/cal_course_price`)
         navigate(`/coursedes`, { state: { ...formData } });
       })
       .catch((error) => {

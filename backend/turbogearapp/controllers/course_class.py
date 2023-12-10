@@ -102,6 +102,8 @@ class ClassController(TGController):
         print(begin_time)
         print(end_time)
         duration = get_duration(begin_time, end_time)
+        cal_price = duration / 60 * price
+        cal_price = round(cal_price, 2)
         session = DBSession()
         # price = session.query(Course).filter_by(id = course_id).first().price
         course_class = Course_Class(
@@ -110,7 +112,7 @@ class ClassController(TGController):
             begin_time = to_timestamp(date, begin_time),
             end_time = to_timestamp(date, end_time),
             duration = duration,
-            price = price,
+            price = cal_price,
             quant_rating = 5
         )
         session.add(course_class)
@@ -203,7 +205,7 @@ class ClassController(TGController):
         transaction.commit()
         return dict(status='success', message='Class review successful.')
     
-    @expose('json')
+    @expose('json') #WARNING: this function should no longer be called
     def cal_course_price(self):
         # course_classes = DBSession.query(Course_Class).all()
         # for course_class in course_classes:
