@@ -15,6 +15,7 @@ const AddCoursePage = () => {
     description: "",
     course_pic: null,
     academic: false,
+    zoom_id: "",
   });
   const [course_id, setCourse_id] = useState("");
 
@@ -96,7 +97,9 @@ const AddCoursePage = () => {
       .then((response) => {
         // Handle the response data as needed
         console.log("Course added:", response.data);
-        navigate(`/coursedes`, { state: { formData: formData } });
+        alert("Course Successful Added!")
+        window.location.reload();
+        // navigate(`/`, { state: { formData: formData } });
         //const id =  response.data.course_id;
         //setCourse_id(id);
         //console.log('Course ID:', course_id);
@@ -175,6 +178,15 @@ const AddCoursePage = () => {
             type="number"
             name="price"
             value={formData.price}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="zoomId">
+          <Form.Label>Zoom Link</Form.Label>
+          <Form.Control
+            type="text"
+            name="zoom_id"
+            value={formData.zoom_id}
             onChange={handleInputChange}
           />
         </Form.Group>

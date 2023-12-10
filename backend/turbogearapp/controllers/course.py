@@ -34,6 +34,7 @@ class CourseController(TGController):
         description = request.json.get('description')
         type=request.json['type']
         subject_name=request.json['subject_name']
+        zoom_id=request.json['zoom_id']
         doc = nlp(' '.join([name, type, subject_name, description]))
         lemmas = ' '.join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct and not token.text == '\n'])
         new_course = Course(
@@ -45,6 +46,7 @@ class CourseController(TGController):
             #pic=request.json['pic'],  # Add pic
             description = description,
             lemmas = lemmas,
+            zoom_id = zoom_id,
         )
 
         coursecheck = DBSession.query(Subject).filter_by(subject_name=new_course.subject_name).first()
