@@ -150,6 +150,10 @@ const CourseMain = ({ data }) => {
     //navigate(`/modcourse/${formData.course_id}`); // Redirect to ModCoursePage with the course ID
   };
 
+  const handleRating = () => {
+    navigate(`/rating`, { state: { course_class: course_class } });
+  };
+
 //   useEffect(() => {
 //     // Check if the user is a student and already enrolled
 //     if (isStudent && isEnrolled) {
@@ -238,6 +242,11 @@ const CourseMain = ({ data }) => {
                 )}
               </Col>
             </Row>
+            {/* <Row>
+              <Button
+                onClick={() => handleRating()}>
+              </Button>
+            </Row> */}
           </Container>
         </Col>
       </Row>
