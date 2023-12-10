@@ -341,7 +341,7 @@ class CourseController(TGController):
 
                 # Calculate the average rating
                 avg_rating = total_rating / len(related_classes)
-
+                avg_rating = round(avg_rating, 2)
                 # Update the course's avg_rating
                 #course.avg_rating = avg_rating
 
