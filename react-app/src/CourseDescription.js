@@ -61,6 +61,15 @@ const CourseDescription = ({ data }) => {
       
     } catch (error) {
       console.error("Error fetching user info:", error);
+      if (error.status === 401) {
+        console.log('Unauthorized');
+        navigate('/login', { state: { message: 'Unauthorized' } });
+      }
+      else if (error.status === 302) {
+        navigate('/login', { state: { message: 'Unauthorized' } });
+      }else{
+        navigate('/login', { state: { message: 'Unauthorized' } });
+      }
     }
     console.log(formData.is_student,"; ",formData.is_enrolled);
     // console.log(response.data.user_type);
