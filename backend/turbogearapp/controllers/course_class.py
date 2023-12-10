@@ -210,21 +210,20 @@ class ClassController(TGController):
 
     @expose('json')
     def review_class(self, **kwargs):
-        user_id=request.environ.get('REMOTE_USER')
-        user_type = request.environ.get('USER_TYPE')
-        if user_type != 'student':
-            return dict(status='failed', message='Only student can purpose class.')
         course_id = request.json['course_id']
         student_id = request.json['student_id']
-        begin_time = datetime.strptime(request.json['begin_time'], '%Y-%m-%d %H:%M:%S')
-        end_time = datetime.strptime(request.json['end_time'], '%Y-%m-%d %H:%M:%S')
-        quant_rating = request.json['quant_rating']
+        begin_time = request.json['begin_time']
+        end_time = request.json['end_time']
+        quant_rating = request.json['rating']
         review = request.json['review']
         session = DBSession()
-        course_class = session.query(Course_Class).filter(Course_Class.course_id == course_id,
-                                                          Course_Class.student_id == student_id,
-                                                          Course_Class.begin_time == begin_time).first()
+        course_class = session.query(Course_Class).filter_by(course_id = course_id,
+                                                          student_id = student_id,
+                                                          begin_time = begin_time,
+                                                          end_time = end_time).first()
+                                                          
         course_class.review = review
+        course_class.quant_rating = quant_rating
         transaction.commit()
         return dict(status='success', message='Class review successful.')
     
