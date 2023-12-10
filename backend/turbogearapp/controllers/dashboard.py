@@ -226,3 +226,36 @@ class DashboardController(TGController):
         # print("======================")
 
         return dict(status='success', courses=courses)
+
+    @expose('json')
+    def change_password(self, **kwargs):
+        print("========change_password=========")
+        old_password = request.json['old_password']
+        new_password = request.json['new_password']
+        confirm_password = request.json['confirm_new_password']
+        print(old_password, new_password, confirm_password)
+        if new_password != confirm_password:
+            print("xxxxxxxxxxxxxxx")
+            return dict(status='success', reason='New password and confirm password do not match')
+        
+
+        user_type = request.environ.get('USER_TYPE')
+        user_id = request.environ.get('REMOTE_USER')
+        if user_type == 'student':
+            student = DBSession.query(Student).filter(Student.id == user_id).first()
+
+            if student:
+                if not student.validate_password(old_password):
+                    return dict(status='success', reason='Incorrect old password')
+                student._set_password(new_password)
+                transaction.commit()
+                return dict(status='success', reason='Password changed successfully!')
+        else:
+            tutor = DBSession.query(Tutor).filter(Tutor.id == user_id).first()
+            if tutor:
+                if not tutor.validate_password(old_password):
+                    return dict(status='success', reason='Incorrect old password')
+                tutor._set_password(new_password)
+                transaction.commit()
+                return dict(status='success')
+        return dict(status='success', reason='Password changed successfully!')
