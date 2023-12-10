@@ -24,6 +24,8 @@ const CourseDescription = ({ data }) => {
   const [formData, setFormData] = useState({
     course_id: "",
     tutor_id: "",
+    tutor_name: "",
+    tutor_email: "",
     user_id: "",
     course_name: "",
     course_subject: "",
@@ -34,6 +36,7 @@ const CourseDescription = ({ data }) => {
     is_student: false,
     is_enrolled: false,
     zoom_id: "",
+
   });
   // const [isStudent, setIsStudent] = useState();
   // const [isEnrolled, setIsEnrolled] = useState(false);
@@ -46,6 +49,8 @@ const CourseDescription = ({ data }) => {
       setFormData({
         course_id: response.data.id,
         tutor_id: response.data.tutor_id,
+        tutor_name: response.data.tutor_name,
+        tutor_email: response.data.tutor_email,
         course_name: response.data.name,
         course_subject: response.data.subject_name,
         course_type: response.data.type,
@@ -122,7 +127,13 @@ const CourseDescription = ({ data }) => {
           <ListGroup variant="flush">
             <ListGroup.Item>Course id: {formData.course_id}</ListGroup.Item>
             <ListGroup.Item>
-              Course tutor id: {formData.tutor_id}
+              Tutor Name: {formData.tutor_name}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Tutor ID: {formData.tutor_id}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Tutor Email: {formData.tutor_email}
             </ListGroup.Item>
             {/* <ListGroup.Item>Course name: {formData.course_name}</ListGroup.Item> */}
 
@@ -130,9 +141,9 @@ const CourseDescription = ({ data }) => {
               Course subject: {formData.course_subject}
             </ListGroup.Item>
             <ListGroup.Item>Course type: {formData.course_type}</ListGroup.Item>
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               Course price: {formData.course_price}
-            </ListGroup.Item>
+            </ListGroup.Item> */}
             <ListGroup.Item>
               Zoom Link: {formData.zoom_id}
             </ListGroup.Item>

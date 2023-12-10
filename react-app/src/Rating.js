@@ -34,15 +34,17 @@ const Rating = () => {
         begin_time: location.state.course_class.begin_time,
         end_time: location.state.course_class.end_time,
       });
-     
-      console.log('Submitted Rating:', rating, 'Review:', review); 
-      alert("Course Successful Added!")
+      
+      console.log('Submitted Rating:', rating, 'Review:', review);
+      console.log('Response:', response.message); 
+      alert("Rating Successful Added!")
       navigate(`/dashboard`);
 
     }
     catch (error) {
       console.error('Error submitting rating:', error);
     }
+    axios.get('/course/cal_avg_rating')
   };
 
   return (

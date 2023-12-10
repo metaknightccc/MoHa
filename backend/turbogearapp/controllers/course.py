@@ -10,6 +10,7 @@ import base64
 from io import BytesIO
 import datetime
 from hashlib import sha256
+from sqlalchemy.orm import aliased
 
 class CourseController(TGController):
     @expose('json')
@@ -101,11 +102,14 @@ class CourseController(TGController):
         #     image_file = open('./turbogearapp/public/assets/default.png', 'rb')
         #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
+            tutor = DBSession.query(Tutor).filter_by(id=course.tutor_id).first()
             print("====GetCourseInfo2====")
             print(is_enrolled)
             return dict(
                 id=course.id,
                 tutor_id=course.tutor_id,
+                tutor_name=str(tutor.first_name) + ' ' + str(tutor.last_name),
+                tutor_email=tutor.email,
                 name=course.name,
                 subject_name=course.subject_name,
                 type=course.type,
@@ -287,6 +291,7 @@ class CourseController(TGController):
     def rating_class(self, **kwargs):
         
         # course_id=request.json['course_id']
+        print("======Rating Course Class=====")
         student_id=request.environ.get('REMOTE_USER')
         rating=request.json['rating']
         review=request.json['review']
@@ -294,16 +299,66 @@ class CourseController(TGController):
         end_time=request.json['end_time']
         course_id=request.json['course_id']
         
-        cc = DBSession.query(Course_Class).filter(
-            course_id == course_id, 
-            student_id == student_id,
-            begin_time == begin_time,
-            end_time == end_time).first()
+        cc = DBSession.query(Course_Class).filter_by(
+            course_id = course_id, 
+            student_id = student_id,
+            begin_time = begin_time,
+            end_time = end_time).first()
 
         # Check if the entry exists
         if cc:
+            print("======Rating Course Class: found class=====")
             # Update the rating and review
             cc.quant_rating = rating
             cc.review = review
             transaction.commit()
-            return dict(status='success', message='successfully added course class!')
+            return dict(status='success', message='successfully added course rating!')
+        else:
+            return dict(status='failed', message='course class not found!')
+    # @expose('json')
+    # def cal_avg_rating(self):
+    #     courses = DBSession.query(Course).all()
+    #     #courses.expunge_all()
+    #     #courses.close()
+    #     for course in courses:
+    #         related_classes = DBSession.query(Course_Class).filter_by(course_id=course.id).all()
+    #         if related_classes:
+    #             total_rating = sum([course_class.quant_rating for course_class in related_classes])
+    #             avg_rating = total_rating / len(related_classes)
+    #             course.avg_rating = avg_rating
+    #             transaction.commit()
+    #         else:
+    #             course.avg_rating = None
+    #             transaction.commit()
+    #     return dict(status='success', message='successfully calculated average rating!')
+    @expose('json')
+    def cal_avg_rating(self):
+        courses = DBSession.query(Course).all()
+        
+        for course in courses:
+            # Use aliased to create a separate alias for Course_Class
+            CourseClassAlias = aliased(Course_Class)
+
+            # Fetch related classes using the aliased class
+            related_classes = DBSession.query(CourseClassAlias).filter_by(course_id=course.id).all()
+
+            if related_classes:
+                # Calculate the total rating using a list comprehension
+                total_rating = sum([course_class.quant_rating for course_class in related_classes])
+
+                # Calculate the average rating
+                avg_rating = total_rating / len(related_classes)
+                avg_rating = round(avg_rating, 2)
+                # Update the course's avg_rating
+                #course.avg_rating = avg_rating
+
+            else:
+                # No related classes, set avg_rating to None
+                avg_rating = None
+
+            # Commit the changes for each course
+            course = DBSession.query(Course).filter_by(id=course.id).first()
+            course.avg_rating = avg_rating
+            #DBSession.commit()
+
+        return dict(status='success', message='successfully calculated average rating!')
