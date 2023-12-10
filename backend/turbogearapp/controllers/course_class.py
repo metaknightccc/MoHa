@@ -5,6 +5,7 @@ import json
 import os
 import datetime
 from sqlalchemy.orm import aliased
+
 def sqlalchemy_to_json(sqlalchemy_objects):
     result = []
     for obj in sqlalchemy_objects:
@@ -18,8 +19,20 @@ def sqlalchemy_to_json(sqlalchemy_objects):
             else:
                 obj_dict[column.name] = value
         result.append(obj_dict)
-    print(result)
+    # print(result)
     return result
+
+def sqlalchemy_to_json_single(sqlalchemy_object):
+    obj_dict = {}
+    for column in sqlalchemy_object.__table__.columns:
+        value = getattr(sqlalchemy_object, column.name)
+        # Convert datetime objects to string
+        if isinstance(value, datetime.datetime):
+            obj_dict[column.name] = value.isoformat()
+        # Add more type checks as needed (e.g., for date, decimal.Decimal, etc.)
+        else:
+            obj_dict[column.name] = value
+    return obj_dict
 
 def get_duration(begin_time, end_time):
     begin_h, begin_m = begin_time.split(':')
@@ -44,6 +57,7 @@ class ClassController(TGController):
                 classes = session.query(Course_Class).filter(Course_Class.course_id == course_id, Course_Class.enroll == False).all()
         return sqlalchemy_to_json(classes)
     
+    # get all pending classes
     @expose('json')
     def get_classes(self, **kwargs):
         user_id=request.environ.get('REMOTE_USER')
@@ -52,16 +66,24 @@ class ClassController(TGController):
         classes = []
         print(user_type)
         if user_type == 'student':
-            classes = session.query(Course_Class).filter_by(student_id = user_id).all()
+            classes = session.query(Course_Class).filter_by(student_id = user_id, enroll = False).all()
         elif user_type == 'tutor':
             course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id).all()]
             for course_id in course_ids:
                 classes += session.query(Course_Class).filter_by(course_id = course_id, enroll = False).all()
         else:
             return dict(status='failed', message='Only student or tutor can get classes.')
-        print(classes)
-        json_data = json.dumps(sqlalchemy_to_json(classes))
-        return json_data.encode('utf-8')
+        # add course info into response
+        response = []
+        for course_class in classes:
+            course = session.query(Course).filter_by(id = course_class.course_id).first()
+            class_dict = sqlalchemy_to_json_single(course_class)
+            course_dict = sqlalchemy_to_json_single(course)
+            response.append({**class_dict, **course_dict})
+        return json.dumps(response)
+            
+        # json_data = json.dumps(sqlalchemy_to_json(classes))
+        # return json_data.encode('utf-8')
     
     @expose('json')
     def get_enrolled_classes(self, **kwargs):
