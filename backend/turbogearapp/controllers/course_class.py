@@ -5,6 +5,22 @@ import json
 import os
 import datetime
 
+def sqlalchemy_to_json(sqlalchemy_objects):
+    result = []
+    for obj in sqlalchemy_objects:
+        result.append(
+            {column.name: getattr(obj, column.name) for column in obj.__table__.columns}
+        )
+    return result
+
+def get_duration(begin_time, end_time):
+    begin_h, begin_m = begin_time.split(':')
+    end_h, end_m = end_time.split(':')
+    return (int(end_h) - int(begin_h)) * 60 + (int(end_m) - int(begin_m))
+
+def to_timestamp(date, time):
+    return datetime.datetime.strptime(date + ' ' + time, '%Y-%m-%d %H:%M')
+
 class ClassController(TGController):
     @expose('json')
     def get_existing_classes(self, **kwargs):
@@ -35,38 +51,48 @@ class ClassController(TGController):
     def get_enrolled_classes(self, **kwargs):
         user_id=request.environ.get('REMOTE_USER')
         user_type = request.environ.get('USER_TYPE')
+        print("******************")
+        print(user_id, user_type)
+        print("******************")
         if user_type != 'student':
             return dict(status='failed', message='Only student can get enroll class.')
         session = DBSession()
         classes = session.query(Course_Class).filter(Course_Class.student_id == user_id, Course_Class.enroll == True).all()
-        return dict(status='success', classes=sqlalchemy_to_json(classes))
+        courses = []
+        for course_class in classes:
+            courses.append(session.query(Course).filter(Course.id == course_class.course_id).first())
+        return dict(status='success', courses=sqlalchemy_to_json(courses))
         
 
     @expose('json')
     def purpose_class(self, **kwargs):
-        user_id=request.environ.get('REMOTE_USER')
-        user_type = request.environ.get('USER_TYPE')
-        if user_type != 'student':
-            return dict(status='failed', message='Only student can purpose class.')
+        # user_id=request.environ.get('REMOTE_USER')
+        # user_type = request.environ.get('USER_TYPE')
+        # if user_type != 'student':
+        #     return dict(status='failed', message='Only student can purpose class.')
         course_id = request.json['course_id']
-        student_id = request.json['student_id']
-        begin_time = datetime.strptime(request.json['begin_time'], '%Y-%m-%d %H:%M:%S')
-        end_time = datetime.strptime(request.json['end_time'], '%Y-%m-%d %H:%M:%S')
+        student_id = request.json['user_id']
+        begin_time = request.json['begin_time']
+        end_time = request.json['end_time']
+        date = request.json['date']
+        price = request.json['course_price']
 
         # check time validity
-        if begin_time > end_time:
-            return dict(status='failed', message='begin_time should be earlier than end_time')
-        elif begin_time < datetime.now():
-            return dict(status='failed', message='begin_time should be later than now')
-        
-        duration = str(end_time - begin_time)
+        # if begin_time > end_time:
+        #     return dict(status='failed', message='begin_time should be earlier than end_time')
+        # elif begin_time < datetime.now():
+        #     return dict(status='failed', message='begin_time should be later than now')
+        print(date)
+        print(begin_time)
+        print(end_time)
+        duration = get_duration(begin_time, end_time)
         session = DBSession()
-        price = session.query(Course).filter(Course.id == course_id).first().price
+        # price = session.query(Course).filter_by(id = course_id).first().price
         course_class = Course_Class(
             course_id = course_id,
             student_id = student_id,
-            begin_time = begin_time,
-            end_time = end_time,
+            begin_time = to_timestamp(date, begin_time),
+            end_time = to_timestamp(date, end_time),
             duration = duration,
             price = price,
             quant_rating = 5

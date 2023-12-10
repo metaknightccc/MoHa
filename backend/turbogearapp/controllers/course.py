@@ -219,8 +219,8 @@ class CourseController(TGController):
         print("======Enrolling Course=====")
         print("course_id=",course_id)
         print("getting Course Info:")
-        cc= DBSession.query(Course_Class).filter(course_id==course_id, 
-                                                student_id==student_id).first()
+        cc= DBSession.query(Course_Class).filter_by(course_id=course_id, 
+                                                student_id=student_id).first()
         print("======Enrolling Course=====")
         if not cc:
             new_course_class= Course_Class(
@@ -236,7 +236,7 @@ class CourseController(TGController):
                 price=float(request.json['course_price']),
                 quant_rating=0,
                 review="",
-                confirmed=True,
+                # confirmed=True,
             )
             DBSession.add(new_course_class)
             transaction.commit()

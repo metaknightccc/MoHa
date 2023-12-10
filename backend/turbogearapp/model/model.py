@@ -193,8 +193,8 @@ class Course_Class(DeclarativeBase):
     enroll = Column(Boolean, default= False)
     course_id = Column(BigInteger, ForeignKey('course.id'), primary_key=True)
     student_id = Column(BigInteger, ForeignKey('student.id'), primary_key=True)
-    begin_time = Column(DateTime) #planned time to start
-    end_time = Column(DateTime) #planned time to end
+    begin_time = Column(DateTime, primary_key=True) #planned time to start
+    end_time = Column(DateTime, primary_key=True) #planned time to end
     t_begin_time = Column(DateTime)#true time started
     t_end_time = Column(DateTime)#true time ended
     duration = Column(BigInteger, nullable=True) #the real duration of the class taken, stored in seconds
