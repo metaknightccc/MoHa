@@ -79,7 +79,7 @@ class ClassController(TGController):
             course = session.query(Course).filter_by(id = course_class.course_id).first()
             class_dict = sqlalchemy_to_json_single(course_class)
             course_dict = sqlalchemy_to_json_single(course)
-            response.append({**class_dict, **course_dict})
+            response.append({**course_dict, **class_dict})
         return json.dumps(response)
             
         # json_data = json.dumps(sqlalchemy_to_json(classes))
@@ -143,39 +143,40 @@ class ClassController(TGController):
     
     @expose('json')
     def confirm_class(self, **kwargs):
-        user_id=request.environ.get('REMOTE_USER')
-        user_type = request.environ.get('USER_TYPE')
-        if user_type != 'tutor':
-            return dict(status='failed', message='Only tutor can confirm class.')
+        # user_id=request.environ.get('REMOTE_USER')
+        # user_type = request.environ.get('USER_TYPE')
+        # if user_type != 'tutor':
+        #     return dict(status='failed', message='Only tutor can confirm class.')
         course_id = request.json['course_id']
         student_id = request.json['student_id']
-        begin_time = datetime.strptime(request.json['begin_time'], '%Y-%m-%d %H:%M:%S')
-        end_time = datetime.strptime(request.json['end_time'], '%Y-%m-%d %H:%M:%S')
+        begin_time = request.json['begin_time']
+        end_time = request.json['end_time']
+        confiremd = request.json['confirmed']
         session = DBSession()
-        course_class = session.query(Course_Class).filter(Course_Class.course_id == course_id,
-                                                          Course_Class.student_id == student_id,
-                                                          Course_Class.begin_time == begin_time).first()
-        course_class.confirmed = True
+        course_class = session.query(Course_Class).filter_by(course_id = course_id,
+                                                          student_id = student_id,
+                                                          begin_time = begin_time).first()
+        course_class.confirmed = confiremd
         transaction.commit()
         return dict(status='success', message='Class confirm successful.')
     
-    @expose('json')
-    def reject_class(self, **kwargs):
-        user_id=request.environ.get('REMOTE_USER')
-        user_type = request.environ.get('USER_TYPE')
-        if user_type != 'tutor':
-            return dict(status='failed', message='Only tutor can reject class.')
-        course_id = request.json['course_id']
-        student_id = request.json['student_id']
-        begin_time = datetime.strptime(request.json['begin_time'], '%Y-%m-%d %H:%M:%S')
-        end_time = datetime.strptime(request.json['end_time'], '%Y-%m-%d %H:%M:%S')
-        session = DBSession()
-        course_class = session.query(Course_Class).filter(Course_Class.course_id == course_id,
-                                                          Course_Class.student_id == student_id,
-                                                          Course_Class.begin_time == begin_time).first()
-        course_class.confirmed = False
-        transaction.commit()
-        return dict(status='success', message='Class reject successful.')
+    # @expose('json')
+    # def reject_class(self, **kwargs):
+    #     # user_id=request.environ.get('REMOTE_USER')
+    #     # user_type = request.environ.get('USER_TYPE')
+    #     # if user_type != 'tutor':
+    #     #     return dict(status='failed', message='Only tutor can reject class.')
+    #     course_id = request.json['course_id']
+    #     student_id = request.json['student_id']
+    #     begin_time = request.json['begin_time']
+    #     end_time = request.json['end_time']
+    #     session = DBSession()
+    #     course_class = session.query(Course_Class).filter(course_id == course_id,
+    #                                                       student_id == student_id,
+    #                                                       begin_time == begin_time).first()
+    #     course_class.confirmed = False
+    #     transaction.commit()
+    #     return dict(status='success', message='Class reject successful.')
     
     @expose('json')
     def delete_class(self, **kwargs):
