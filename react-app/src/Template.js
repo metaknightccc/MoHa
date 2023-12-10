@@ -139,7 +139,7 @@ function Template() {
             </Navbar>
           </div>
           <div className="Nav-Main-Right">
-            <SearchBar isSimple={true} />
+            {/* <SearchBar isSimple={true} /> */}
             <div className="avatar">
               <Dropdown>
                 <Dropdown.Toggle
