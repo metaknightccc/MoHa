@@ -20,6 +20,7 @@ ROUTE_TO_AUTHENTICATE = [
     '/course/get_course_class',
     '/course/add_course_class',
     '/course_class/get_enrolled_classes',
+    '/course_class/review_class',
 ]
 
 def jwt_middleware(app):
