@@ -9,6 +9,7 @@ import spacy
 import base64
 from io import BytesIO
 import datetime
+from hashlib import sha256
 from sqlalchemy.orm import aliased
 
 class CourseController(TGController):
