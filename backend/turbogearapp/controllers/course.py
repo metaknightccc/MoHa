@@ -274,3 +274,12 @@ class CourseController(TGController):
         student_id=request.environ.get('REMOTE_USER')
         
         return dict(status='success', message='successfully added course class!')
+    
+    @expose('json')
+    def rating_class(self, **kwargs):
+        user_id=request.environ.get('REMOTE_USER')
+        course_id=request.json['course_id']
+        student_id=request.environ.get('REMOTE_USER')
+        rating=request.json['rating']
+        review=request.json['review']
+        return dict(status='success', message='successfully rated class!')
