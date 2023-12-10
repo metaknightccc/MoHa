@@ -25,9 +25,12 @@ class SearchController(TGController):
     @expose("json")
     def index(self, **kwargs):
         # if no query provided at all
+        result = []
         if not kwargs:
+            print("no query provided")
             session = DBSession()
             matching_courses = session.query(Course).limit(5).all()
+            result = matching_courses
         else:
             print("========================")
             print(kwargs)
