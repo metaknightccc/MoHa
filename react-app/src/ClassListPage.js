@@ -15,8 +15,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ClassSlot from "./ClassSlot";
+import "./ClassListPage.css";
 import Card from 'react-bootstrap/Card';
 
+const sliceTime = (time) => {
+  return time.slice(0, 10) + " " + time.slice(11, 19);
+}
 const ClassListPage = ({ data, userType }) => {
   const [classlist, setClasslist] = useState([]);
   const navigate = useNavigate();
@@ -36,8 +40,10 @@ const ClassListPage = ({ data, userType }) => {
   }, []);
 
   const handleComment = (course_id, student_id, begin_time, end_time) => {
-    navigate("/Rating", {state: 
-      {course_class: {course_id: course_id, student_id: student_id, begin_time: begin_time, end_time: end_time}}});
+    navigate("/Rating", {
+      state:
+        { course_class: { course_id: course_id, student_id: student_id, begin_time: begin_time, end_time: end_time } }
+    });
   };
 
   const handlePurpose = (course_id, student_id, begin_time, end_time, accept) => {
@@ -49,32 +55,37 @@ const ClassListPage = ({ data, userType }) => {
       <Container>
         {
           data && data.map((item) => {
-            if(item.enroll == false && 
-              ((!item.comfirm && userType === "tutor") || userType === "student") ){
+            if (item.enroll == false &&
+              ((!item.comfirm && userType === "tutor") || userType === "student")) {
               return (
                 <Card>
-                  <Card.Body>
-                    <Card.Title>course ID: {item.course_id}</Card.Title>
-                    <Card.Text>price: {item.price}</Card.Text>
+                  <Card.Body className="classslot">
+                    <div className="classtitle">
+                      <Card.Title>course name: {item.name}</Card.Title>
+                      <Card.Text>Price: {item.price}, Begin: {sliceTime(item.begin_time)}, End: {sliceTime(item.end_time)}</Card.Text>
+                    </div>
                     {
                       userType === "tutor" &&
-                      <>
+                      <div className="classcontent">
                         <Button variant="primary" onClick={() => {
                           handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, true);
                         }}>Accept</Button>
                         <Button variant="primary" onClick={() => {
                           handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, false);
                         }}>Reject</Button>
-                      </>
+                      </div>
                     }
                     {
                       userType === "student" &&
-                      <>
-                        <Button variant="primary" onClick={() => {
-                          handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
-                        }}>Comment</Button>
-                        <a href="https://www.google.com" >Zoom</a>
-                      </>
+                      <div className="classcontent">
+                        {
+                          (item.review == "User left with a good impression!" || item.review == "") ? 
+                            <Button variant="primary" onClick={() => {
+                              handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
+                            }}>Comment</Button> : <Button variant="primary">Rated ✓</Button>
+                        }
+                        <a href={item.zoom_id ? item.zoom_id : "https://www.google.com"} >Zoom</a>
+                      </div>
                     }
                   </Card.Body>
                 </Card>
