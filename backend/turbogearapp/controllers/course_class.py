@@ -37,14 +37,19 @@ class ClassController(TGController):
         return sqlalchemy_to_json(classes)
     
     @expose('json')
-    def get_class(self, **kwargs):
-        course_id = request.json['course_id']
-        student_id = request.json['student_id']
-        begin_time = datetime.strptime(request.json['begin_time'], '%Y-%m-%d %H:%M:%S')
+    def get_classes(self, **kwargs):
+        user_id=request.environ.get('REMOTE_USER')
+        user_type = request.environ.get('USER_TYPE')
         session = DBSession()
-        course_class = session.query(Course_Class).filter(Course_Class.course_id == course_id,
-                                                          Course_Class.student_id == student_id,
-                                                          Course_Class.begin_time == begin_time).first()
+        classes = []
+        if user_type == 'student':
+            classes = session.query(Course_Class).filter_by(student_id = user_id).all()
+        elif user_type == 'tutor':
+            course_ids = [course.id for course in session.query(Course).filter_by(tutor_id = user_id, enroll = false).all()]
+            for course_id in course_ids:
+                classes += session.query(Course_Class).filter_by(course_id = course_id).all()
+        else:
+            return dict(status='failed', message='Only student or tutor can get classes.')
         return sqlalchemy_to_json(course_class)
     
     @expose('json')
