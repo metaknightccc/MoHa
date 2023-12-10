@@ -210,6 +210,7 @@ class ClassController(TGController):
 
     @expose('json')
     def review_class(self, **kwargs):
+        user_id=request.environ.get('REMOTE_USER')
         course_id = request.json['course_id']
         student_id = request.json['student_id']
         begin_time = request.json['begin_time']
@@ -218,7 +219,7 @@ class ClassController(TGController):
         review = request.json['review']
         session = DBSession()
         course_class = session.query(Course_Class).filter_by(course_id = course_id,
-                                                          student_id = student_id,
+                                                          student_id = user_id,
                                                           begin_time = begin_time,
                                                           end_time = end_time).first()
                                                           
