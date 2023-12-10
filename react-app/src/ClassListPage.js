@@ -17,12 +17,13 @@ import axios from "axios";
 import ClassSlot from "./ClassSlot";
 import "./ClassListPage.css";
 import Card from 'react-bootstrap/Card';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 const sliceTime = (time) => {
   return time.slice(0, 10) + " " + time.slice(11, 19);
 }
 const ClassListPage = ({ data, userType }) => {
-  const [classlist, setClasslist] = useState([]);
+  const [classlist, setClasslist] = useState(data);
   const navigate = useNavigate();
 
   const fetchClassInfo = async () => {
@@ -47,8 +48,21 @@ const ClassListPage = ({ data, userType }) => {
   };
 
   const handlePurpose = (course_id, student_id, begin_time, end_time, accept) => {
-    // if (accept) 
-    // axios.post("/course_class/confirm_class", {
+    axios.post("/course_class/confirm_class", {
+      course_id: course_id,
+      student_id: student_id,
+      begin_time: begin_time,
+      end_time: end_time,
+      confirmed: accept
+    }).then((response) => {
+      if (response.status === 200) {
+        console.log(response.data);
+        alert(`You've ${accept ? "accepted" : "rejected"} the class purpose!`);
+        window.location.reload();
+      }
+    }).catch((error) => {
+      console.error("Error confirming class:", error);
+    });
   };
 
   return (
@@ -68,19 +82,34 @@ const ClassListPage = ({ data, userType }) => {
                     {
                       userType === "tutor" &&
                       <div className="classcontent">
-                        <Button variant="primary" onClick={() => {
+                        {/* <Button variant="primary" onClick={() => {
                           handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, true);
                         }}>Accept</Button>
                         <Button variant="primary" onClick={() => {
                           handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, false);
-                        }}>Reject</Button>
+                        }}>Reject</Button> */}
+
+                        <ButtonGroup type="checkbox" defaultValue={[1, 3]}>
+                          <ToggleButton variant={item.confirmed ? "success" : "outline-success"}
+                            value={true}
+                            onClick={() => {
+                              handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, true);
+                            }}
+                          >Accept</ToggleButton>
+                          <ToggleButton variant={item.confirmed ? "outline-danger" : "danger"}
+                            value={false}
+                            onClick={() => {
+                              handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, false);
+                            }}
+                          >Reject</ToggleButton>
+                        </ButtonGroup>
                       </div>
                     }
                     {
                       userType === "student" &&
                       <div className="classcontent">
                         {
-                          (item.review == "User left with a good impression!" || item.review == "") ? 
+                          (item.review == "User left with a good impression!" || item.review == "") ?
                             <Button variant="primary" onClick={() => {
                               handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
                             }}>Comment</Button> : <Button variant="primary">Rated ✓</Button>
