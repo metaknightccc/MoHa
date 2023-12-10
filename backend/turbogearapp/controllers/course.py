@@ -298,11 +298,16 @@ class CourseController(TGController):
         begin_time=request.json['begin_time']
         end_time=request.json['end_time']
         course_id=request.json['course_id']
-
+        begin_time = begin_time.replace('T', ' ')
+        end_time = end_time.replace('T', ' ')
         print("begin_time=",begin_time)
         print("end_time=",end_time)
+        print("course_id=",course_id)
+        print("student_id=",student_id)
+        print("rating=",rating)
+        print("review=",review)
         
-        cc = DBSession.query(Course_Class).filter(
+        cc = DBSession.query(Course_Class).filter_by(
             course_id == course_id, 
             student_id == student_id,
             begin_time == begin_time,
@@ -312,10 +317,15 @@ class CourseController(TGController):
         # Check if the entry exists
         if cc:
             print("======Rating Course Class: found class=====")
+            print("cc.begin_time=",cc.begin_time)
+            print("cc.end_time=",cc.end_time)
+            print("cc.course_id=",cc.course_id)
+            print("cc.student_id=",cc.student_id)
+            
             # Update the rating and review
             cc.quant_rating = rating
             cc.review = review
-            transaction.commit()
+            #transaction.commit()
             return dict(status='success', message='successfully added course rating!')
         else:
             return dict(status='failed', message='course class not found!')
