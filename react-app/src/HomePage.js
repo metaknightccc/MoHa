@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./HomePage.css";
 import ClassSlot from "./ClassSlot";
 import background from "./background.svg";
 import Carousel from 'react-bootstrap/Carousel';
 
 const HomePage = () => {
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState();
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get('/search')
+      .then((response) => {
+        setClasses(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error searching:", error);
+      });
+  }, []);
+
+
   return (
     <div className="wrap">
       <div className="bgContainer">
@@ -19,89 +37,16 @@ const HomePage = () => {
       </div>
       <div>
         <Carousel interval={10000} pause={false}>
-          <Carousel.Item>
-            <div className="group">
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world</div>
-            </div>
-            </div>
-           
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="group">
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world111</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world111</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world111</div>
-            </div>
-
-            <div className="item">
-              <img
-                className="d-block w-100"
-                src={'./assets/nyu.jpg'}
-                alt="First slide"
-              />
-              <div className="title">Hello world</div>
-            </div>
-            </div>
-           
-          </Carousel.Item>
-
-          
-         
+          {
+            loading ? <div>Loading...</div> :
+            classes.map((item, index) => (
+              <Carousel.Item key={index}>
+                <div className="group">
+                  <ClassSlot props={item} />
+                </div>
+              </Carousel.Item>
+            ))
+          }
         </Carousel>
       </div>
     </div>
