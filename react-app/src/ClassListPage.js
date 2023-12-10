@@ -35,11 +35,12 @@ const ClassListPage = ({ data, userType }) => {
     fetchClassInfo();
   }, []);
 
-  const handleComment = (course_id, student_id, start_time, end_time) => {
-    navigate("/Rating", {state: {course_id: course_id, student_id: student_id, start_time: start_time, end_time: end_time}});
+  const handleComment = (course_id, student_id, begin_time, end_time) => {
+    navigate("/Rating", {state: 
+      {course_class: {course_id: course_id, student_id: student_id, begin_time: begin_time, end_time: end_time}}});
   };
 
-  const handlePurpose = (course_id, student_id, start_time, end_time, accept) => {
+  const handlePurpose = (course_id, student_id, begin_time, end_time, accept) => {
     // todo: send accept to backend
   };
 
@@ -59,10 +60,10 @@ const ClassListPage = ({ data, userType }) => {
                       userType === "tutor" &&
                       <>
                         <Button variant="primary" onClick={() => {
-                          handlePurpose(item.course_id, item.student_id, item.start_time, item.end_time, true);
+                          handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, true);
                         }}>Accept</Button>
                         <Button variant="primary" onClick={() => {
-                          handlePurpose(item.course_id, item.student_id, item.start_time, item.end_time, false);
+                          handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, false);
                         }}>Reject</Button>
                       </>
                     }
@@ -70,7 +71,7 @@ const ClassListPage = ({ data, userType }) => {
                       userType === "student" &&
                       <>
                         <Button variant="primary" onClick={() => {
-                          handleComment(item.course_id, item.student_id, item.start_time, item.end_time);
+                          handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
                         }}>Comment</Button>
                         <a href="https://www.google.com" >Zoom</a>
                       </>
