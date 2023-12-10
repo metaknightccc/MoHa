@@ -8,7 +8,7 @@ const Rating = () => {
   const [review, setReview] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   const handleRatingChange = (event) => {
     setRating(event.target.value);
   };
@@ -34,7 +34,8 @@ const Rating = () => {
         begin_time: location.state.course_class.begin_time,
         end_time: location.state.course_class.end_time,
       });
-      
+      console.log('Submitted Rating:', location.state.course_class.rating, 'Review:', location.state.course_class.review);
+      console.log('beingtime:', location.state.course_class.begin_time);
       console.log('Submitted Rating:', rating, 'Review:', review);
       console.log('Response:', response.message); 
       alert("Rating Successful Added!")
