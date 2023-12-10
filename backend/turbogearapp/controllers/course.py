@@ -101,11 +101,14 @@ class CourseController(TGController):
         #     image_file = open('./turbogearapp/public/assets/default.png', 'rb')
         #     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         if course:
+            tutor = DBSession.query(Tutor).filter_by(id=course.tutor_id).first()
             print("====GetCourseInfo2====")
             print(is_enrolled)
             return dict(
                 id=course.id,
                 tutor_id=course.tutor_id,
+                tutor_name=str(tutor.first_name) + ' ' + str(tutor.last_name),
+                tutor_email=tutor.email,
                 name=course.name,
                 subject_name=course.subject_name,
                 type=course.type,
