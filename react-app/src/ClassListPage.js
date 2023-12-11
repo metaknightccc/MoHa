@@ -90,13 +90,13 @@ const ClassListPage = ({ data, userType }) => {
                         }}>Reject</Button> */}
 
                         <ButtonGroup type="checkbox" defaultValue={[1, 3]}>
-                          <ToggleButton variant={item.confirmed ? "success" : "outline-success"}
+                          <ToggleButton variant={item.confirmed == null || item.confirmed == false ? "outline-success" : "success"}
                             value={true}
                             onClick={() => {
                               handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, true);
                             }}
                           >Accept</ToggleButton>
-                          <ToggleButton variant={item.confirmed ? "outline-danger" : "danger"}
+                          <ToggleButton variant={item.confirmed == null || item.confirmed == true ? "outline-danger" : "danger"}
                             value={false}
                             onClick={() => {
                               handlePurpose(item.course_id, item.student_id, item.begin_time, item.end_time, false);
