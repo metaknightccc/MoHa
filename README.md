@@ -38,6 +38,11 @@ sqlalchemy.url=postgresql+psycopg2://[username]:[password]@[hostname]/[database_
 cd backend
 python setup.py
 ```
+or
+```
+cd backend
+pip install -e .
+```
   * other dependencies required for backend implementation
 ```
 pip install hashlib
@@ -50,8 +55,9 @@ pip install base64
 pip install io
 pip install datetime
 pip install transaction
-pip install jwt
+pip install pyjwt
 pip install faker
+pip install psycopg2
 ```
 or
 ```
