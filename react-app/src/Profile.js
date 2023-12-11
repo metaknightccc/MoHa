@@ -260,7 +260,6 @@ const Profile = ({ data }) => {
           <Col xs={2} md={5}>
             <DropdownButton as={ButtonGroup} title="Edit" id="bg-nested-dropdown">
               <Dropdown.Item eventKey="1" onClick={handleInputChange}>Change a photo</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Remove photo</Dropdown.Item>
             </DropdownButton>
             <input 
               type="file" 
