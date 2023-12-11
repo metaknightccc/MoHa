@@ -14,6 +14,9 @@ const ClassSlot = ({ props }) => {
     variant: 'top' 
   };
   let { description, id, pic, name, tutorName, variant = 'top' } = props;
+  if (!tutorName ){
+    tutorName = props.tutor_name;
+  };
   const cardType = variant ? `classCard classCard-${variant}` : "classCard";
   if (!tutorName) tutorName = "Not Given";
   return (
