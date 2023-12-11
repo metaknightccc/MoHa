@@ -10,6 +10,7 @@ const Logout = () => {
   useEffect(() => {
     removeToken();
     navigate("/login");
+    window.location.reload();
   }, []);
 
 
