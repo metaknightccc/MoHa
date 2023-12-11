@@ -50,7 +50,6 @@ pip install sqlalchemy
 pip install json
 pip install PIL
 pip install spacy
-python -m spacy download en
 pip install base64
 pip install io
 pip install datetime
@@ -59,6 +58,9 @@ pip install pyjwt
 pip install faker
 pip install psycopg2
 pip install tg.devtools
+```
+```
+python -m spacy download en
 ```
 or
 ```
