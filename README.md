@@ -18,9 +18,9 @@ able to tutor or find tutors for their needs and achieve academic success withou
 academic programs to achieve equal access to academic resources.
 # Project Setup Instruction
 ### Environment Preparation
-Python, https://www.python.org
-Node.js, https://nodejs.org
-PostgreSQL, https://www.postgresql.org
+ * Python, https://www.python.org
+ * Node.js, https://nodejs.org
+ * PostgreSQL, https://www.postgresql.org
 ### React(Frontend)
  * Add react app dependency
 ```
