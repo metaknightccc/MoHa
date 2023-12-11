@@ -113,6 +113,7 @@ const Profile = ({ data }) => {
           // Handle the response data as needed
           console.log('Image uploaded:', response.data);
           setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+          window.location.reload();
         })
         .catch((error) => {
           console.error('Error uploading image:', error);

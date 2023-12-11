@@ -52,6 +52,7 @@ function Login() {
           saveToken(response.data.token);
           setMessage('Success!');
           navigate('/dashboard');
+          window.location.reload();
         } else {
           setMessage('Unsuccessful: Bad username or password!');
         }

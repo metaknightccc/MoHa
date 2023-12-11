@@ -67,6 +67,24 @@ function Template() {
     }
   }, [isLogged]);
 
+  const [avatar, setAvatar] = useState('');
+
+  const fetchAvatar = async () => {
+    // axios.get('/dashboard/get_avatar_path')
+    try {
+      const response=await axios.get('/dashboard/get_avatar')
+      setAvatar(`data:image/jpeg;base64,${response.data.image}`);
+      // console.log("avatar path===", avatar)
+    }
+    catch (error) {
+      console.error('Error fetching avatar path:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvatar();
+  }, []);
+
   // useEffect(() => {
   //   try{
   //   const response = axios.get('/dashboard/get_user_info');
@@ -155,14 +173,14 @@ function Template() {
                   className="avatar-dropdown"
                   variant="primary"
                 >
-                  <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
+                  <Image src={avatar || './assets/nyu.jpg'} roundedCircle fluid />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="right">
                   <Dropdown.Item disabled>
                     <div className="avatar-dropdown-header">
 
-                      <Image src={'./assets/nyu.jpg'} roundedCircle fluid />
+                      <Image src={avatar || './assets/nyu.jpg'} roundedCircle fluid />
 
                       <div>
                         {/* <div className="username">Username</div>
