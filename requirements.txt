@@ -1,5 +1,13 @@
-tg.devtools
+hashlib
+sqlalchemy
+json
+PIL
+spacy
+base64
+io
+datetime
+transaction
+pyjwt
 faker
 psycopg2
-pyjwt
-spacy
+tg.devtools
