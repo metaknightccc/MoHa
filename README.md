@@ -58,6 +58,7 @@ pip install transaction
 pip install pyjwt
 pip install faker
 pip install psycopg2
+pip install tg.devtools
 ```
 or
 ```
