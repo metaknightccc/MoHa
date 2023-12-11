@@ -109,6 +109,11 @@ const ClassListPage = ({ data, userType }) => {
                       userType === "student" &&
                       <div className="classcontent">
                         {
+                          item.confirmed == null ?
+                            <Card.Text >request pending...</Card.Text> :
+                            <Card.Text style={{color: item.confirmed ? "green" : "red"}}>{item.confirmed ? "request accepted" : "request rejected"}</Card.Text>
+                        }
+                        {
                           (item.review == "User left with a good impression!" || item.review == "" || !item.review) ?
                             <Button variant="primary" onClick={() => {
                               handleComment(item.course_id, item.student_id, item.begin_time, item.end_time);
