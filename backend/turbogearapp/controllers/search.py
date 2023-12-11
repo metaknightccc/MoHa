@@ -4,6 +4,7 @@ from turbogearapp.model import DBSession, Course, Tutor
 import transaction
 import json
 import spacy
+import datetime
 
 
 def sqlalchemy_to_json(sqlalchemy_objects):
@@ -13,6 +14,19 @@ def sqlalchemy_to_json(sqlalchemy_objects):
             {column.name: getattr(obj, column.name) for column in obj.__table__.columns}
         )
     return result
+
+def sqlalchemy_to_json_single(sqlalchemy_object):
+    obj_dict = {}
+    for column in sqlalchemy_object.__table__.columns:
+        value = getattr(sqlalchemy_object, column.name)
+        # Convert datetime objects to string
+        if isinstance(value, datetime.datetime):
+            obj_dict[column.name] = value.isoformat()
+        # Add more type checks as needed (e.g., for date, decimal.Decimal, etc.)
+        else:
+            obj_dict[column.name] = value
+    return obj_dict
+
 
 def jaccard_similarity(query, document):
     intersection = list(set(query).intersection(set(document)))
@@ -95,6 +109,15 @@ class SearchController(TGController):
         
         print("========================")
 
-        response = json.dumps(sqlalchemy_to_json(result))
-        return response
+        # adding tutor name to the result
+        response = []
+        for course in result:
+            tutor = session.query(Tutor).filter_by(id = course.tutor_id).first()
+            course_dict = sqlalchemy_to_json_single(course)
+            course_dict['tutor_name'] = tutor.first_name + ' ' + tutor.last_name
+            response.append(course_dict)
+        return json.dumps(response)
+            
+        # response = json.dumps(sqlalchemy_to_json(result))
+        # return response
   
