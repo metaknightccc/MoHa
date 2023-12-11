@@ -256,7 +256,18 @@ const Profile = ({ data }) => {
         </Row>
         <Row>
           <Col xs={2} md={2}>
-            <Image className="avatarImg" src={avatar || './assets/nyu.jpg'}  roundedCircle fluid/>
+          <Image 
+              className="avatarImg" 
+              src={avatar || './assets/nyu.jpg'} 
+              roundedCircle 
+              fluid
+              style={{
+                  width: '100px', // Set your desired width
+                  height: '100px', // Set your desired height
+                  objectFit: 'cover' // Ensures the image covers the area without stretching
+              }}
+          />
+
           </Col>  
           <Col xs={2} md={5}>
             <DropdownButton as={ButtonGroup} title="Edit" id="bg-nested-dropdown">
