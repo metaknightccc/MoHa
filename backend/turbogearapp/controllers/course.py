@@ -357,11 +357,15 @@ class CourseController(TGController):
             related_classes = DBSession.query(CourseClassAlias).filter_by(course_id=course.id).all()
 
             if related_classes:
+                total_rating = 0
                 # Calculate the total rating using a list comprehension
-                total_rating = sum([course_class.quant_rating for course_class in related_classes])
-
+                #total_rating = sum([course_class.quant_rating for course_class in related_classes])
+                for course_class in related_classes:
+                    if(course_class.enroll != True):
+                        total_rating+=course_class.quant_rating
+                    
                 # Calculate the average rating
-                avg_rating = total_rating / len(related_classes)
+                avg_rating = total_rating / (len(related_classes)-1)
                 avg_rating = round(avg_rating, 2)
                 # Update the course's avg_rating
                 #course.avg_rating = avg_rating
