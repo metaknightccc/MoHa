@@ -4,10 +4,16 @@ import "./HomePage.css";
 import ClassSlot from "./ClassSlot";
 import background from "./background.svg";
 import Carousel from 'react-bootstrap/Carousel';
+import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState();
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/search');
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +53,7 @@ const HomePage = () => {
           <div className="txt">
             <h2 className="wlc">Learn Together Grow Together</h2>
             <h1 className="title">find any desired courses here or become a tutor to help others</h1>
-            <div className="button">Get started now</div>
+            <div className="button" onClick={handleButtonClick}>Get started now</div>
           </div>
         </div>
       </div>

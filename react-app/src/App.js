@@ -17,6 +17,7 @@ import CourseEnrollPage from './CourseEnrollPage';
 import CourseMainPage from './CourseMainPage';
 import AddClasspage from './AddClassPage';
 import Rating from './Rating';
+import About from './AboutPage';
 
 // Set up Axios interceptor to add JWT token to all outgoing requests
 axios.interceptors.request.use((config) => {
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="coursemain" element={<CourseMainPage />} />
           <Route path="addclass" element={<AddClasspage />} />
           <Route path="rating" element={<Rating />} />
+          <Route path="about" element={<About />} />
         </Route>
         {/* Redirect to homepage if route is not found */}
         <Route path="*" element={<Template />} />

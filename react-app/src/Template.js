@@ -142,15 +142,6 @@ function Template() {
                     </Nav.Link>
                   </Nav.Item>
 
-                  <Nav.Item>
-                    <Nav.Link
-                      as={Link}
-                      to="/contact"
-                      className="custom-link"
-                    >
-                      Contact us
-                    </Nav.Link>
-                  </Nav.Item>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
